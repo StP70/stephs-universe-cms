@@ -283,7 +283,11 @@
         </div>
         <div class="field">
           <label>Icon URL</label>
-          <input type="text" data-field="iconUrl" placeholder="assets/icon.png">
+          <div style="display:flex;gap:.5rem;align-items:center">
+            <input type="text" data-field="iconUrl" placeholder="assets/icon.png">
+            <button class="btn btn-sm" onclick="pickSettingsImage('iconUrl')" title="Bild wählen">Datei</button>
+          </div>
+          <input type="file" accept="image/*" style="display:none" id="filePick-iconUrl" onchange="handleSettingsImagePick('iconUrl',event)">
         </div>
       </div>
       <div class="field">
@@ -293,7 +297,11 @@
       <div class="field-row">
         <div class="field">
           <label>Hero Hintergrundbild</label>
-          <input type="text" data-field="heroBg" placeholder="https://images.unsplash.com/...">
+          <div style="display:flex;gap:.5rem;align-items:center">
+            <input type="text" data-field="heroBg" placeholder="https://images.unsplash.com/...">
+            <button class="btn btn-sm" onclick="pickSettingsImage('heroBg')" title="Bild wählen">Datei</button>
+          </div>
+          <input type="file" accept="image/*" style="display:none" id="filePick-heroBg" onchange="handleSettingsImagePick('heroBg',event)">
         </div>
         <div class="field">
           <label>Hero Badge</label>
@@ -645,6 +653,35 @@ function updateVideo(sIdx, vIdx, field, value) {
   }
 }
 
+// ---- Image Picker (Settings) ----
+function pickSettingsImage(field) {
+  document.getElementById('filePick-' + field).click();
+}
+function handleSettingsImagePick(field, event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const path = 'assets/' + file.name;
+  pageData[field] = path;
+  // Update all inputs with this data-field
+  document.querySelectorAll('[data-field="' + field + '"]').forEach(el => el.value = path);
+  event.target.value = '';
+}
+
+// ---- Image Picker (Sections) ----
+function pickImage(sIdx) {
+  document.getElementById('imgFile-' + sIdx).click();
+}
+function handleImagePick(sIdx, event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  // Use relative path: assets/filename
+  const path = 'assets/' + file.name;
+  pageData.sections[sIdx].image = path;
+  const input = document.getElementById('imgInput-' + sIdx);
+  if (input) input.value = path;
+  event.target.value = '';
+}
+
 // ---- Quote ----
 function updateQuote(sIdx, field, value) {
   if (!pageData.sections[sIdx].quote) pageData.sections[sIdx].quote = { text: '', cite: '' };
@@ -709,7 +746,11 @@ function renderSectionBody(idx) {
     </div>
     <div class="field">
       <label>Bild URL (optional)</label>
-      <input type="text" value="${esc(s.image || '')}" oninput="updateSectionField(${idx},'image',this.value)">
+      <div style="display:flex;gap:.5rem;align-items:center">
+        <input type="text" value="${esc(s.image || '')}" oninput="updateSectionField(${idx},'image',this.value)" id="imgInput-${idx}">
+        <button class="btn btn-sm" onclick="pickImage(${idx})" title="Bild wählen">Datei</button>
+      </div>
+      <input type="file" accept="image/*" style="display:none" id="imgFile-${idx}" onchange="handleImagePick(${idx},event)">
     </div>
 
     <!-- ABSÄTZE -->
@@ -923,18 +964,42 @@ function render(tpl, data) {
   if (!data.theme) data.theme = 'dark';
   if (!data.lang) data.lang = 'de';
   let html = tpl;
-  html = html.replace(/\{\{(\w+)\}\}/g, (_, key) => data[key] !== undefined ? data[key] : '');
-  html = html.replace(/\{\{\{(\w+)\}\}\}/g, (_, key) => data[key] !== undefined ? data[key] : '');
+  html = html.replace(/\{\{(\w+)\}\}/g, (_, key) => {
+    if (key === 'this' || key === 'each' || key === 'if' || key === 'unless') return `{{${key}}}`;
+    return data[key] !== undefined ? data[key] : '';
+  });
+  html = html.replace(/\{\{\{(\w+)\}\}\}/g, (_, key) => {
+    if (key === 'this') return `{{{${key}}}}`;
+    return data[key] !== undefined ? data[key] : '';
+  });
   html = html.replace(/\{\{#if (\w+)\}\}([\s\S]*?)\{\{\/if\}\}/g, (_, key, content) => {
     return data[key] ? content.replace(/\{\{(\w+)\}\}/g, (__, k) => data[k] || '') : '';
   });
-  const sectionMatch = html.match(/\{\{#each sections\}\}([\s\S]*?)\{\{\/each\}\}/);
+  // Find outer #each sections (handles nested #each)
+  function findOuterEach(str) {
+    const all = [];
+    const re = /\{\{#each sections\}\}/g;
+    let m;
+    while ((m = re.exec(str)) !== null) {
+      const s = m.index, cs = s + m[0].length;
+      let d = 1, p = cs;
+      while (d > 0 && p < str.length) {
+        const no = str.indexOf('{{#each', p), nc = str.indexOf('{{/each}}', p);
+        if (nc === -1) break;
+        if (no !== -1 && no < nc) { d++; p = no + 7; }
+        else { d--; if (d === 0) all.push({ 0: str.substring(s, nc + 9), 1: str.substring(cs, nc) }); p = nc + 9; }
+      }
+    }
+    return all;
+  }
+  const sectionMatches = findOuterEach(html);
+  const sectionMatch = sectionMatches.length > 1 ? sectionMatches[1] : sectionMatches[0];
   if (sectionMatch) {
     const sectionTpl = sectionMatch[1];
     const sectionsHtml = data.sections.map((section, idx) => {
       let s = sectionTpl;
       s = s.replace(/\{\{#unless @first\}\}([\s\S]*?)\{\{\/unless\}\}/g, (_, c) => idx === 0 ? '' : c);
-      s = s.replace(/\{\{this\.(\w+)\}\}/g, (_, key) => typeof section[key] === 'string' ? section[key] : '');
+      // Process all block constructs BEFORE simple field replacement
       s = s.replace(/\{\{#if this\.image\}\}([\s\S]*?)\{\{\/if\}\}/g, (_, c) => {
         if (!section.image) return '';
         return c.replace(/\{\{this\.image\}\}/g, section.image).replace(/\{\{this\.title\}\}/g, section.title);
@@ -973,6 +1038,8 @@ function render(tpl, data) {
         if (!section.warning) return '';
         return c.replace(/\{\{this\.warning\.title\}\}/g, section.warning.title).replace(/\{\{this\.warning\.text\}\}/g, section.warning.text);
       });
+      // LAST: simple section fields (only remaining {{this.X}} not inside blocks)
+      s = s.replace(/\{\{this\.(\w+)\}\}/g, (_, key) => typeof section[key] === 'string' ? section[key] : '');
       return s;
     }).join('\n');
     html = html.replace(sectionMatch[0], sectionsHtml);

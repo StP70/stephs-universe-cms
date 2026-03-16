@@ -88,13 +88,15 @@ function render(tpl, data) {
 
   let html = tpl;
 
-  // Simple values: {{key}}
+  // Simple values: {{key}} – skip template keywords (this, #each, #if, etc.)
   html = html.replace(/\{\{(\w+)\}\}/g, (_, key) => {
+    if (key === 'this' || key === 'each' || key === 'if' || key === 'unless') return `{{${key}}}`;
     return data[key] !== undefined ? data[key] : '';
   });
 
-  // {{{key}}} raw HTML
+  // {{{key}}} raw HTML – skip {{{this}}} (used in loops)
   html = html.replace(/\{\{\{(\w+)\}\}\}/g, (_, key) => {
+    if (key === 'this') return `{{{${key}}}}`;
     return data[key] !== undefined ? data[key] : '';
   });
 
@@ -103,8 +105,42 @@ function render(tpl, data) {
     return data[key] ? content.replace(/\{\{(\w+)\}\}/g, (__, k) => data[k] || '') : '';
   });
 
-  // Process sections
-  const sectionMatch = html.match(/\{\{#each sections\}\}([\s\S]*?)\{\{\/each\}\}/);
+  // Process sections – find the LAST (largest) #each sections block
+  // The first one is the nav (small), the second is the content (large with nested #each)
+  function findOuterEachSections(str) {
+    const allMatches = [];
+    const re = /\{\{#each sections\}\}/g;
+    let m;
+    while ((m = re.exec(str)) !== null) {
+      const start = m.index;
+      const contentStart = start + m[0].length;
+      // Find matching {{/each}} by counting nesting
+      let depth = 1;
+      let pos = contentStart;
+      while (depth > 0 && pos < str.length) {
+        const nextOpen = str.indexOf('{{#each', pos);
+        const nextClose = str.indexOf('{{/each}}', pos);
+        if (nextClose === -1) break;
+        if (nextOpen !== -1 && nextOpen < nextClose) {
+          depth++;
+          pos = nextOpen + 7;
+        } else {
+          depth--;
+          if (depth === 0) {
+            allMatches.push({
+              full: str.substring(start, nextClose + 9),
+              content: str.substring(contentStart, nextClose),
+              index: start
+            });
+          }
+          pos = nextClose + 9;
+        }
+      }
+    }
+    return allMatches;
+  }
+  const sectionMatches = findOuterEachSections(html);
+  const sectionMatch = sectionMatches.length > 1 ? { 0: sectionMatches[1].full, 1: sectionMatches[1].content } : (sectionMatches[0] ? { 0: sectionMatches[0].full, 1: sectionMatches[0].content } : null);
   if (sectionMatch) {
     const sectionTpl = sectionMatch[1];
     const sectionsHtml = data.sections.map((section, idx) => {
@@ -115,11 +151,8 @@ function render(tpl, data) {
         return idx === 0 ? '' : content;
       });
 
-      // Simple section fields
-      s = s.replace(/\{\{this\.(\w+)\}\}/g, (_, key) => {
-        if (typeof section[key] === 'string') return section[key];
-        return '';
-      });
+      // Process ALL block-level constructs FIRST (before simple field replacement)
+      // This prevents {{this.title}} at section level from overwriting {{this.title}} inside card loops
 
       // Image conditional
       s = s.replace(/\{\{#if this\.image\}\}([\s\S]*?)\{\{\/if\}\}/g, (_, content) => {
@@ -199,6 +232,12 @@ function render(tpl, data) {
         return content
           .replace(/\{\{this\.warning\.title\}\}/g, section.warning.title)
           .replace(/\{\{this\.warning\.text\}\}/g, section.warning.text);
+      });
+
+      // LAST: Simple section fields (only replaces remaining {{this.X}} not inside blocks)
+      s = s.replace(/\{\{this\.(\w+)\}\}/g, (_, key) => {
+        if (typeof section[key] === 'string') return section[key];
+        return '';
       });
 
       return s;
