@@ -88,15 +88,16 @@ function render(tpl, data) {
 
   let html = tpl;
 
-  // Simple values: {{key}} – skip template keywords (this, #each, #if, etc.)
-  html = html.replace(/\{\{(\w+)\}\}/g, (_, key) => {
-    if (key === 'this' || key === 'each' || key === 'if' || key === 'unless') return `{{${key}}}`;
+  // {{{key}}} raw HTML FIRST – skip {{{this}}} (used in loops)
+  // Must run before {{key}} to avoid partial match on triple-brace patterns
+  html = html.replace(/\{\{\{(\w+)\}\}\}/g, (_, key) => {
+    if (key === 'this') return `{{{${key}}}}`;
     return data[key] !== undefined ? data[key] : '';
   });
 
-  // {{{key}}} raw HTML – skip {{{this}}} (used in loops)
-  html = html.replace(/\{\{\{(\w+)\}\}\}/g, (_, key) => {
-    if (key === 'this') return `{{{${key}}}}`;
+  // Simple values: {{key}} – skip template keywords (this, #each, #if, etc.)
+  html = html.replace(/\{\{(\w+)\}\}/g, (_, key) => {
+    if (key === 'this' || key === 'each' || key === 'if' || key === 'unless') return `{{${key}}}`;
     return data[key] !== undefined ? data[key] : '';
   });
 
@@ -147,7 +148,7 @@ function render(tpl, data) {
       let s = sectionTpl;
 
       // @first
-      s = s.replace(/\{\{#unless @first\}\}([\s\S]*?)\{\{\/unless\}\}/g, (_, content) => {
+      s = s.replace(/\{\{#unless @first\}\}([\s\S]*?)\{\{\/unless\}\}/, (_, content) => {
         return idx === 0 ? '' : content;
       });
 

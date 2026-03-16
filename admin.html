@@ -964,12 +964,13 @@ function render(tpl, data) {
   if (!data.theme) data.theme = 'dark';
   if (!data.lang) data.lang = 'de';
   let html = tpl;
-  html = html.replace(/\{\{(\w+)\}\}/g, (_, key) => {
-    if (key === 'this' || key === 'each' || key === 'if' || key === 'unless') return `{{${key}}}`;
-    return data[key] !== undefined ? data[key] : '';
-  });
+  // Triple-brace {{{key}}} BEFORE double-brace {{key}} to avoid partial match
   html = html.replace(/\{\{\{(\w+)\}\}\}/g, (_, key) => {
     if (key === 'this') return `{{{${key}}}}`;
+    return data[key] !== undefined ? data[key] : '';
+  });
+  html = html.replace(/\{\{(\w+)\}\}/g, (_, key) => {
+    if (key === 'this' || key === 'each' || key === 'if' || key === 'unless') return `{{${key}}}`;
     return data[key] !== undefined ? data[key] : '';
   });
   html = html.replace(/\{\{#if (\w+)\}\}([\s\S]*?)\{\{\/if\}\}/g, (_, key, content) => {
@@ -998,7 +999,7 @@ function render(tpl, data) {
     const sectionTpl = sectionMatch[1];
     const sectionsHtml = data.sections.map((section, idx) => {
       let s = sectionTpl;
-      s = s.replace(/\{\{#unless @first\}\}([\s\S]*?)\{\{\/unless\}\}/g, (_, c) => idx === 0 ? '' : c);
+      s = s.replace(/\{\{#unless @first\}\}([\s\S]*?)\{\{\/unless\}\}/, (_, c) => idx === 0 ? '' : c);
       // Process all block constructs BEFORE simple field replacement
       s = s.replace(/\{\{#if this\.image\}\}([\s\S]*?)\{\{\/if\}\}/g, (_, c) => {
         if (!section.image) return '';
