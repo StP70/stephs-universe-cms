@@ -1,0 +1,47 @@
+{
+  "slug": "meine-neue-seite",
+  "title": "Meine neue Seite",
+  "accentColor": "#10b981",
+  "accentLight": "#6ee7b7",
+  "iconUrl": "assets/icon.png",
+  "iconLink": "https://flexgate.at",
+  "heroBg": "",
+  "heroBadge": "Neu",
+  "heroTitle": "Titel deiner Seite",
+  "heroSubtitle": "Kurze Beschreibung deiner Seite.",
+  "ctaText": "Mehr erfahren",
+  "footerText": "&copy; 2026 &middot; by Stephan Peham, <a href=\"https://flexgate.at\" target=\"_blank\">FLEXGATE</a>",
+  "sections": [
+    {
+      "id": "section1",
+      "navLabel": "Abschnitt 1",
+      "label": "LABEL",
+      "title": "Abschnitt-Titel",
+      "image": "",
+      "paragraphs": [
+        "Dein Text hier. <strong>Fett</strong> und <em>kursiv</em> sind m\u00f6glich."
+      ],
+      "cards": [
+        { "icon": "\u2b50", "title": "Karte 1", "text": "Beschreibung der Karte." },
+        { "icon": "\ud83d\ude80", "title": "Karte 2", "text": "Beschreibung der Karte." },
+        { "icon": "\ud83d\udca1", "title": "Karte 3", "text": "Beschreibung der Karte." }
+      ]
+    },
+    {
+      "id": "section2",
+      "navLabel": "Abschnitt 2",
+      "label": "VIDEOS",
+      "title": "Videos",
+      "videos": [
+        {
+          "url": "https://www.youtube.com/watch?v=VIDEOID",
+          "thumbnail": "https://img.youtube.com/vi/VIDEOID/hqdefault.jpg",
+          "title": "Video-Titel",
+          "description": "Video-Beschreibung.",
+          "badge": "YouTube",
+          "badgeType": "youtube"
+        }
+      ]
+    }
+  ]
+}
