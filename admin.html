@@ -302,11 +302,11 @@
       </div>
       <div class="field">
         <label>Hero Titel (HTML erlaubt)</label>
-        <input type="text" data-field="heroTitle" placeholder="Autophagie<br>&amp; Fasten">
+        <textarea data-field="heroTitle" rows="2" placeholder="Autophagie<br>&amp; Fasten"></textarea>
       </div>
       <div class="field">
         <label>Hero Untertitel</label>
-        <textarea data-field="heroSubtitle" rows="2" placeholder="Kurze Beschreibung deiner Seite..."></textarea>
+        <textarea data-field="heroSubtitle" rows="3" placeholder="Kurze Beschreibung deiner Seite..."></textarea>
       </div>
       <div class="field">
         <label>CTA Button Text</label>
@@ -314,7 +314,7 @@
       </div>
       <div class="field">
         <label>Footer (HTML erlaubt)</label>
-        <textarea data-field="footerText" rows="2" placeholder="&copy; 2026 &middot; by ..."></textarea>
+        <textarea data-field="footerText" rows="4" placeholder="&copy; 2026 &middot; by ..."></textarea>
       </div>
     </div>
   </div>
@@ -629,12 +629,18 @@ function removeVideo(sIdx, vIdx) {
 }
 function updateVideo(sIdx, vIdx, field, value) {
   pageData.sections[sIdx].videos[vIdx][field] = value;
-  // Auto-thumbnail for YouTube
+  // Auto-thumbnail for YouTube (update only the thumbnail input, not full re-render)
   if (field === 'url') {
     const match = value.match(/(?:youtube\.com\/watch\?v=|youtube\.com\/shorts\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
     if (match) {
-      pageData.sections[sIdx].videos[vIdx].thumbnail = 'https://img.youtube.com/vi/' + match[1] + '/hqdefault.jpg';
-      renderSectionBody(sIdx);
+      const thumbUrl = 'https://img.youtube.com/vi/' + match[1] + '/hqdefault.jpg';
+      pageData.sections[sIdx].videos[vIdx].thumbnail = thumbUrl;
+      // Update thumbnail input without re-rendering
+      const body = document.getElementById('sectionBody-' + sIdx);
+      if (body) {
+        const thumbInputs = body.querySelectorAll('input[placeholder*="Thumbnail"]');
+        if (thumbInputs[vIdx]) thumbInputs[vIdx].value = thumbUrl;
+      }
     }
   }
 }
@@ -714,7 +720,7 @@ function renderSectionBody(idx) {
     ${(s.paragraphs || []).map((p, pi) => `
       <div class="list-item">
         <div class="list-fields">
-          <textarea rows="3" oninput="updateParagraph(${idx},${pi},this.value)">${esc(p)}</textarea>
+          <textarea rows="5" oninput="updateParagraph(${idx},${pi},this.value)">${esc(p)}</textarea>
         </div>
         <button class="btn btn-icon btn-sm btn-danger" onclick="removeParagraph(${idx},${pi})">&#128465;</button>
       </div>
