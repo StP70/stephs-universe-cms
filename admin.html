@@ -332,22 +332,152 @@
 // ============================================================
 // STATE
 // ============================================================
+// Beispieldaten aus dem Originalprojekt (experiment-010)
+// Können überschrieben oder beibehalten werden – beim Speichern wird der aktuelle Stand exportiert.
 let pageData = {
-  slug: '',
-  title: '',
+  slug: 'autophagie-fasten',
+  title: 'Autophagie & Fasten',
   theme: 'dark',
   lang: 'de',
   accentColor: '#10b981',
   accentLight: '#6ee7b7',
   iconUrl: 'assets/icon.png',
   iconLink: 'https://flexgate.at',
-  heroBg: '',
-  heroBadge: '',
-  heroTitle: '',
-  heroSubtitle: '',
+  heroBg: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1400&q=80',
+  heroBadge: 'Wissenschaftlich fundiert',
+  heroTitle: 'Autophagie<br>&amp; Fasten',
+  heroSubtitle: 'Wie dein K\u00f6rper sich durch zellul\u00e4re Selbstreinigung regeneriert \u2013 und wie Fasten diesen Prozess aktiviert.',
   ctaText: 'Mehr erfahren',
-  footerText: '',
-  sections: []
+  footerText: '&copy; 2026 \u2013 Informationsseite zu Autophagie &amp; Fasten &middot; by Stephan Peham, <a href="https://flexgate.at" target="_blank" rel="noopener">FLEXGATE</a>',
+  sections: [
+    {
+      id: 'autophagie',
+      navLabel: 'Autophagie',
+      label: 'Grundlagen',
+      title: 'Was ist Autophagie?',
+      image: 'assets/Grundlagen.png',
+      paragraphs: [
+        'Das Wort <strong>Autophagie</strong> stammt aus dem Griechischen und bedeutet w\u00f6rtlich <em>\u201esich selbst essen\u201c</em> (auto = selbst, phagein = essen). Es beschreibt einen nat\u00fcrlichen Prozess, bei dem Zellen besch\u00e4digte oder nicht mehr ben\u00f6tigte Bestandteile abbauen und recyceln.',
+        'Dieser Mechanismus dient als eine Art <strong>zellul\u00e4res Aufr\u00e4umprogramm</strong>: Defekte Proteine, gesch\u00e4digte Mitochondrien und andere Zellabf\u00e4lle werden in Membranbl\u00e4schen (Autophagosomen) eingeschlossen und von Lysosomen abgebaut. Die gewonnenen Bausteine nutzt die Zelle zur Energiegewinnung oder zum Aufbau neuer Strukturen.'
+      ],
+      quote: {
+        text: 'Autophagie ist das Recyclingprogramm unserer Zellen \u2013 ein Schl\u00fcssel zu Langlebigkeit und Gesundheit.',
+        cite: '\u2013 frei nach Yoshinori Ohsumi, Nobelpreistr\u00e4ger 2016'
+      },
+      cards: [
+        { icon: '\ud83d\udd2c', title: 'Zellerneuerung', text: 'Besch\u00e4digte Zellbestandteile werden abgebaut und durch neue ersetzt \u2013 die Zelle verj\u00fcngt sich von innen.' },
+        { icon: '\ud83d\udee1\ufe0f', title: 'Immunabwehr', text: 'Autophagie hilft, intrazellul\u00e4re Krankheitserreger wie Bakterien und Viren zu beseitigen.' },
+        { icon: '\u26a1', title: 'Energiegewinnung', text: 'In Zeiten von N\u00e4hrstoffmangel liefert der Abbau zelleigener Bestandteile wertvolle Energie.' }
+      ],
+      timeline: [],
+      videos: [],
+      warning: null
+    },
+    {
+      id: 'fasten',
+      navLabel: 'Fasten',
+      label: 'Methoden',
+      title: 'Fasten im \u00dcberblick',
+      image: 'assets/human.png',
+      paragraphs: [
+        'Fasten ist der bewusste, zeitlich begrenzte Verzicht auf Nahrung. Es ist eine der \u00e4ltesten Gesundheitspraktiken der Menschheit und wird heute wissenschaftlich intensiv erforscht.'
+      ],
+      quote: null,
+      cards: [
+        { icon: '\u23f0', title: '16:8 Intervallfasten', text: '16 Stunden fasten, 8 Stunden essen. Die beliebteste Methode f\u00fcr den Alltag \u2013 z.B. von 12\u201320 Uhr essen.' },
+        { icon: '\ud83d\udcc5', title: '5:2 Methode', text: 'An 5 Tagen normal essen, an 2 Tagen nur ca. 500\u2013600 kcal. Flexibel in der Wochenplanung.' },
+        { icon: '\ud83c\udf7d\ufe0f', title: 'OMAD', text: 'One Meal a Day \u2013 nur eine Mahlzeit am Tag, ein intensiverer Ansatz mit ca. 23h Fastenzeit.' },
+        { icon: '\ud83e\uddd8', title: 'Mehrt\u00e4giges Fasten', text: '24\u201372+ Stunden ohne Nahrung. St\u00e4rkster Autophagie-Stimulus, nur mit Vorbereitung und \u00e4rztlicher Begleitung.' }
+      ],
+      timeline: [],
+      videos: [],
+      warning: null
+    },
+    {
+      id: 'verbindung',
+      navLabel: 'Wissenschaft',
+      label: 'Wissenschaft',
+      title: 'Wie Fasten die Autophagie aktiviert',
+      image: 'assets/autophagy.png',
+      paragraphs: [
+        'Wenn dem K\u00f6rper \u00fcber einen l\u00e4ngeren Zeitraum keine Nahrung zugef\u00fchrt wird, sinkt der <strong>Insulinspiegel</strong> und ein Enzym namens <strong>AMPK</strong> wird aktiviert. Gleichzeitig wird der Wachstumsfaktor <strong>mTOR</strong> gehemmt \u2013 ein zentraler Signalweg, der bei Nahrungs\u00fcberfluss die Autophagie unterdr\u00fcckt.',
+        'Das Ergebnis: Die Zellen schalten in den \u201eAufr\u00e4ummodus\u201c. Je l\u00e4nger die Fastenperiode, desto intensiver l\u00e4uft die Autophagie ab. Erste Effekte zeigen sich bereits nach <strong>12\u201316 Stunden</strong>, ein deutlicher Anstieg wird nach <strong>24\u201348 Stunden</strong> beobachtet.'
+      ],
+      quote: null,
+      cards: [
+        { icon: '\ud83d\udcc9', title: 'Insulin sinkt', text: 'Niedrige Insulinwerte signalisieren den Zellen: \u201eEs gibt gerade keine neue Energie von au\u00dfen.\u201c' },
+        { icon: '\ud83d\udd04', title: 'mTOR wird gehemmt', text: 'Der Wachstumssensor mTOR f\u00e4hrt herunter \u2013 das gibt den Startschuss f\u00fcr die zellul\u00e4re Selbstreinigung.' },
+        { icon: '\u2699\ufe0f', title: 'AMPK wird aktiviert', text: 'Der \u201eEnergiesensor\u201c AMPK erkennt den Mangel und kurbelt Reparatur- und Recyclingprozesse an.' }
+      ],
+      timeline: [],
+      videos: [],
+      warning: null
+    },
+    {
+      id: 'timeline',
+      navLabel: 'Zeitstrahl',
+      label: 'Zeitverlauf',
+      title: 'Was passiert beim Fasten?',
+      image: 'assets/Zeitstrahl.png',
+      paragraphs: [
+        'Ein \u00dcberblick, was in deinem K\u00f6rper passiert, wenn du aufh\u00f6rst zu essen.'
+      ],
+      quote: null,
+      cards: [],
+      timeline: [
+        { time: '0\u20134 h', text: 'Verdauungsphase \u2013 der K\u00f6rper verarbeitet die letzte Mahlzeit. Blutzucker und Insulin steigen.' },
+        { time: '4\u20138 h', text: 'Blutzucker normalisiert sich. Der K\u00f6rper beginnt, Glykogenreserven in der Leber anzuzapfen.' },
+        { time: '8\u201312 h', text: 'Glykogenspeicher leeren sich. Fettverbrennung setzt ein. Erste Autophagie-Signale.' },
+        { time: '12\u201318 h', text: 'Ketose beginnt \u2013 Fette werden in Ketonk\u00f6rper umgewandelt. Autophagie nimmt messbar zu.' },
+        { time: '18\u201324 h', text: 'Starke Autophagie-Aktivit\u00e4t. Der K\u00f6rper r\u00e4umt intensiv auf. Wachstumshormon steigt.' },
+        { time: '24\u201348 h', text: 'Autophagie auf hohem Niveau. Tiefgreifende zellul\u00e4re Reparaturprozesse. Entz\u00fcndungswerte sinken.' },
+        { time: '48\u201372 h', text: 'Maximale Autophagie. Stammzell-Regeneration beginnt. Immunsystem wird quasi \u201eneu gestartet\u201c.' }
+      ],
+      videos: [],
+      warning: null
+    },
+    {
+      id: 'tipps',
+      navLabel: 'Tipps',
+      label: 'Praxis',
+      title: 'Tipps f\u00fcr Einsteiger',
+      image: '',
+      paragraphs: [],
+      quote: null,
+      cards: [
+        { icon: '\ud83d\udeb6', title: 'Langsam starten', text: 'Beginne mit 12:12 und steigere dich schrittweise auf 16:8. Dein K\u00f6rper braucht Zeit zur Anpassung.' },
+        { icon: '\ud83d\udca7', title: 'Viel trinken', text: 'Wasser, unges\u00fc\u00dfter Tee und schwarzer Kaffee sind erlaubt und helfen, das Hungergef\u00fchl zu mildern.' },
+        { icon: '\ud83e\udd57', title: 'N\u00e4hrstoffreich essen', text: 'In den Essensphasen auf vollwertige, n\u00e4hrstoffreiche Mahlzeiten achten \u2013 Qualit\u00e4t vor Quantit\u00e4t.' },
+        { icon: '\ud83d\udccb', title: 'Auf den K\u00f6rper h\u00f6ren', text: 'Schwindel, starke Schw\u00e4che oder Unwohlsein? Dann brich das Fasten ab. Gesundheit geht vor.' }
+      ],
+      timeline: [],
+      videos: [],
+      warning: {
+        title: 'Wichtiger Hinweis:',
+        text: 'Diese Seite dient ausschlie\u00dflich der Information und ersetzt keine \u00e4rztliche Beratung. Personen mit Vorerkrankungen, Schwangere, Stillende und Kinder sollten nicht ohne \u00e4rztliche R\u00fccksprache fasten.'
+      }
+    },
+    {
+      id: 'videos',
+      navLabel: 'Videos',
+      label: 'Weiterf\u00fchrend',
+      title: 'Videos zum Thema',
+      image: '',
+      paragraphs: [
+        'Ausgew\u00e4hlte Videos rund um Fasten und Autophagie \u2013 von Dokumentationen bis zu kurzen Erkl\u00e4rvideos.'
+      ],
+      quote: null,
+      cards: [],
+      timeline: [],
+      videos: [
+        { url: 'https://www.arte.tv/de/videos/118244-000-A/fasten-ein-phaenomen-wird-erforscht/', thumbnail: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80', title: 'Fasten \u2013 Ein Ph\u00e4nomen wird erforscht', description: 'ARTE-Dokumentation \u00fcber die wissenschaftliche Erforschung des Fastens und seine Auswirkungen auf den K\u00f6rper.', badge: 'ARTE', badgeType: 'arte' },
+        { url: 'https://www.youtube.com/watch?v=jlELeipDRXc', thumbnail: 'https://img.youtube.com/vi/jlELeipDRXc/hqdefault.jpg', title: 'Fasten & Autophagie erkl\u00e4rt', description: 'Ausf\u00fchrliches Video \u00fcber die Zusammenh\u00e4nge zwischen Fasten und zellul\u00e4rer Selbstreinigung.', badge: 'YouTube', badgeType: 'youtube' },
+        { url: 'https://www.youtube.com/shorts/f2U6ALFiuwU', thumbnail: 'https://img.youtube.com/vi/f2U6ALFiuwU/hqdefault.jpg', title: 'Autophagie in K\u00fcrze', description: 'Kompaktes Kurzvideo \u2013 die wichtigsten Fakten zur Autophagie in unter einer Minute.', badge: 'YouTube Short', badgeType: 'youtube' },
+        { url: 'https://www.youtube.com/watch?v=0pQSWRdtrf8', thumbnail: 'https://img.youtube.com/vi/0pQSWRdtrf8/hqdefault.jpg', title: 'Bakteriophagen \u2013 Viren gegen Bakterien', description: 'Wie Bakteriophagen gezielt Bakterien angreifen und als Alternative zu Antibiotika erforscht werden.', badge: 'YouTube', badgeType: 'youtube' }
+      ],
+      warning: null
+    }
+  ]
 };
 
 // ============================================================
