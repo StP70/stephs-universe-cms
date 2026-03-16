@@ -1,0 +1,224 @@
+{
+  "slug": "Leberfasten",
+  "title": "Leberfasten",
+  "theme": "dark",
+  "lang": "de",
+  "accentColor": "#10b981",
+  "accentLight": "#6ee7b7",
+  "iconUrl": "assets/icon.png",
+  "iconLink": "https://flexgate.at",
+  "heroBg": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1400&q=80",
+  "heroBadge": "Wissenschaftlich fundiert",
+  "heroTitle": "Leberfasten",
+  "heroSubtitle": "Gezielte Ernährungsstrategie, um eine verfettete Leber in kurzer Zeit - meist 14 Tage - effektiv zu entfetten und den Stoffwechsel zu regenerieren.",
+  "ctaText": "Mehr erfahren",
+  "footerText": "&copy; 2026 – Informationsseite zum Leberfasten &middot; by Stephan Peham, <a href=\"https://flexgate.at\" target=\"_blank\" rel=\"noopener\">FLEXGATE</a>",
+  "sections": [
+    {
+      "id": "Leberfasten",
+      "navLabel": "Leberfasten",
+      "label": "Kernkonzept und Ablauf",
+      "title": "Was ist Leberfasten?",
+      "image": "assets/Grundlagen.png",
+      "paragraphs": [
+        "Die Kur zielt darauf ab, die Insulinresistenz zu durchbrechen und das Organfett zu reduzieren.\nDauer: In der Regel 14 Tage. Bei starker Verfettung kann die Phase auf bis zu vier Wochen ausgedehnt werden.\nErnährung: Pro Tag werden etwa 800 bis 1000 Kilokalorien aufgenommen.\nMahlzeiten: Meist besteht der Tag aus drei Mahlzeiten. Häufig werden zwei bis drei Mahlzeiten durch spezielle hochwertige Eiweißshakes (wie Hepafast®) ersetzt, die wichtige Ballaststoffe (z.B. Inulin) und leberaktive Stoffe enthalten.\nErgänzung: Zusätzlich ist reichlich Gemüse (gedünstet oder als Rohkost/Salat) erlaubt, um die Sättigung zu fördern und Vitamine zu liefern.\n\nLebensmittel-Leitfaden\nWährend der Kur gelten klare Prioritäten für die Lebensmittelauswahl:\nErlaubt/Förderlich:\nGemüse: Brokkoli, Karotten, Spinat, Zucchini, Spargel, Tomaten.\nGetränke: Wasser, ungesüßter Tee, schwarzer Kaffee (in Maßen) und Zitronenwasser.\nProteine: Mageres Fleisch (Huhn, Pute), Fisch (Kabeljau, Seelachs) und Eier.\nZu vermeiden:\nZucker & Fruktose: Besonders schädlich bei Fettleber; Obst sollte während der strikten Phase nur sehr begrenzt verzehrt werden.\nEinfache Kohlenhydrate: Weißmehlprodukte und stark verarbeitete Lebensmittel. "
+      ],
+      "quote": {
+        "text": "Autophagie ist das Recyclingprogramm unserer Zellen – ein Schlüssel zu Langlebigkeit und Gesundheit.",
+        "cite": "– frei nach Yoshinori Ohsumi, Nobelpreisträger 2016"
+      },
+      "cards": [
+        {
+          "icon": "🔬",
+          "title": "Zellerneuerung",
+          "text": "Beschädigte Zellbestandteile werden abgebaut und durch neue ersetzt – die Zelle verjüngt sich von innen."
+        },
+        {
+          "icon": "🛡️",
+          "title": "Immunabwehr",
+          "text": "Autophagie hilft, intrazelluläre Krankheitserreger wie Bakterien und Viren zu beseitigen."
+        },
+        {
+          "icon": "⚡",
+          "title": "Energiegewinnung",
+          "text": "In Zeiten von Nährstoffmangel liefert der Abbau zelleigener Bestandteile wertvolle Energie."
+        }
+      ]
+    },
+    {
+      "id": "fasten",
+      "navLabel": "Fasten",
+      "label": "Methoden",
+      "title": "Fasten im Überblick",
+      "image": "assets/human.png",
+      "paragraphs": [
+        "Fasten ist der bewusste, zeitlich begrenzte Verzicht auf Nahrung. Es ist eine der ältesten Gesundheitspraktiken der Menschheit und wird heute wissenschaftlich intensiv erforscht."
+      ],
+      "cards": [
+        {
+          "icon": "⏰",
+          "title": "16:8 Intervallfasten",
+          "text": "16 Stunden fasten, 8 Stunden essen. Die beliebteste Methode für den Alltag – z.B. von 12–20 Uhr essen."
+        },
+        {
+          "icon": "📅",
+          "title": "5:2 Methode",
+          "text": "An 5 Tagen normal essen, an 2 Tagen nur ca. 500–600 kcal. Flexibel in der Wochenplanung."
+        },
+        {
+          "icon": "🍽️",
+          "title": "OMAD",
+          "text": "One Meal a Day – nur eine Mahlzeit am Tag, ein intensiverer Ansatz mit ca. 23h Fastenzeit."
+        },
+        {
+          "icon": "🧘",
+          "title": "Mehrtägiges Fasten",
+          "text": "24–72+ Stunden ohne Nahrung. Stärkster Autophagie-Stimulus, nur mit Vorbereitung und ärztlicher Begleitung."
+        }
+      ]
+    },
+    {
+      "id": "verbindung",
+      "navLabel": "Wissenschaft",
+      "label": "Wissenschaft",
+      "title": "Wie Fasten die Autophagie aktiviert",
+      "image": "assets/autophagy.png",
+      "paragraphs": [
+        "Wenn dem Körper über einen längeren Zeitraum keine Nahrung zugeführt wird, sinkt der <strong>Insulinspiegel</strong> und ein Enzym namens <strong>AMPK</strong> wird aktiviert. Gleichzeitig wird der Wachstumsfaktor <strong>mTOR</strong> gehemmt – ein zentraler Signalweg, der bei Nahrungsüberfluss die Autophagie unterdrückt.",
+        "Das Ergebnis: Die Zellen schalten in den „Aufräummodus“. Je länger die Fastenperiode, desto intensiver läuft die Autophagie ab. Erste Effekte zeigen sich bereits nach <strong>12–16 Stunden</strong>, ein deutlicher Anstieg wird nach <strong>24–48 Stunden</strong> beobachtet."
+      ],
+      "cards": [
+        {
+          "icon": "📉",
+          "title": "Insulin sinkt",
+          "text": "Niedrige Insulinwerte signalisieren den Zellen: „Es gibt gerade keine neue Energie von außen.“"
+        },
+        {
+          "icon": "🔄",
+          "title": "mTOR wird gehemmt",
+          "text": "Der Wachstumssensor mTOR fährt herunter – das gibt den Startschuss für die zelluläre Selbstreinigung."
+        },
+        {
+          "icon": "⚙️",
+          "title": "AMPK wird aktiviert",
+          "text": "Der „Energiesensor“ AMPK erkennt den Mangel und kurbelt Reparatur- und Recyclingprozesse an."
+        }
+      ]
+    },
+    {
+      "id": "timeline",
+      "navLabel": "Zeitstrahl",
+      "label": "Zeitverlauf",
+      "title": "Was passiert beim Fasten?",
+      "image": "assets/Zeitstrahl.png",
+      "paragraphs": [
+        "Ein Überblick, was in deinem Körper passiert, wenn du aufhörst zu essen."
+      ],
+      "timeline": [
+        {
+          "time": "0–4 h",
+          "text": "Verdauungsphase – der Körper verarbeitet die letzte Mahlzeit. Blutzucker und Insulin steigen."
+        },
+        {
+          "time": "4–8 h",
+          "text": "Blutzucker normalisiert sich. Der Körper beginnt, Glykogenreserven in der Leber anzuzapfen."
+        },
+        {
+          "time": "8–12 h",
+          "text": "Glykogenspeicher leeren sich. Fettverbrennung setzt ein. Erste Autophagie-Signale."
+        },
+        {
+          "time": "12–18 h",
+          "text": "Ketose beginnt – Fette werden in Ketonkörper umgewandelt. Autophagie nimmt messbar zu."
+        },
+        {
+          "time": "18–24 h",
+          "text": "Starke Autophagie-Aktivität. Der Körper räumt intensiv auf. Wachstumshormon steigt."
+        },
+        {
+          "time": "24–48 h",
+          "text": "Autophagie auf hohem Niveau. Tiefgreifende zelluläre Reparaturprozesse. Entzündungswerte sinken."
+        },
+        {
+          "time": "48–72 h",
+          "text": "Maximale Autophagie. Stammzell-Regeneration beginnt. Immunsystem wird quasi „neu gestartet“."
+        }
+      ]
+    },
+    {
+      "id": "tipps",
+      "navLabel": "Tipps",
+      "label": "Praxis",
+      "title": "Tipps für Einsteiger",
+      "cards": [
+        {
+          "icon": "🚶",
+          "title": "Langsam starten",
+          "text": "Beginne mit 12:12 und steigere dich schrittweise auf 16:8. Dein Körper braucht Zeit zur Anpassung."
+        },
+        {
+          "icon": "💧",
+          "title": "Viel trinken",
+          "text": "Wasser, ungesüßter Tee und schwarzer Kaffee sind erlaubt und helfen, das Hungergefühl zu mildern."
+        },
+        {
+          "icon": "🥗",
+          "title": "Nährstoffreich essen",
+          "text": "In den Essensphasen auf vollwertige, nährstoffreiche Mahlzeiten achten – Qualität vor Quantität."
+        },
+        {
+          "icon": "📋",
+          "title": "Auf den Körper hören",
+          "text": "Schwindel, starke Schwäche oder Unwohlsein? Dann brich das Fasten ab. Gesundheit geht vor."
+        }
+      ],
+      "warning": {
+        "title": "Wichtiger Hinweis:",
+        "text": "Diese Seite dient ausschließlich der Information und ersetzt keine ärztliche Beratung. Personen mit Vorerkrankungen, Schwangere, Stillende und Kinder sollten nicht ohne ärztliche Rücksprache fasten."
+      }
+    },
+    {
+      "id": "videos",
+      "navLabel": "Videos",
+      "label": "Weiterführend",
+      "title": "Videos zum Thema",
+      "paragraphs": [
+        "Ausgewählte Videos rund um Fasten und Autophagie – von Dokumentationen bis zu kurzen Erklärvideos."
+      ],
+      "videos": [
+        {
+          "url": "https://www.arte.tv/de/videos/118244-000-A/fasten-ein-phaenomen-wird-erforscht/",
+          "thumbnail": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80",
+          "title": "Fasten – Ein Phänomen wird erforscht",
+          "description": "ARTE-Dokumentation über die wissenschaftliche Erforschung des Fastens und seine Auswirkungen auf den Körper.",
+          "badge": "ARTE",
+          "badgeType": "arte"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=jlELeipDRXc",
+          "thumbnail": "https://img.youtube.com/vi/jlELeipDRXc/hqdefault.jpg",
+          "title": "Fasten & Autophagie erklärt",
+          "description": "Ausführliches Video über die Zusammenhänge zwischen Fasten und zellulärer Selbstreinigung.",
+          "badge": "YouTube",
+          "badgeType": "youtube"
+        },
+        {
+          "url": "https://www.youtube.com/shorts/f2U6ALFiuwU",
+          "thumbnail": "https://img.youtube.com/vi/f2U6ALFiuwU/hqdefault.jpg",
+          "title": "Autophagie in Kürze",
+          "description": "Kompaktes Kurzvideo – die wichtigsten Fakten zur Autophagie in unter einer Minute.",
+          "badge": "YouTube Short",
+          "badgeType": "youtube"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=0pQSWRdtrf8",
+          "thumbnail": "https://img.youtube.com/vi/0pQSWRdtrf8/hqdefault.jpg",
+          "title": "Bakteriophagen – Viren gegen Bakterien",
+          "description": "Wie Bakteriophagen gezielt Bakterien angreifen und als Alternative zu Antibiotika erforscht werden.",
+          "badge": "YouTube",
+          "badgeType": "youtube"
+        }
+      ]
+    }
+  ]
+}
