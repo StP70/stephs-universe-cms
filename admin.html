@@ -990,100 +990,127 @@
   <!-- Editor Sub-Tab: Seiten-Einstellungen -->
   <div id="editorTabSettingsContent" style="padding:1.5rem">
   <div class="panel">
-    <div class="panel-title">Seiten-Einstellungen</div>
-    <div class="panel-body">
-      <div class="field-row">
-        <div class="field">
-          <label>Slug (URL-Pfad)</label>
-          <input type="text" data-field="slug" placeholder="meine-seite">
+    <div class="panel-body" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+
+      <!-- LINKE SPALTE -->
+      <div>
+        <!-- Grundlagen -->
+        <div style="background:var(--bg-input);border-radius:var(--radius);padding:1rem;margin-bottom:1rem">
+          <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem">Grundlagen</div>
+          <div class="field">
+            <label>Slug (URL-Pfad)</label>
+            <input type="text" data-field="slug" placeholder="meine-seite">
+          </div>
+          <div class="field">
+            <label>Seitentitel</label>
+            <input type="text" data-field="title" placeholder="Meine Seite">
+          </div>
+          <div class="field-row-3">
+            <div class="field">
+              <label>Theme</label>
+              <select data-field="theme">
+                <option value="dark">Dark</option>
+                <option value="light">Light</option>
+                <option value="colorful">Colorful</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Sprache</label>
+              <input type="text" data-field="lang" placeholder="de" maxlength="5">
+            </div>
+            <div class="field">
+              <label>CTA Button</label>
+              <input type="text" data-field="ctaText" placeholder="Mehr erfahren">
+            </div>
+          </div>
         </div>
-        <div class="field">
-          <label>Seitentitel</label>
-          <input type="text" data-field="title" placeholder="Meine Seite">
+
+        <!-- Design -->
+        <div style="background:var(--bg-input);border-radius:var(--radius);padding:1rem;margin-bottom:1rem">
+          <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem">Design &amp; Farben</div>
+          <div class="field-row">
+            <div class="field">
+              <label>Akzentfarbe</label>
+              <div class="color-field">
+                <input type="color" data-field="accentColor" value="#10b981">
+                <input type="text" data-field="accentColor" placeholder="#10b981">
+              </div>
+            </div>
+            <div class="field">
+              <label>Helle Akzentfarbe</label>
+              <div class="color-field">
+                <input type="color" data-field="accentLight" value="#6ee7b7">
+                <input type="text" data-field="accentLight" placeholder="#6ee7b7">
+              </div>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Icon Größe (px)</label>
+              <input type="number" data-field="iconSize" placeholder="46" min="16" max="120" style="max-width:100px">
+            </div>
+            <div class="field">
+              <label>Card-Icon-Größe (px)</label>
+              <input type="number" data-field="cardIconSize" placeholder="40" min="20" max="80" style="max-width:100px">
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="field-row-3">
-        <div class="field">
-          <label>Theme</label>
-          <select data-field="theme">
-            <option value="dark">Dark</option>
-            <option value="light">Light</option>
-            <option value="colorful">Colorful</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Sprache</label>
-          <input type="text" data-field="lang" placeholder="de" maxlength="5">
-        </div>
-        <div class="field">
-          <label>Akzentfarbe</label>
-          <div class="color-field">
-            <input type="color" data-field="accentColor" value="#10b981">
-            <input type="text" data-field="accentColor" placeholder="#10b981">
+
+        <!-- Icon / Navigation -->
+        <div style="background:var(--bg-input);border-radius:var(--radius);padding:1rem">
+          <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem">Navigation &amp; Icon</div>
+          <div class="field">
+            <label>Icon</label>
+            <div style="display:flex;gap:.5rem;align-items:center">
+              <input type="text" data-field="iconUrl" placeholder="assets/icon.png">
+              <button class="btn btn-sm" onclick="pickSettingsImage('iconUrl')" title="Bild wählen">Datei</button>
+            </div>
+            <input type="file" accept="image/*" style="display:none" id="filePick-iconUrl" onchange="handleSettingsImagePick('iconUrl',event)">
+          </div>
+          <div class="field">
+            <label>Icon Link</label>
+            <input type="text" data-field="iconLink" placeholder="https://flexgate.at">
           </div>
         </div>
       </div>
-      <div class="field-row">
-        <div class="field">
-          <label>Helle Akzentfarbe</label>
-          <div class="color-field">
-            <input type="color" data-field="accentLight" value="#6ee7b7">
-            <input type="text" data-field="accentLight" placeholder="#6ee7b7">
+
+      <!-- RECHTE SPALTE -->
+      <div>
+        <!-- Hero -->
+        <div style="background:var(--bg-input);border-radius:var(--radius);padding:1rem;margin-bottom:1rem">
+          <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem">Hero-Bereich</div>
+          <div class="field">
+            <label>Hintergrundbild</label>
+            <div style="display:flex;gap:.5rem;align-items:center">
+              <input type="text" data-field="heroBg" placeholder="https://images.unsplash.com/...">
+              <button class="btn btn-sm" onclick="pickSettingsImage('heroBg')" title="Bild wählen">Datei</button>
+            </div>
+            <input type="file" accept="image/*" style="display:none" id="filePick-heroBg" onchange="handleSettingsImagePick('heroBg',event)">
+          </div>
+          <div class="field">
+            <label>Badge</label>
+            <input type="text" data-field="heroBadge" placeholder="Wissenschaftlich fundiert">
+          </div>
+          <div class="field">
+            <label>Titel (HTML erlaubt)</label>
+            <textarea data-field="heroTitle" rows="2" placeholder="Autophagie<br>&amp; Fasten"></textarea>
+          </div>
+          <div class="field">
+            <label>Untertitel</label>
+            <textarea data-field="heroSubtitle" rows="3" placeholder="Kurze Beschreibung deiner Seite..."></textarea>
           </div>
         </div>
-        <div class="field">
-          <label>Icon URL</label>
-          <div style="display:flex;gap:.5rem;align-items:center">
-            <input type="text" data-field="iconUrl" placeholder="assets/icon.png">
-            <button class="btn btn-sm" onclick="pickSettingsImage('iconUrl')" title="Bild wählen">Datei</button>
+
+        <!-- Footer -->
+        <div style="background:var(--bg-input);border-radius:var(--radius);padding:1rem">
+          <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem">Footer</div>
+          <div class="field">
+            <label>Footer-Text (HTML erlaubt)</label>
+            <textarea data-field="footerText" rows="4" placeholder="&copy; 2026 &middot; by ..."></textarea>
           </div>
-          <input type="file" accept="image/*" style="display:none" id="filePick-iconUrl" onchange="handleSettingsImagePick('iconUrl',event)">
         </div>
       </div>
-      <div class="field-row">
-        <div class="field">
-          <label>Icon Link</label>
-          <input type="text" data-field="iconLink" placeholder="https://flexgate.at">
-        </div>
-        <div class="field">
-          <label>Icon Größe (px)</label>
-          <input type="number" data-field="iconSize" placeholder="46" min="16" max="120" style="max-width:100px">
-        </div>
-        <div class="field">
-          <label>Card-Icon-Größe (px)</label>
-          <input type="number" data-field="cardIconSize" placeholder="40" min="20" max="80" style="max-width:100px">
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field">
-          <label>Hero Hintergrundbild</label>
-          <div style="display:flex;gap:.5rem;align-items:center">
-            <input type="text" data-field="heroBg" placeholder="https://images.unsplash.com/...">
-            <button class="btn btn-sm" onclick="pickSettingsImage('heroBg')" title="Bild wählen">Datei</button>
-          </div>
-          <input type="file" accept="image/*" style="display:none" id="filePick-heroBg" onchange="handleSettingsImagePick('heroBg',event)">
-        </div>
-        <div class="field">
-          <label>Hero Badge</label>
-          <input type="text" data-field="heroBadge" placeholder="Wissenschaftlich fundiert">
-        </div>
-      </div>
-      <div class="field">
-        <label>Hero Titel (HTML erlaubt)</label>
-        <textarea data-field="heroTitle" rows="2" placeholder="Autophagie<br>&amp; Fasten"></textarea>
-      </div>
-      <div class="field">
-        <label>Hero Untertitel</label>
-        <textarea data-field="heroSubtitle" rows="3" placeholder="Kurze Beschreibung deiner Seite..."></textarea>
-      </div>
-      <div class="field">
-        <label>CTA Button Text</label>
-        <input type="text" data-field="ctaText" placeholder="Mehr erfahren">
-      </div>
-      <div class="field">
-        <label>Footer (HTML erlaubt)</label>
-        <textarea data-field="footerText" rows="4" placeholder="&copy; 2026 &middot; by ..."></textarea>
-      </div>
+
     </div>
   </div>
 
