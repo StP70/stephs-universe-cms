@@ -310,6 +310,7 @@
           </div>
         </div>
       </div>
+      <div id="genTokenEst" style="font-size:.8rem;color:var(--text-muted);margin-top:.3rem"></div>
       <div style="display:flex;gap:.5rem;margin-top:.5rem">
         <button class="btn" id="genButton" onclick="startGeneration()" style="background:var(--accent);color:#000;font-weight:600;white-space:nowrap">Generieren</button>
         <button class="btn btn-sm" id="genCopyBtn" onclick="copyPrompt()" style="white-space:nowrap">Prompt kopieren</button>
@@ -321,10 +322,27 @@
       <div id="genManualPaste" style="display:none;margin-top:.75rem">
         <div class="field">
           <label>JSON-Antwort von claude.ai hier einfügen</label>
-          <textarea id="genPasteArea" rows="6" placeholder='{"slug":"...","title":"...","sections":[...]}'></textarea>
+          <textarea id="genPasteArea" rows="6" placeholder='[{"slug":"..."},{"slug":"..."}] oder {"slug":"..."}'></textarea>
         </div>
         <button class="btn btn-sm" onclick="loadPastedJSON()" style="margin-top:.3rem">In Editor laden</button>
       </div>
+      <!-- REMIX -->
+      <div id="genRemix" style="display:none;margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--border)">
+        <div style="font-weight:600;margin-bottom:.5rem">Remix: Beste Teile kombinieren</div>
+        <div id="remixHeroList" style="margin-bottom:.5rem"></div>
+        <div id="remixSectionList" style="margin-bottom:.5rem"></div>
+        <div class="field" style="margin-top:.5rem">
+          <label>Zusätzliche Anweisung (optional)</label>
+          <input type="text" id="remixInstruction" placeholder="z.B. Verwende den lockeren Ton von V2">
+        </div>
+        <div id="remixTokenEst" style="font-size:.8rem;color:var(--text-muted);margin-top:.3rem"></div>
+        <div style="display:flex;gap:.5rem;margin-top:.5rem">
+          <button class="btn btn-sm" onclick="copyRemixPrompt()" style="white-space:nowrap">Remix-Prompt kopieren</button>
+          <a href="https://claude.ai/new" target="_blank" rel="noopener" class="btn btn-sm" style="white-space:nowrap;text-decoration:none">Claude.ai öffnen</a>
+        </div>
+      </div>
+      <!-- Session-Zähler -->
+      <div id="genTotalTokens" style="margin-top:.75rem;padding-top:.5rem;border-top:1px solid var(--border);font-size:.8rem;color:var(--text-muted)"></div>
     </div>
   </div>
   <script>
@@ -408,6 +426,7 @@
     var indices = getSelectedVariants();
     if (indices.length === 0) { alert('Bitte mindestens eine Variante wählen.'); return; }
     var prompt = buildMultiPrompt(desc, indices);
+    addToTotalTokens(Math.ceil(prompt.length / 4) + indices.length * 2000);
     navigator.clipboard.writeText(prompt).then(function() {
       document.getElementById('genStatus').textContent = 'Prompt kopiert (' + indices.length + ' Variante(n))! Füge ihn in claude.ai ein und kopiere die JSON-Antwort zurück.';
       document.getElementById('genManualPaste').style.display = 'block';
@@ -443,6 +462,7 @@
       }).join('');
       document.getElementById('genStatus').textContent = variants.length + ' Variante(n) geladen! Klicke eine zum Bearbeiten.';
       document.getElementById('genPasteArea').value = '';
+      showRemixUI();
     } catch(err) {
       alert('Ungültiges JSON: ' + err.message);
     }
@@ -500,6 +520,7 @@
         '</button>' +
         '<button class="btn btn-sm btn-icon" onclick="downloadGeneratedVariant(' + i + ')" style="margin:0" title="JSON herunterladen">&#128190;</button>';
     }).join('');
+    showRemixUI();
   }
 
   function loadGeneratedVariant(idx) {
@@ -541,6 +562,143 @@
     a.download = (data.slug || 'variante-' + (idx + 1)) + '.json';
     a.click();
     URL.revokeObjectURL(a.href);
+  }
+
+  // ============================================================
+  // TOKEN-SCHÄTZUNG + SESSION-ZÄHLER
+  // ============================================================
+  var _totalTokensEstimated = 0;
+
+  function fmtTokens(n) {
+    return Math.round(n / 100) * 100;  // auf 100er runden
+  }
+  function fmtTokensStr(n) {
+    return fmtTokens(n).toLocaleString('de-DE');
+  }
+
+  function updateGenTokenEstimate() {
+    var count = getSelectedVariants().length;
+    var el = document.getElementById('genTokenEst');
+    el.textContent = count > 0 ? 'Geschätzt: ~' + fmtTokensStr(count * 3500) + ' Tokens' : '';
+  }
+
+  function addToTotalTokens(n) {
+    _totalTokensEstimated += n;
+    var el = document.getElementById('genTotalTokens');
+    el.textContent = 'Bisheriger Verbrauch: ~' + fmtTokensStr(_totalTokensEstimated) + ' Tokens';
+  }
+
+  // Event-Listener für Varianten-Checkboxen
+  document.querySelectorAll('.genVariantCb').forEach(function(cb) {
+    cb.addEventListener('change', updateGenTokenEstimate);
+  });
+  updateGenTokenEstimate();
+
+  // ============================================================
+  // REMIX
+  // ============================================================
+  function getSectionType(s) {
+    var types = [];
+    if (s.cards && s.cards.length) types.push('Cards');
+    if (s.timeline && s.timeline.length) types.push('Timeline');
+    if (s.paragraphs && s.paragraphs.length) types.push('Text');
+    if (s.quote) types.push('Zitat');
+    if (s.warning) types.push('Hinweis');
+    if (s.videos && s.videos.length) types.push('Videos');
+    return types.join('+') || 'Leer';
+  }
+
+  function showRemixUI() {
+    var variants = window._generatedVariants || [];
+    var remixDiv = document.getElementById('genRemix');
+    if (variants.length < 2) { remixDiv.style.display = 'none'; return; }
+    remixDiv.style.display = 'block';
+
+    // Hero-Radios
+    var heroHtml = '<div style="font-size:.8rem;font-weight:600;color:var(--text-muted);margin-bottom:.3rem">Hero & Design:</div>';
+    variants.forEach(function(v, i) {
+      heroHtml += '<label style="display:flex;align-items:center;gap:.3rem;cursor:pointer;font-size:.85rem;margin-bottom:.2rem">' +
+        '<input type="radio" name="remixHero" value="' + i + '"' + (i === 0 ? ' checked' : '') + ' onchange="updateRemixTokenEstimate()">' +
+        ' V' + (i+1) + ': ' + (v.theme || '?') + ' / ' + esc(v.title || '?') +
+        '</label>';
+    });
+    document.getElementById('remixHeroList').innerHTML = heroHtml;
+
+    // Sektions-Checkboxen
+    var secHtml = '<div style="font-size:.8rem;font-weight:600;color:var(--text-muted);margin-bottom:.3rem">Sektionen:</div>';
+    variants.forEach(function(v, vi) {
+      (v.sections || []).forEach(function(s, si) {
+        secHtml += '<label style="display:flex;align-items:center;gap:.3rem;cursor:pointer;font-size:.85rem;margin-bottom:.2rem">' +
+          '<input type="checkbox" class="remixSectionCb" data-vi="' + vi + '" data-si="' + si + '" onchange="updateRemixTokenEstimate()">' +
+          ' V' + (vi+1) + ': ' + esc(s.navLabel || s.title || 'Unbenannt') + ' <span style="color:var(--text-muted)">(' + getSectionType(s) + ')</span>' +
+          '</label>';
+      });
+    });
+    document.getElementById('remixSectionList').innerHTML = secHtml;
+    updateRemixTokenEstimate();
+  }
+
+  function updateRemixTokenEstimate() {
+    var selected = getSelectedRemixSections();
+    var heroIdx = parseInt((document.querySelector('input[name="remixHero"]:checked') || {}).value || '0');
+    var hero = (window._generatedVariants || [])[heroIdx];
+    var tokens = 500; // Prompt-Overhead
+    if (hero) tokens += Math.ceil(JSON.stringify(hero).length / 4) * 0.3; // nur toplevel, nicht sections
+    selected.forEach(function(s) { tokens += Math.ceil(JSON.stringify(s).length / 4); });
+    tokens += 2000; // geschätzte Antwort
+    document.getElementById('remixTokenEst').textContent =
+      selected.length > 0 ? 'Remix geschätzt: ~' + fmtTokensStr(tokens) + ' Tokens' : '';
+  }
+
+  function getSelectedRemixSections() {
+    var sections = [];
+    document.querySelectorAll('.remixSectionCb:checked').forEach(function(cb) {
+      var vi = parseInt(cb.dataset.vi);
+      var si = parseInt(cb.dataset.si);
+      var v = (window._generatedVariants || [])[vi];
+      if (v && v.sections && v.sections[si]) sections.push(v.sections[si]);
+    });
+    return sections;
+  }
+
+  function buildRemixPrompt() {
+    var heroIdx = parseInt((document.querySelector('input[name="remixHero"]:checked') || {}).value || '0');
+    var hero = (window._generatedVariants || [])[heroIdx];
+    if (!hero) return '';
+    var sections = getSelectedRemixSections();
+    if (sections.length === 0) return '';
+
+    // Hero-JSON ohne sections
+    var heroCopy = Object.assign({}, hero);
+    delete heroCopy.sections;
+
+    var instruction = (document.getElementById('remixInstruction') || {}).value || '';
+
+    return 'Du bist ein Webdesign-Content-Generator.\n' +
+      'Kombiniere die folgenden Homepage-Teile zu einer NEUEN, konsistenten Homepage.\n' +
+      'Übernimm die Sektionen möglichst 1:1. Passe nur IDs und NavLabels an damit sie einzigartig sind.\n' +
+      'Schreibe die Inhalte NICHT um.\n' +
+      'Antworte NUR mit validem JSON (ein Objekt, kein Array). Keine Erklärungen.\n\n' +
+      'HERO & DESIGN:\n' + JSON.stringify(heroCopy, null, 2) + '\n\n' +
+      'SEKTIONEN:\n' + JSON.stringify(sections, null, 2) + '\n\n' +
+      (instruction ? 'ZUSÄTZLICHE ANWEISUNG:\n' + instruction + '\n\n' : '') +
+      'Erstelle daraus eine komplette Homepage-JSON mit diesen Sektionen.';
+  }
+
+  function copyRemixPrompt() {
+    var sections = getSelectedRemixSections();
+    if (sections.length === 0) { alert('Bitte mindestens eine Sektion wählen.'); return; }
+    var prompt = buildRemixPrompt();
+    var tokens = Math.ceil(prompt.length / 4) + 2000;
+    addToTotalTokens(tokens);
+    navigator.clipboard.writeText(prompt).then(function() {
+      document.getElementById('genStatus').textContent = 'Remix-Prompt kopiert (' + sections.length + ' Sektionen)! Füge ihn in claude.ai ein.';
+      document.getElementById('genManualPaste').style.display = 'block';
+    }).catch(function() {
+      document.getElementById('genPasteArea').value = prompt;
+      document.getElementById('genManualPaste').style.display = 'block';
+      document.getElementById('genStatus').textContent = 'Kopieren fehlgeschlagen. Prompt unten angezeigt.';
+    });
   }
   </script>
 
