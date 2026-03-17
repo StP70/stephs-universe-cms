@@ -324,10 +324,26 @@ experiment-011/
 │   │                           - Synchronisiert template.html
 │   │                           - → eingebettetes TEMPLATE_HTML in admin.html
 │   │
+├── prompt.js ················ KI-GENERATOR (Shared Logik)
+│   │                           - Prompt-Builder, Varianten-Matrix
+│   │                           - JSON-Validierung, Farb-Berechnung
+│   │                           - Genutzt von server.js + generate.js
+│   │
+├── server.js ················ KI-GENERATOR (Server)
+│   │                           - node server.js → http://localhost:3000
+│   │                           - Statische Dateien + /api/generate Proxy
+│   │                           - Claude API + OpenAI API forwarding
+│   │
+├── generate.js ·············· KI-GENERATOR (CLI)
+│   │                           - node generate.js "Beschreibung" --variants 3
+│   │                           - Speichert in pages/_generated/
+│   │
 ├── pages/ ··················· DATEN
 │   ├── autophagie-fasten.json
-│   ├── Leberfasten.json
-│   └── _example-neue-seite.json (Vorlage)
+│   ├── leberfasten.json
+│   ├── _example-neue-seite.json (Vorlage)
+│   └── _generated/            (Archiv: KI-generierte Varianten)
+│       └── slug_datum_vN-theme.json
 │   │
 ├── assets/ ·················· MEDIEN
 │   ├── icon.png
@@ -340,9 +356,16 @@ experiment-011/
 │   └── <slug>/
 │       └── index.html        (Fertige Seite, nutzt ../assets/)
 │
+├── .env ····················· API-Keys (gitignored)
+├── .env.example ············· Vorlage mit leeren Keys
+├── .gitignore ··············· .env, node_modules, .claude
+│
 └── docs/ ···················· DOKUMENTATION
     ├── PROZESS.md            (Diese Datei)
-    ├── ANLEITUNG.md          (Benutzerhandbuch)
+    ├── PROZESS-GENERATOR.md  (Technischer Prozess KI-Generator)
+    ├── ANLEITUNG.md          (Benutzerhandbuch CMS)
+    ├── ANLEITUNG-GENERATOR.md (Benutzerhandbuch KI-Generator)
+    ├── FEATURES.md           (Feature-Übersicht)
     └── BRAINSTORM.md         (Architektur & Struktur)
 ```
 
