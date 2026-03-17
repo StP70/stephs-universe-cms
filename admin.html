@@ -290,8 +290,8 @@
 <main class="app-body">
   <!-- TAB-BAR -->
   <div class="tab-bar" style="padding:0 1.5rem;border-bottom:1px solid var(--border);background:var(--bg-elevated)">
-    <button class="tab-btn active" onclick="switchTab('generator')" style="flex:0;padding:.6rem 1.5rem">KI-Generator</button>
-    <button class="tab-btn" onclick="switchTab('editor')" style="flex:0;padding:.6rem 1.5rem">Editor</button>
+    <button class="tab-btn main-tab-btn active" onclick="switchTab('generator')" style="flex:0;padding:.6rem 1.5rem">KI-Generator</button>
+    <button class="tab-btn main-tab-btn" onclick="switchTab('editor')" style="flex:0;padding:.6rem 1.5rem">Editor</button>
   </div>
 
   <!-- TAB: KI-GENERATOR -->
@@ -979,9 +979,16 @@
   </div><!-- /tabGenerator -->
 
   <!-- TAB: EDITOR -->
-  <div id="tabEditor" class="tab-content" style="padding:1.5rem">
+  <div id="tabEditor" class="tab-content" style="padding:0">
 
-  <!-- SEITEN-EINSTELLUNGEN -->
+  <!-- Editor Sub-Tabs -->
+  <div class="tab-bar" style="padding:0 1.5rem;border-bottom:1px solid var(--border)">
+    <button class="tab-btn active" onclick="switchEditorTab('settings')" id="editorTabSettings" style="flex:0;padding:.4rem 1.2rem;font-size:.78rem">Seiten-Einstellungen</button>
+    <button class="tab-btn" onclick="switchEditorTab('sections')" id="editorTabSections" style="flex:0;padding:.4rem 1.2rem;font-size:.78rem">Sektionen</button>
+  </div>
+
+  <!-- Editor Sub-Tab: Seiten-Einstellungen -->
+  <div id="editorTabSettingsContent" style="padding:1.5rem">
   <div class="panel">
     <div class="panel-title">Seiten-Einstellungen</div>
     <div class="panel-body">
@@ -1080,12 +1087,16 @@
     </div>
   </div>
 
-  <!-- SEKTIONEN -->
+  </div><!-- /editorTabSettingsContent -->
+
+  <!-- Editor Sub-Tab: Sektionen -->
+  <div id="editorTabSectionsContent" style="display:none;padding:1.5rem">
   <div class="sections-header">
     <h2>Sektionen</h2>
     <button class="btn btn-sm" onclick="addSection()">+ Neue Sektion</button>
   </div>
   <div id="sectionsContainer"></div>
+  </div><!-- /editorTabSectionsContent -->
 
   </div><!-- /tabEditor -->
 
@@ -2462,19 +2473,31 @@ function switchTab(tabName) {
   document.querySelectorAll('.tab-content').forEach(function(el) {
     el.classList.remove('active');
   });
-  document.querySelectorAll('.tab-btn').forEach(function(el) {
+  document.querySelectorAll('.main-tab-btn').forEach(function(el) {
     el.classList.remove('active');
   });
   var tab = document.getElementById('tab' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
   if (tab) tab.classList.add('active');
-  // Activate matching button
-  document.querySelectorAll('.tab-btn').forEach(function(btn) {
-    if (btn.textContent.toLowerCase().indexOf(tabName) !== -1 ||
-        (tabName === 'generator' && btn.textContent.indexOf('Generator') !== -1) ||
+  document.querySelectorAll('.main-tab-btn').forEach(function(btn) {
+    if ((tabName === 'generator' && btn.textContent.indexOf('Generator') !== -1) ||
         (tabName === 'editor' && btn.textContent.indexOf('Editor') !== -1)) {
       btn.classList.add('active');
     }
   });
+}
+
+function switchEditorTab(tab) {
+  var settings = document.getElementById('editorTabSettingsContent');
+  var sections = document.getElementById('editorTabSectionsContent');
+  var btnSettings = document.getElementById('editorTabSettings');
+  var btnSections = document.getElementById('editorTabSections');
+  if (tab === 'settings') {
+    settings.style.display = ''; sections.style.display = 'none';
+    btnSettings.classList.add('active'); btnSections.classList.remove('active');
+  } else {
+    settings.style.display = 'none'; sections.style.display = '';
+    btnSections.classList.add('active'); btnSettings.classList.remove('active');
+  }
 }
 
 // ============================================================
