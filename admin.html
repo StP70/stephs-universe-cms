@@ -857,15 +857,20 @@
         '</tr>';
     }
 
-    // Tab 1: Nach Speicherzeitpunkt sortiert
+    // Tab 1: Nach Speicherzeitpunkt sortiert, gruppiert nach Datum
+    var byDateGroups = {};
+    allSections.forEach(function(item) {
+      var ts = (window._variantTimestamps || [])[item.vi];
+      var dateKey = ts ? new Date(ts).toLocaleDateString('de-AT', { day:'2-digit', month:'2-digit', year:'numeric' }) : 'Ohne Datum';
+      if (!byDateGroups[dateKey]) byDateGroups[dateKey] = [];
+      byDateGroups[dateKey].push(item);
+    });
     var byVersionHtml = '';
-    variants.forEach(function(v, vi) {
-      var items = allSections.filter(function(x) { return x.vi === vi; });
-      if (items.length === 0) return;
-      byVersionHtml += '<div style="font-size:.7rem;font-weight:600;color:var(--accent);margin-top:' + (vi > 0 ? '.6rem' : '0') + ';margin-bottom:.2rem">Variante ' + (variants.length - vi) + ': ' + esc(v.title || '?') + '</div>';
+    Object.keys(byDateGroups).forEach(function(dateKey) {
+      byVersionHtml += '<div style="font-size:.7rem;font-weight:600;color:var(--accent);margin-top:' + (byVersionHtml ? '.6rem' : '0') + ';margin-bottom:.2rem">' + esc(dateKey) + '</div>';
       byVersionHtml += '<table style="width:100%;border-collapse:collapse;font-size:.82rem">';
       byVersionHtml += _headerByVersion;
-      items.forEach(function(item) { byVersionHtml += buildRowByVersion(item); });
+      byDateGroups[dateKey].forEach(function(item) { byVersionHtml += buildRowByVersion(item); });
       byVersionHtml += '</table>';
     });
     document.getElementById('remixSectionList').innerHTML = byVersionHtml;
