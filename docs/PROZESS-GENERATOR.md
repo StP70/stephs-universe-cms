@@ -571,13 +571,15 @@ Ermöglicht das Kombinieren der besten Sektionen aus verschiedenen generierten V
         │
         ▼
  showRemixUI()
-   ├── Hero-Radios rendern (eine Variante als Basis wählen)
-   └── Sektions-Checkboxen rendern (pro Variante)
+   ├── Hero-Tabelle rendern (Radio + Variante + Theme + Titel + Untertitel)
+   └── Sektions-Tabelle rendern (gruppiert nach Variante)
+       ├── Checkbox + Name + Typ (Cards/Timeline/Text/etc.)
+       ├── Textvorschau (erster Paragraph, Card-Titel, Timeline-Einträge)
        └── getSectionType(s) erkennt Block-Typen
-           (Cards, Timeline, Text, etc.)
         │
         ▼
  ② User wählt Hero + Sektionen aus verschiedenen Varianten
+    (Tabellen-Layout: untereinander, mit Textvorschau)
  ③ Optional: Zusätzliche Anweisung eingeben
         │
         ▼
