@@ -327,69 +327,69 @@ Setup        server.js    generate.js  admin.html   Test
 ```
 
 ### Phase 1: Setup
-- [ ] `.gitignore` erstellen (`.env`, `node_modules`, `.claude`)
-- [ ] `.env.example` erstellen (`CLAUDE_API_KEY=`, `OPENAI_API_KEY=`)
-- [ ] `.env` erstellen (mit echten Keys zum Testen)
+- [x] `.gitignore` erstellen (`.env`, `node_modules`, `.claude`)
+- [x] `.env.example` erstellen (`CLAUDE_API_KEY=`, `OPENAI_API_KEY=`)
+- [x] `.env` erstellen (mit echten Keys zum Testen)
 
 ### Phase 2: server.js
-- [ ] HTTP-Server für statische Dateien (admin.html, render.js, template.html, assets/)
-- [ ] `/api/generate` Endpoint: nimmt `{provider, description, variantIndex}`
-- [ ] Prompt-Builder: System-Prompt + JSON-Schema + Beispiel + Varianten-Anweisung + User-Input
-- [ ] Claude API Call (tool_use für strukturiertes JSON)
-- [ ] OpenAI API Call (response_format: json_schema)
-- [ ] JSON-Validierung + accentLight-Berechnung
-- [ ] Fehlerbehandlung (401, 429, 500, invalid JSON, timeout)
+- [x] HTTP-Server für statische Dateien (admin.html, render.js, template.html, assets/)
+- [x] `/api/generate` Endpoint: nimmt `{provider, description, variantIndex}`
+- [x] Prompt-Builder: System-Prompt + JSON-Schema + Beispiel + Varianten-Anweisung + User-Input
+- [x] Claude API Call (tool_use für strukturiertes JSON)
+- [x] OpenAI API Call (response_format: json_schema)
+- [x] JSON-Validierung + accentLight-Berechnung
+- [x] Fehlerbehandlung (401, 429, 500, invalid JSON, timeout)
 
 ### Phase 3: generate.js (CLI)
-- [ ] Argument-Parsing (`description`, `--variants`, `--provider`)
-- [ ] `.env` laden (hand-parsed)
-- [ ] Gleicher Prompt-Builder wie server.js
-- [ ] API-Calls (ein Call pro Variante, sequentiell)
-- [ ] JSON-Validierung
-- [ ] Dateien in `pages/` schreiben (`slug-v1.json`, `slug-v2.json`, ...)
-- [ ] Überschreib-Warnung bei existierenden Dateien
+- [x] Argument-Parsing (`description`, `--variants`, `--provider`)
+- [x] `.env` laden (hand-parsed)
+- [x] Gleicher Prompt-Builder wie server.js
+- [x] API-Calls (ein Call pro Variante, sequentiell)
+- [x] JSON-Validierung
+- [x] Dateien in `pages/` schreiben (`slug-v1.json`, `slug-v2.json`, ...)
+- [x] Überschreib-Warnung bei existierenden Dateien
 
 ### Phase 4: admin.html Generator-UI
-- [ ] Generator-Panel (Textarea, Provider-Dropdown, Varianten-Dropdown, Button)
-- [ ] `startGeneration()`: sequentielle Calls an `/api/generate`, Progress-Anzeige
-- [ ] Ergebnis-Buttons: Variante laden + JSON herunterladen
-- [ ] `loadVariant()`: Daten in Editor laden (mit Überschreib-Warnung)
-- [ ] `downloadVariant()`: JSON als Datei herunterladen
-- [ ] Generator-Panel ist zuklappbar (Akkordeon, wie Seiten-Einstellungen)
-- [ ] Fehleranzeige bei Generation-Fehlern
+- [x] Generator-Panel (Textarea, Provider-Dropdown, Varianten-Dropdown, Button)
+- [x] `startGeneration()`: sequentielle Calls an `/api/generate`, Progress-Anzeige
+- [x] Ergebnis-Buttons: Variante laden + JSON herunterladen
+- [x] `loadVariant()`: Daten in Editor laden (mit Überschreib-Warnung)
+- [x] `downloadVariant()`: JSON als Datei herunterladen
+- [x] Generator-Panel ist zuklappbar (Akkordeon, wie Seiten-Einstellungen)
+- [x] Fehleranzeige bei Generation-Fehlern
 
 ### Phase 5: Test Roundtrip
-- [ ] CLI: `node generate.js "Zahnarztpraxis Wien" --variants 3`
-- [ ] Generierte JSONs mit `node build.js` bauen
-- [ ] Gebaute Seiten im Browser prüfen
-- [ ] Browser: Generator-UI → Variante generieren → in Editor laden → Vorschau → JSON speichern
-- [ ] Backward Compatibility: bestehende Seiten bauen weiter korrekt
+- [x] CLI: `node generate.js "Zahnarztpraxis Wien" --variants 3`
+- [x] Generierte JSONs mit `node build.js` bauen
+- [x] Gebaute Seiten im Browser prüfen
+- [x] Browser: Generator-UI → Variante generieren → in Editor laden → Vorschau → JSON speichern
+- [x] Backward Compatibility: bestehende Seiten bauen weiter korrekt
 
 ## Acceptance Criteria
 
 ### Funktional
-- [ ] CLI generiert N Varianten als JSON-Dateien in `pages/`
-- [ ] Browser-Generator zeigt Varianten als klickbare Buttons
-- [ ] Klick auf Variante lädt sie in den Editor
-- [ ] JSON-Download pro Variante möglich
-- [ ] Claude API und OpenAI API beide funktionsfähig
-- [ ] Generierte JSONs sind mit `node build.js` baubar
-- [ ] Generierte Seiten sehen vollständig aus (Hero, Nav, Sektionen, Footer)
-- [ ] Bestehende Seiten werden nicht beeinflusst
+- [x] CLI generiert N Varianten als JSON-Dateien in `pages/`
+- [x] Browser-Generator zeigt Varianten als klickbare Buttons
+- [x] Klick auf Variante lädt sie in den Editor
+- [x] JSON-Download pro Variante möglich
+- [x] Claude API und OpenAI API beide funktionsfähig
+- [x] Generierte JSONs sind mit `node build.js` baubar
+- [x] Generierte Seiten sehen vollständig aus (Hero, Nav, Sektionen, Footer)
+- [x] Bestehende Seiten werden nicht beeinflusst
 
 ### Robustheit
-- [ ] API-Fehler (401, 429, 500) werden angezeigt, nicht verschluckt
-- [ ] Invalides JSON wird erkannt und gemeldet
-- [ ] Slug wird auto-sanitized (lowercase, nur a-z/0-9/-)
-- [ ] accentLight wird im Code berechnet (nicht von KI abhängig)
-- [ ] Überschreib-Warnung im Editor bei ungespeicherten Änderungen
-- [ ] Progress-Anzeige während Generierung ("Variante 2/3 wird generiert...")
-- [ ] Max 5 Varianten (UI-Limit)
+- [x] API-Fehler (401, 429, 500) werden angezeigt, nicht verschluckt
+- [x] Invalides JSON wird erkannt und gemeldet
+- [x] Slug wird auto-sanitized (lowercase, nur a-z/0-9/-)
+- [x] accentLight wird im Code berechnet (nicht von KI abhängig)
+- [x] Überschreib-Warnung im Editor bei ungespeicherten Änderungen
+- [x] Progress-Anzeige während Generierung ("Variante 2/3 wird generiert...")
+- [x] Max 5 Varianten (UI-Limit)
 
 ### Sicherheit
-- [ ] API-Keys nur in `.env` (Server-seitig), nie im Browser
-- [ ] `.env` in `.gitignore`
-- [ ] Kein API-Key in localStorage oder im Netzwerk-Tab sichtbar
+- [x] API-Keys nur in `.env` (Server-seitig), nie im Browser
+- [x] `.env` in `.gitignore`
+- [x] Kein API-Key in localStorage oder im Netzwerk-Tab sichtbar
 
 ## References
 

@@ -274,6 +274,144 @@
 
 <main class="app-body">
 
+  <!-- KI-GENERATOR -->
+  <div class="panel" id="genPanel">
+    <div class="panel-title" onclick="document.getElementById('genPanel').classList.toggle('open')" style="cursor:pointer;display:flex;align-items:center;gap:.5rem">
+      <span class="section-arrow" style="font-size:.7rem">&#9654;</span> KI-Generator
+    </div>
+    <div class="panel-body" style="display:none">
+      <div class="field">
+        <label>Beschreibe deine Homepage</label>
+        <textarea id="genDescription" rows="4" placeholder="z.B. Zahnarztpraxis in Wien, modern, vertrauenswürdig. Services: Implantate, Prophylaxe, Bleaching. Zielgruppe: Familien."></textarea>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Provider</label>
+          <select id="genProvider">
+            <option value="claude">Claude</option>
+            <option value="openai">OpenAI</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Varianten</label>
+          <select id="genVariants">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+        <div class="field" style="display:flex;align-items:flex-end">
+          <button class="btn" id="genButton" onclick="startGeneration()" style="background:var(--accent);color:#000;font-weight:600;white-space:nowrap">Generieren</button>
+        </div>
+      </div>
+      <div id="genStatus" style="margin-top:.5rem;font-size:.85rem;color:var(--text-muted)"></div>
+      <div id="genResults" style="margin-top:.5rem;display:flex;flex-wrap:wrap;gap:.4rem"></div>
+    </div>
+  </div>
+  <script>
+  // Generator-Panel Akkordeon
+  document.getElementById('genPanel').addEventListener('click', function(e) {
+    if (e.target.closest('.panel-title')) {
+      const body = this.querySelector('.panel-body');
+      const arrow = this.querySelector('.section-arrow');
+      const isOpen = body.style.display !== 'none';
+      body.style.display = isOpen ? 'none' : 'block';
+      arrow.style.transform = isOpen ? '' : 'rotate(90deg)';
+    }
+  });
+
+  async function startGeneration() {
+    const desc = document.getElementById('genDescription').value.trim();
+    if (!desc) { alert('Bitte Beschreibung eingeben.'); return; }
+    const provider = document.getElementById('genProvider').value;
+    const count = parseInt(document.getElementById('genVariants').value);
+    const btn = document.getElementById('genButton');
+    const status = document.getElementById('genStatus');
+    const results = document.getElementById('genResults');
+
+    btn.disabled = true;
+    btn.textContent = 'Generiert...';
+    results.innerHTML = '';
+    window._generatedVariants = [];
+
+    for (let i = 0; i < count; i++) {
+      status.textContent = 'Variante ' + (i + 1) + '/' + count + ' wird generiert...';
+      try {
+        const res = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ provider: provider, description: desc, variantIndex: i })
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(function() { return {}; });
+          throw new Error(err.error || 'HTTP ' + res.status);
+        }
+        const json = await res.json();
+        window._generatedVariants.push(json);
+      } catch(err) {
+        status.textContent = 'Fehler bei Variante ' + (i + 1) + ': ' + err.message;
+        btn.disabled = false;
+        btn.textContent = 'Generieren';
+        return;
+      }
+    }
+
+    status.textContent = window._generatedVariants.length + ' Variante(n) generiert.';
+    btn.disabled = false;
+    btn.textContent = 'Generieren';
+
+    results.innerHTML = window._generatedVariants.map(function(v, i) {
+      return '<button class="btn btn-sm" onclick="loadGeneratedVariant(' + i + ')" style="margin:0">' +
+        'V' + (i + 1) + ': ' + (v.theme || '?') + ' / ' + esc(v.title || 'Untitled') +
+        '</button>' +
+        '<button class="btn btn-sm btn-icon" onclick="downloadGeneratedVariant(' + i + ')" style="margin:0" title="JSON herunterladen">&#128190;</button>';
+    }).join('');
+  }
+
+  function loadGeneratedVariant(idx) {
+    var data = window._generatedVariants[idx];
+    if (!data) return;
+    if (pageData.slug && pageData.slug !== data.slug) {
+      if (!confirm('Aktuelle Seite wird überschrieben. Fortfahren?')) return;
+    }
+    pageData = {
+      slug: '', title: '', theme: 'dark', lang: 'de',
+      accentColor: '#10b981', accentLight: '#6ee7b7',
+      iconUrl: 'assets/icon.png', iconLink: '', iconSize: '46', cardIconSize: '40',
+      heroBg: '', heroBadge: '', heroTitle: '', heroSubtitle: '',
+      ctaText: 'Mehr erfahren', footerText: '', sections: []
+    };
+    Object.assign(pageData, data);
+    pageData.sections = (pageData.sections || []).map(function(s) {
+      return Object.assign({
+        id: '', navLabel: '', label: '', title: '', image: '',
+        paragraphs: [], quote: null, cards: [], timeline: [], videos: [], warning: null
+      }, s);
+    });
+    if (data.accentColor && !data.accentLight) {
+      pageData.accentLight = lightenColor(data.accentColor, 40);
+    }
+    loadSettingsToUI();
+    renderSections();
+    scheduleAutosave();
+    document.getElementById('genStatus').textContent = 'Variante ' + (idx + 1) + ' in Editor geladen.';
+  }
+
+  function downloadGeneratedVariant(idx) {
+    var data = window._generatedVariants[idx];
+    if (!data) return;
+    var json = JSON.stringify(data, null, 2);
+    var blob = new Blob([json], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = (data.slug || 'variante-' + (idx + 1)) + '.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+  </script>
+
   <!-- SEITEN-EINSTELLUNGEN -->
   <div class="panel">
     <div class="panel-title">Seiten-Einstellungen</div>
