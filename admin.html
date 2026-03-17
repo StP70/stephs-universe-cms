@@ -418,7 +418,7 @@
         <!-- Sektionen mit Sub-Tabs -->
         <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem">Sektionen</div>
         <div class="tab-bar" style="margin-bottom:.4rem;border-bottom:1px solid var(--border)">
-          <button class="tab-btn active" onclick="switchRemixTab('version')" id="remixTabVersion" style="flex:0;padding:.4rem 1.2rem;font-size:.78rem">Nach Version</button>
+          <button class="tab-btn active" onclick="switchRemixTab('version')" id="remixTabVersion" style="flex:0;padding:.4rem 1.2rem;font-size:.78rem">Nach Speicherzeitpunkt</button>
           <button class="tab-btn" onclick="switchRemixTab('section')" id="remixTabSection" style="flex:0;padding:.4rem 1.2rem;font-size:.78rem">Nach Sektion</button>
         </div>
         <div id="remixSectionList" style="background:var(--bg-input);border-radius:var(--radius-sm);padding:.5rem .75rem;max-height:360px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.15) transparent"></div>
@@ -857,7 +857,7 @@
         '</tr>';
     }
 
-    // Tab 1: Nach Version sortiert
+    // Tab 1: Nach Speicherzeitpunkt sortiert
     var byVersionHtml = '';
     variants.forEach(function(v, vi) {
       var items = allSections.filter(function(x) { return x.vi === vi; });
