@@ -1104,9 +1104,30 @@
         <!-- Footer -->
         <div style="background:var(--bg-input);border-radius:var(--radius);padding:1rem">
           <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem">Footer</div>
-          <div class="field">
-            <label>Footer-Text (HTML erlaubt)</label>
-            <textarea data-field="footerText" rows="4" placeholder="&copy; 2026 &middot; by ..."></textarea>
+          <div class="tab-bar" style="margin-bottom:.5rem;border-bottom:1px solid var(--border)">
+            <button class="tab-btn active" onclick="switchFooterTab('visual')" id="footerTabVisual" style="flex:0;padding:.3rem .9rem;font-size:.72rem">Visuell</button>
+            <button class="tab-btn" onclick="switchFooterTab('html')" id="footerTabHtml" style="flex:0;padding:.3rem .9rem;font-size:.72rem">HTML</button>
+          </div>
+          <!-- Visuell -->
+          <div id="footerVisual">
+            <div style="display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.5rem">
+              <button type="button" class="btn btn-sm" style="padding:.2rem .5rem;font-size:.75rem" onclick="insertFooterText('&amp;copy;')" title="Copyright ©">©</button>
+              <button type="button" class="btn btn-sm" style="padding:.2rem .5rem;font-size:.75rem" onclick="insertFooterText('&amp;middot;')" title="Mittelpunkt ·">·</button>
+              <button type="button" class="btn btn-sm" style="padding:.2rem .5rem;font-size:.75rem" onclick="insertFooterText('&amp;ndash;')" title="Gedankenstrich –">–</button>
+              <button type="button" class="btn btn-sm" style="padding:.2rem .5rem;font-size:.75rem" onclick="insertFooterText('&amp;bull;')" title="Aufzählung •">•</button>
+              <button type="button" class="btn btn-sm" style="padding:.2rem .5rem;font-size:.75rem" onclick="insertFooterText('&amp;amp;')" title="Kaufmanns-Und &">&amp;</button>
+              <button type="button" class="btn btn-sm" style="padding:.2rem .5rem;font-size:.75rem" onclick="insertFooterText('&amp;trade;')" title="Trademark ™">™</button>
+              <button type="button" class="btn btn-sm" style="padding:.2rem .5rem;font-size:.75rem" onclick="insertFooterText('&amp;reg;')" title="Registered ®">®</button>
+              <button type="button" class="btn btn-sm" style="padding:.2rem .5rem;font-size:.75rem" onclick="insertFooterText('&amp;rarr;')" title="Pfeil →">→</button>
+              <button type="button" class="btn btn-sm" style="padding:.2rem .5rem;font-size:.75rem" onclick="insertFooterLink()" title="Link einfügen">🔗 Link</button>
+              <button type="button" class="btn btn-sm" style="padding:.2rem .5rem;font-size:.75rem" onclick="insertFooterText('&lt;br&gt;')" title="Zeilenumbruch">↵ Umbruch</button>
+            </div>
+            <div id="footerPreview" style="min-height:60px;padding:.6rem .8rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:.85rem;color:var(--text-muted);line-height:1.5;cursor:text" contenteditable="false"></div>
+            <textarea id="footerVisualText" data-field="footerText" rows="3" style="margin-top:.4rem" placeholder="&copy; 2026 &middot; by ..."></textarea>
+          </div>
+          <!-- HTML -->
+          <div id="footerHtml" style="display:none">
+            <textarea id="footerHtmlText" data-field="footerText" rows="5" style="font-family:monospace;font-size:.8rem" placeholder="&amp;copy; 2026 &amp;middot; by ..."></textarea>
           </div>
         </div>
       </div>
@@ -1357,6 +1378,7 @@ function loadSettingsToUI() {
       el.value = pageData[field];
     }
   });
+  updateFooterPreview();
 }
 
 // ============================================================
@@ -2525,6 +2547,64 @@ function switchEditorTab(tab) {
     btnSections.classList.add('active'); btnSettings.classList.remove('active');
   }
 }
+
+// ============================================================
+// FOOTER TABS (Visuell / HTML)
+// ============================================================
+function switchFooterTab(tab) {
+  var visual = document.getElementById('footerVisual');
+  var html = document.getElementById('footerHtml');
+  var btnVisual = document.getElementById('footerTabVisual');
+  var btnHtml = document.getElementById('footerTabHtml');
+  if (tab === 'visual') {
+    visual.style.display = ''; html.style.display = 'none';
+    btnVisual.classList.add('active'); btnHtml.classList.remove('active');
+    document.getElementById('footerVisualText').value = pageData.footerText || '';
+    updateFooterPreview();
+  } else {
+    visual.style.display = 'none'; html.style.display = '';
+    btnHtml.classList.add('active'); btnVisual.classList.remove('active');
+    document.getElementById('footerHtmlText').value = pageData.footerText || '';
+  }
+}
+
+function updateFooterPreview() {
+  var preview = document.getElementById('footerPreview');
+  if (preview) preview.innerHTML = pageData.footerText || '<span style="opacity:.4">Footer-Vorschau...</span>';
+}
+
+function insertFooterText(entity) {
+  var ta = document.getElementById('footerVisualText');
+  var start = ta.selectionStart;
+  var val = ta.value;
+  ta.value = val.substring(0, start) + entity + val.substring(ta.selectionEnd);
+  pageData.footerText = ta.value;
+  var newPos = start + entity.length;
+  ta.focus();
+  ta.setSelectionRange(newPos, newPos);
+  updateFooterPreview();
+  scheduleAutosave();
+}
+
+function insertFooterLink() {
+  var url = prompt('URL eingeben:', 'https://');
+  if (!url) return;
+  var text = prompt('Link-Text eingeben:', url);
+  if (!text) text = url;
+  insertFooterText('<a href="' + url + '" target="_blank">' + text + '</a>');
+}
+
+// Footer-Textarea sync → pageData + Preview
+document.addEventListener('input', function(e) {
+  if (e.target.id === 'footerVisualText' || e.target.id === 'footerHtmlText') {
+    pageData.footerText = e.target.value;
+    updateFooterPreview();
+    var other = e.target.id === 'footerVisualText' ? 'footerHtmlText' : 'footerVisualText';
+    var otherEl = document.getElementById(other);
+    if (otherEl) otherEl.value = e.target.value;
+    scheduleAutosave();
+  }
+});
 
 // ============================================================
 // INIT
