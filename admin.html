@@ -702,22 +702,22 @@
     var thStyle = 'text-align:left;padding:.3rem .4rem;font-size:.7rem;color:var(--text-muted);font-weight:500';
     var html = '<table style="width:100%;border-collapse:collapse;font-size:.82rem;margin-top:.3rem">';
     html += '<tr style="border-bottom:1px solid var(--border)">' +
-      (hasFilenames ? '<th style="' + thStyle + '">Dateiname</th>' : '') +
-      '<th style="' + thStyle + '">Nr.</th>' +
+      '<th style="' + thStyle + '">Version</th>' +
+      (hasFilenames ? '<th style="' + thStyle + '">Datei</th>' : '') +
+      (hasFilenames ? '<th style="' + thStyle + '">Gespeichert</th>' : '') +
       '<th style="' + thStyle + '">Theme</th>' +
       '<th style="' + thStyle + '">Titel</th>' +
-      (hasFilenames ? '<th style="' + thStyle + '">Gespeichert</th>' : '') +
       '<th style="padding:.3rem .4rem"></th>' +
       '</tr>';
     variants.forEach(function(v, i) {
       var fname = filenames[i] || '';
       var ts = timestamps[i] ? new Date(timestamps[i]).toLocaleString('de-AT', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '';
       html += '<tr style="border-bottom:1px solid rgba(255,255,255,.04)">' +
-        (hasFilenames ? '<td style="padding:.35rem .4rem;color:var(--text-muted);font-size:.75rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + esc(fname) + '">' + esc(fname) + '</td>' : '') +
         '<td style="padding:.35rem .4rem;font-weight:600">V' + (i + 1) + '</td>' +
+        (hasFilenames ? '<td style="padding:.35rem .4rem;color:var(--text-muted);font-size:.75rem;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + esc(fname) + '">' + esc(fname) + '</td>' : '') +
+        (hasFilenames ? '<td style="padding:.35rem .4rem;color:var(--text-muted);font-size:.75rem;white-space:nowrap">' + ts + '</td>' : '') +
         '<td style="padding:.35rem .4rem;color:var(--text-muted)">' + (v.theme || '?') + '</td>' +
         '<td style="padding:.35rem .4rem">' + esc(v.title || 'Untitled') + '</td>' +
-        (hasFilenames ? '<td style="padding:.35rem .4rem;color:var(--text-muted);font-size:.75rem;white-space:nowrap">' + ts + '</td>' : '') +
         '<td style="padding:.35rem .4rem;white-space:nowrap">' +
           '<button class="btn btn-sm" onclick="loadGeneratedVariant(' + i + ')" style="padding:.15rem .5rem;font-size:.75rem">Laden</button> ' +
           '<button class="btn btn-sm btn-icon" onclick="downloadGeneratedVariant(' + i + ')" style="padding:.15rem .3rem;font-size:.75rem" title="JSON herunterladen">&#128190;</button>' +
