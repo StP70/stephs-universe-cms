@@ -830,16 +830,14 @@
     var _tsTd = 'padding:.3rem .4rem;color:var(--text-muted);font-size:.72rem;white-space:nowrap';
     var _cbHtml = function(item) { return _cbTd + '<input type="checkbox" class="remixSectionCb" data-vi="' + item.vi + '" data-si="' + item.si + '" onchange="syncRemixCheckboxes(this);updateRemixTokenEstimate()"></td>'; };
     var _fnTd = 'padding:.3rem .4rem;color:var(--text-muted);font-size:.72rem;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
-    // Tab 1 (Nach Variante): Variante | Datei | Gespeichert | Sektion | Typ | Vorschau
-    var _headerByVersion = '<tr style="border-bottom:1px solid var(--border)"><th style="' + _thS + ';width:24px"></th><th style="' + _thS + '">Variante</th><th style="' + _thS + '">Datei</th><th style="' + _thS + '">Gespeichert</th><th style="' + _thS + '">Sektion</th><th style="' + _thS + '">Typ</th><th style="' + _thS + '">Vorschau</th></tr>';
-    // Tab 2 (Nach Sektion): Sektion | Variante | Datei | Gespeichert | Typ | Vorschau
-    var _headerBySection = '<tr style="border-bottom:1px solid var(--border)"><th style="' + _thS + ';width:24px"></th><th style="' + _thS + '">Sektion</th><th style="' + _thS + '">Variante</th><th style="' + _thS + '">Datei</th><th style="' + _thS + '">Gespeichert</th><th style="' + _thS + '">Typ</th><th style="' + _thS + '">Vorschau</th></tr>';
+    // Tab 1 (Nach Variante): Datei | Gespeichert | Sektion | Typ | Vorschau
+    var _headerByVersion = '<tr style="border-bottom:1px solid var(--border)"><th style="' + _thS + ';width:24px"></th><th style="' + _thS + '">Datei</th><th style="' + _thS + '">Gespeichert</th><th style="' + _thS + '">Sektion</th><th style="' + _thS + '">Typ</th><th style="' + _thS + '">Vorschau</th></tr>';
+    // Tab 2 (Nach Sektion): Sektion | Datei | Gespeichert | Typ | Vorschau
+    var _headerBySection = '<tr style="border-bottom:1px solid var(--border)"><th style="' + _thS + ';width:24px"></th><th style="' + _thS + '">Sektion</th><th style="' + _thS + '">Datei</th><th style="' + _thS + '">Gespeichert</th><th style="' + _thS + '">Typ</th><th style="' + _thS + '">Vorschau</th></tr>';
 
-    var _totalV = variants.length;
     function buildRowByVersion(item) {
       return '<tr style="border-bottom:1px solid rgba(255,255,255,.04)">' +
         _cbHtml(item) +
-        '<td style="padding:.3rem .4rem;color:var(--text-muted);font-size:.7rem;white-space:nowrap">' + (_totalV - item.vi) + '</td>' +
         '<td style="' + _fnTd + '" title="' + esc(item.filename) + '">' + esc(item.filename) + '</td>' +
         '<td style="' + _tsTd + '">' + item.timestamp + '</td>' +
         '<td style="padding:.3rem .4rem;white-space:nowrap;font-weight:600">' + esc(item.s.navLabel || item.s.title || 'Unbenannt') + '</td>' +
@@ -852,7 +850,6 @@
       return '<tr style="border-bottom:1px solid rgba(255,255,255,.04)">' +
         _cbHtml(item) +
         '<td style="padding:.3rem .4rem;white-space:nowrap;font-weight:600">' + esc(item.s.navLabel || item.s.title || 'Unbenannt') + '</td>' +
-        '<td style="padding:.3rem .4rem;color:var(--text-muted);font-size:.7rem;white-space:nowrap">' + (_totalV - item.vi) + '</td>' +
         '<td style="' + _fnTd + '" title="' + esc(item.filename) + '">' + esc(item.filename) + '</td>' +
         '<td style="' + _tsTd + '">' + item.timestamp + '</td>' +
         '<td style="padding:.3rem .4rem;color:var(--accent);font-size:.7rem;white-space:nowrap">' + item.type + '</td>' +
