@@ -75,7 +75,8 @@ Der Prompt enthält:
 | Datei | Zweck |
 |---|---|
 | `server.js` | Combined Server: statische Dateien + API-Proxy. Node.js `http`, keine Dependencies. |
-| `generate.js` | CLI-Tool: Prompt-Bau, API-Call, JSON-Validierung, Datei-Speicherung. |
+| `prompt.js` | Shared Logik: Prompt-Builder, JSON-Validierung, Varianten-Matrix. Node CommonJS. |
+| `generate.js` | CLI-Tool: Args-Parsing, API-Call, Datei-Speicherung. Nutzt prompt.js. |
 | `.env` | API-Keys (gitignored) |
 | `.env.example` | Vorlage: `CLAUDE_API_KEY=` und `OPENAI_API_KEY=` |
 | `.gitignore` | Root-Level, mindestens `.env` und `node_modules` |
@@ -147,10 +148,19 @@ const path = require('path');
 // .env laden, Args parsen, Prompt bauen, API aufrufen, JSON validieren, speichern
 ```
 
-**Shared zwischen server.js und generate.js:**
-- Prompt-Template (als String-Konstante, in beiden Dateien identisch oder in eine Datei ausgelagert)
-- JSON-Validierungsfunktion
-- Varianten-Matrix (Theme + Tonality + Fokus)
+**Shared Logik in `prompt.js` (von server.js und generate.js importiert):**
+- `buildPrompt(description, variantIndex)` -- baut den vollständigen Prompt
+- `validateGeneratedJSON(data)` -- validiert + sanitized das KI-Output
+- `VARIANT_MATRIX` -- Theme + Tonality + Fokus pro Variante
+- `lightenHex(hex, amount)` -- accentLight berechnen (Kopie der admin.html Logik)
+
+`prompt.js` ist ein Node-only CommonJS-Modul (`module.exports`). Kein UMD nötig, da der Browser den Prompt nicht direkt baut -- er schickt nur `{description, variantIndex}` an `/api/generate`.
+
+**API-Parameter:**
+- `max_tokens: 4096` pro Variante (reicht für ~6 Sektionen mit allen Blöcken)
+- `timeout: 60s` (Claude/OpenAI können bei großen Outputs 30-60s brauchen)
+- Claude: `claude-sonnet-4-20250514` mit `tool_use` für strukturiertes JSON
+- OpenAI: `gpt-4o` mit `response_format: json_schema`
 
 ### admin.html -- Generator-UI
 
