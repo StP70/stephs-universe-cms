@@ -1194,9 +1194,12 @@ async function generatePreview() {
     if (!templateHtml) templateHtml = TEMPLATE_HTML;
 
     let html = CMS.render(templateHtml, data);
-    // Inject <base> so asset paths that aren't cached still resolve when served via http
+    // Asset-Pfade absolut machen (statt <base>, das Anker-Links bricht)
+    // Nur relative Pfade umschreiben, keine data: oder https: URLs
     const baseHref = window.location.href.replace(/[^/]*$/, '');
-    html = html.replace('<head>', '<head>\n  <base href="' + baseHref + '">');
+    html = html.replace(/(src|href)="(assets\/[^"]*)/g, '$1="' + baseHref + '$2');
+    html = html.replace(/(src|href)='(assets\/[^']*)/g, "$1='" + baseHref + '$2');
+    html = html.replace(/url\('(assets\/)/g, "url('" + baseHref + '$1');
 
     // Preview-Fenster mit fertigem HTML befüllen
     previewWin.document.open();
