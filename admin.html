@@ -1548,13 +1548,13 @@ font-family: Georgia, serif; line-height: 1;
 }
 .quote-block p { font-size: 1.05rem; color: var(--text-muted); font-style: italic; }
 .quote-block cite { display: block; margin-top: .8rem; font-size: .85rem; color: var(--text-muted); font-style: normal; font-weight: 500; }
-.timeline { margin-top: 2rem; }
+.timeline { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
 .tl-item {
 display: grid; grid-template-columns: 100px 1fr;
-gap: 1.5rem; padding: 1.5rem 0;
-border-bottom: 1px solid var(--border); align-items: start;
+gap: 1.5rem; padding: 1.2rem 1.5rem;
+background: var(--card-bg); border: 1px solid var(--border);
+border-radius: var(--radius); align-items: start;
 }
-.tl-item:last-child { border-bottom: none; }
 .tl-time { font-weight: 700; font-size: .95rem; color: var(--accent); padding-top: .1rem; white-space: nowrap; }
 .tl-text { font-size: .95rem; color: var(--text-muted); text-align: justify; }
 .hinweis {
