@@ -889,6 +889,10 @@
     });
     document.getElementById('remixSectionListByType').innerHTML = byTypeHtml;
 
+    // Aktiven Sub-Tab wiederherstellen
+    var activeTab = document.getElementById('remixTabSection').classList.contains('active') ? 'section' : 'version';
+    switchRemixTab(activeTab);
+
     updateRemixTokenEstimate();
   }
 
