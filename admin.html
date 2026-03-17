@@ -673,9 +673,9 @@
         }
         loaded++;
         if (loaded === files.length) {
-          // Nach Timestamp sortieren: älteste zuerst (V1 = älteste)
+          // Nach Timestamp sortieren: neueste zuerst (höchste V-Nummer = neueste, steht oben)
           var sorted = fileList.filter(function(item) { return !!item; });
-          sorted.sort(function(a, b) { return (a.modified || 0) - (b.modified || 0); });
+          sorted.sort(function(a, b) { return (b.modified || 0) - (a.modified || 0); });
           sorted.forEach(function(item) {
             window._generatedVariants.push(item.data);
             window._variantFilenames.push(item.name);
