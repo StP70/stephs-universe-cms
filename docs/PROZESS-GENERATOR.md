@@ -506,13 +506,19 @@ Die Funktion `validateAndFix(data)` in `prompt.js` prüft und korrigiert das KI-
  │
  ├── admin.html          ← Browser-UI (Generator-Panel + Editor)
  │                          - Generator-UI: Textarea, Provider, Varianten, Modi
- │                          - Manuell: buildBrowserPrompt() + clipboard + loadPastedJSON()
+ │                          - Manuell: buildMultiPrompt() + clipboard + loadPastedJSON()
  │                          - API: fetch('/api/generate') + loadVariant()
+ │                          - Archiv: loadArchiveFiles() + Multi-File-Picker
+ │                          - Remix: showRemixUI() + buildRemixPrompt()
  │
- └── pages/              ← Generierte JSON-Dateien
-     ├── slug-v1.json
-     ├── slug-v2.json
-     └── slug-v3.json
+ └── pages/
+     ├── autophagie-fasten.json  ← Aktive Seiten (werden gebaut)
+     ├── leberfasten.json
+     ├── _example-neue-seite.json
+     └── _generated/             ← Archiv (wird NICHT gebaut)
+         ├── slug_2026-03-17_v1-dark.json
+         ├── slug_2026-03-17_v2-light.json
+         └── slug_2026-03-17_remix.json
 ```
 
 | Datei | Verantwortlichkeit |
@@ -625,4 +631,50 @@ Dynamische Schätzung der Token-Kosten für Generator und Remix.
 │  │   └── Formatiert mit toLocaleString('de-DE')                  │
 │  │       (z.B. 12.000 statt 12000)                               │
 └──────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 14. Datenfluss: Archiv laden
+
+Historische Varianten aus `pages/_generated/` direkt im Admin-Panel laden.
+
+```
+ Benutzer klickt [Archiv laden (Dateien wählen)]
+         │
+         ▼
+ <input type="file" accept=".json" multiple>
+         │
+         ▼
+ loadArchiveFiles(event)
+         │
+         ├── Für jede gewählte Datei:
+         │   ├── FileReader.readAsText(file)
+         │   ├── JSON.parse(text)
+         │   ├── Validierung: slug oder title vorhanden?
+         │   └── window._generatedVariants.push(data)
+         │
+         ├── Ergebnis-Buttons rendern
+         │   └── Pro Variante: [Laden] [Download]
+         │
+         └── showRemixUI()
+             └── Remix-Bereich wenn ≥2 Varianten
+
+ Kein Server nötig (reiner File-Picker).
+ Dateien bleiben in _generated/ (nur gelesen, nicht verschoben).
+```
+
+### Archiv-Dateistruktur
+
+```
+ pages/_generated/
+ │
+ ├── zahnarzt-wien_2026-03-17_v1-dark.json
+ ├── zahnarzt-wien_2026-03-17_v2-light.json
+ ├── zahnarzt-wien_2026-03-17_v3-colorful.json
+ ├── zahnarzt-wien_2026-03-17_remix.json
+ └── fitness-studio_2026-03-18_v1-dark.json
+
+ Namensformat: {slug}_{datum}_{variante}-{theme}.json
+ Wird von build.js ignoriert (_prefix + Unterordner).
 ```
