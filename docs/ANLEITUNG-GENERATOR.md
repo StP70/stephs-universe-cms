@@ -34,8 +34,8 @@ Der manuelle Modus ist kostenlos und braucht keinen API-Key. Du kopierst einen P
      Zielgruppe: Erwachsene und Familien.
      ```
 
-4. **Variante waehlen**
-   - Waehle eine der 5 Varianten aus. Jede erzeugt eine andere Art von Homepage:
+4. **Varianten waehlen**
+   - Waehle per Checkboxen eine oder mehrere der 5 Varianten aus (Mehrfachauswahl moeglich). Es wird EIN Prompt fuer alle gewaehlten Varianten generiert. Jede Variante erzeugt eine andere Art von Homepage:
 
    | Variante | Theme | Schreibstil | Sektions-Fokus |
    |---|---|---|---|
@@ -46,7 +46,7 @@ Der manuelle Modus ist kostenlos und braucht keinen API-Key. Du kopierst einen P
    | **V5** | Light (heller Hintergrund) | Kreativ und verspielt | Cards + Zitate |
 
 5. **"Prompt kopieren" klicken**
-   - Der Generator erstellt einen fertigen Prompt und kopiert ihn in die Zwischenablage
+   - Der Generator erstellt einen fertigen Prompt fuer alle gewaehlten Varianten und kopiert ihn in die Zwischenablage
 
 6. **In claude.ai einfuegen**
    - Oeffne [claude.ai](https://claude.ai) im Browser
@@ -223,6 +223,27 @@ Nur fuer den API-Modus. Im manuellen Modus kannst du admin.html ganz normal per 
 
 **Kann ich auch OpenAI statt Claude nutzen?**
 Ja, im API-Modus und CLI-Modus kannst du den Provider auf "openai" umschalten. Du brauchst dann einen OpenAI API-Key in der `.env` (`OPENAI_API_KEY=sk-...`).
+
+---
+
+## Varianten remixen
+
+1. Generiere mindestens 2 Varianten (per Prompt kopieren + claude.ai)
+2. Lade die JSON-Antwort im "JSON einfuegen" Feld
+3. Der Remix-Bereich erscheint automatisch unter den Ergebnis-Buttons
+4. Waehle per Radio den Hero/Design einer Variante
+5. Hake die gewuenschten Sektionen aus verschiedenen Varianten an
+6. Optional: Zusaetzliche Anweisung eingeben
+7. "Remix-Prompt kopieren" → claude.ai → JSON zurueck einfuegen
+
+---
+
+## Token-Kosten-Anzeige
+
+- Bei den Varianten-Checkboxen wird die geschaetzte Token-Anzahl angezeigt (~3.500 pro Variante)
+- Beim Remix wird die Schaetzung basierend auf der Groesse der gewaehlten Sektionen berechnet
+- Unten im Generator-Panel steht der bisherige Gesamtverbrauch der Session
+- Alle Zahlen mit 1.000er-Punkt (z.B. 12.000 statt 12000)
 
 ---
 

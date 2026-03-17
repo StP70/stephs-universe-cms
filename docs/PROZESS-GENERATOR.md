@@ -537,3 +537,92 @@ Die Funktion `validateAndFix(data)` in `prompt.js` prüft und korrigiert das KI-
 | Auth-Header | `x-api-key: sk-ant-...` | `Authorization: Bearer sk-...` |
 | API-URL | `api.anthropic.com/v1/messages` | `api.openai.com/v1/chat/completions` |
 | Kosten pro Variante | ~$0.01-0.05 | ~$0.01-0.05 |
+
+---
+
+## 12. Datenfluss: Remix-Modus
+
+Ermöglicht das Kombinieren der besten Sektionen aus verschiedenen generierten Varianten.
+
+```
+ admin.html                                    claude.ai
+ ──────────                                    ─────────
+
+ ① Mehrere Varianten generieren & laden
+        │
+        ▼
+ window._generatedVariants (Array)
+        │
+        ▼
+ showRemixUI()
+   ├── Hero-Radios rendern (eine Variante als Basis wählen)
+   └── Sektions-Checkboxen rendern (pro Variante)
+       └── getSectionType(s) erkennt Block-Typen
+           (Cards, Timeline, Text, etc.)
+        │
+        ▼
+ ② User wählt Hero + Sektionen aus verschiedenen Varianten
+ ③ Optional: Zusätzliche Anweisung eingeben
+        │
+        ▼
+ buildRemixPrompt()
+   ├── Hero-JSON (ohne Sections) aus gewählter Variante
+   ├── Ausgewählte Sektionen zusammenstellen
+   └── Instruction-Text anhängen
+        │
+        ▼
+ copyRemixPrompt()
+   ├── navigator.clipboard.writeText()
+   └── Tokens zum Session-Counter addieren
+        │
+        └──────────────────────────> ④ Remix-Prompt einfügen
+                                            │
+                                            ▼
+                                      KI generiert JSON
+                                            │
+                                     ⑤ JSON-Antwort kopieren
+                                            │
+        ┌───────────────────────────────────┘
+        ▼
+ loadPastedJSON() (behandelt einzelnes Objekt)
+        │
+        ▼
+ Remixte Seite im Editor bearbeitbar
+```
+
+---
+
+## 13. Token-Schätzung
+
+Dynamische Schätzung der Token-Kosten für Generator und Remix.
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  TOKEN-SCHÄTZUNG                                                  │
+│                                                                   │
+│  Basis-Formel:                                                   │
+│  ├── estimateTokens: text.length / 4                             │
+│  │   (grobe Annäherung für deutschen Text)                       │
+│                                                                   │
+│  Generator:                                                      │
+│  ├── count * 3500 Tokens pro Variante                            │
+│                                                                   │
+│  Remix:                                                          │
+│  ├── JSON.stringify(selectedSections).length / 4                 │
+│  │   + 500 Overhead                                              │
+│  │   + 2000 Response                                             │
+│                                                                   │
+│  Session-Counter:                                                │
+│  ├── _totalTokensEstimated (globale Variable)                    │
+│  ├── Inkrementiert bei:                                          │
+│  │   ├── copyPrompt()                                            │
+│  │   ├── copyRemixPrompt()                                       │
+│  │   └── startGeneration()                                       │
+│                                                                   │
+│  Anzeige:                                                        │
+│  ├── fmtTokensStr()                                              │
+│  │   ├── Rundet auf 100                                          │
+│  │   └── Formatiert mit toLocaleString('de-DE')                  │
+│  │       (z.B. 12.000 statt 12000)                               │
+└──────────────────────────────────────────────────────────────────┘
+```

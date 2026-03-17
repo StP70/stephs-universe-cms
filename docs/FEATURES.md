@@ -16,6 +16,8 @@
 | Validierung | Warnt vor dem Speichern bei fehlendem Slug, Titel oder Sektions-IDs |
 | Slug-Sanitize | URL-Pfad wird automatisch kleingeschrieben, nur `a-z`, `0-9`, `-` erlaubt |
 | Dark-Mode UI | Editor im gleichen dunklen Design wie die generierten Seiten |
+| Varianten-Remix | Beste Sektionen aus verschiedenen generierten Varianten kombinieren (Hero-Radio + Sektions-Checkboxen + Remix-Prompt) |
+| Token-Kosten-Anzeige | Dynamische Schätzung bei Varianten/Remix-Auswahl, Session-Gesamtzähler, 1.000er-Interpunktion |
 
 ## Sektions-Editor
 
