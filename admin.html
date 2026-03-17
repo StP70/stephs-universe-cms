@@ -37,7 +37,7 @@
     /* ---- EMOJI PICKER ---- */
     .emoji-picker {
       position: fixed; z-index: 200;
-      width: 320px; max-height: 360px; overflow-y: auto;
+      width: 420px; max-height: 520px; overflow-y: auto;
       background: var(--bg-card); border: 1px solid var(--border);
       border-radius: var(--radius); padding: .75rem;
       box-shadow: 0 12px 40px rgba(0,0,0,.5);
@@ -881,7 +881,7 @@ function openEmojiPicker(sIdx, cIdx, btn) {
   };
   emojiTriggerEl = btn;
   const rect = btn.getBoundingClientRect();
-  const pw = 320, ph = 360, m = 8;
+  const pw = 420, ph = 520, m = 8;
   let top = rect.bottom + m, left = rect.left;
   if (left + pw > window.innerWidth - m) left = window.innerWidth - pw - m;
   if (left < m) left = m;
@@ -894,7 +894,6 @@ function openEmojiPicker(sIdx, cIdx, btn) {
     document.addEventListener('mousedown', emojiOutsideClick);
   });
   document.addEventListener('keydown', emojiEscapeHandler);
-  window.addEventListener('scroll', closeEmojiPicker, true);
   window.addEventListener('resize', closeEmojiPicker);
 }
 
@@ -903,7 +902,6 @@ function closeEmojiPicker() {
   if (picker) picker.classList.remove('visible');
   document.removeEventListener('mousedown', emojiOutsideClick);
   document.removeEventListener('keydown', emojiEscapeHandler);
-  window.removeEventListener('scroll', closeEmojiPicker, true);
   window.removeEventListener('resize', closeEmojiPicker);
   emojiPickerCallback = null;
   emojiTriggerEl = null;
