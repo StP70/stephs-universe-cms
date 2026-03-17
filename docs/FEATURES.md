@@ -31,8 +31,8 @@
 | Block | Features |
 |---|---|
 | **Absätze** | Dynamische Liste, Formatierungs-Toolbar (Fett, Kursiv, Link), Zeilenumbrüche automatisch |
-| **Cards** | Icon (Emoji) + Titel + Text, Grid-Layout, Hover-Glow |
-| **Timeline** | Zeitpunkt + Beschreibung, 2-Spalten Zeitstrahl |
+| **Cards** | Icon (Emoji-Picker mit 80 Icons in 8 Kategorien oder manuelle Eingabe) + Titel + Text, Grid-Layout, Hover-Glow, globale Icon-Größe einstellbar |
+| **Timeline** | Zeitpunkt + Beschreibung, 2-Spalten Layout, Card-Styling (gleiche Helligkeit wie Cards) |
 | **Videos** | URL + Thumbnail + Titel + Badge, YouTube-Thumbnail wird automatisch erkannt |
 | **Zitat** | Text + Quellenangabe, dekoratives Anführungszeichen |
 | **Warnung** | Titel + Text, gelber Hinweis-Block |
@@ -55,6 +55,7 @@
 | 3 Themes | Dark (Standard), Light, Colorful – per Dropdown wählbar |
 | Akzentfarbe | Frei wählbar per Color-Picker, gilt für Buttons, Links, Badges |
 | Helle Akzentfarbe | Wird automatisch aus der Akzentfarbe berechnet (HSL +40% Lightness), manuell überschreibbar |
+| Card-Icon-Größe | Global einstellbar (20–80px), steuert Box-Größe, font-size und border-radius proportional |
 | Responsive | Mobile-first Design, Breakpoint bei 640px |
 | Auto-responsive Nav | Pillen-Grid passt sich automatisch an die Anzahl der Sektionen an |
 | Glassmorphism Nav | Sticky Navigation mit Blur-Effekt und Pillen-Tags |

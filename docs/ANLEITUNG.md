@@ -113,10 +113,11 @@ Jede Sektion kann diese Inhaltsblöcke haben (alle optional):
 
 1. Klicke **[+ Karte]**
 2. Fülle aus:
-   - **Icon:** Ein Emoji (z.B. `🔬`, `⚡`, `🧘`)
+   - **Icon:** Klicke **☰** um ein Emoji aus dem Picker zu wählen (8 Kategorien), oder tippe ein Emoji direkt ins Feld
    - **Titel:** Kurzer Titel
    - **Text:** Beschreibung
 3. Weitere Karten mit **[+ Karte]**
+4. Die **Icon-Größe** kannst du global in den Seiten-Einstellungen unter "Card-Icon-Größe" anpassen
 
 ### Timeline (Zeitstrahl)
 
