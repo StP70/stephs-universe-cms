@@ -499,13 +499,9 @@
         if (!v.slug && !v.title) throw new Error('Variante ' + (i+1) + ': slug oder title fehlt');
       });
       window._generatedVariants = variants;
-      var results = document.getElementById('genResults');
-      results.innerHTML = variants.map(function(v, i) {
-        return '<button class="btn btn-sm" onclick="loadGeneratedVariant(' + i + ')" style="margin:0">' +
-          'V' + (i + 1) + ': ' + (v.theme || '?') + ' / ' + esc(v.title || 'Untitled') +
-          '</button>' +
-          '<button class="btn btn-sm btn-icon" onclick="downloadGeneratedVariant(' + i + ')" style="margin:0" title="JSON herunterladen">&#128190;</button>';
-      }).join('');
+      window._variantFilenames = [];
+      window._variantTimestamps = [];
+      renderVariantTable();
       document.getElementById('genStatus').textContent = variants.length + ' Variante(n) geladen! Klicke eine zum Bearbeiten.';
       document.getElementById('genPasteArea').value = '';
       showRemixUI();
@@ -560,12 +556,9 @@
     status.textContent = window._generatedVariants.length + ' Variante(n) generiert!';
     btn.disabled = false;
     btn.textContent = 'Generieren';
-    results.innerHTML = window._generatedVariants.map(function(v, i) {
-      return '<button class="btn btn-sm" onclick="loadGeneratedVariant(' + i + ')" style="margin:0">' +
-        'V' + (i + 1) + ': ' + (v.theme || '?') + ' / ' + esc(v.title || 'Untitled') +
-        '</button>' +
-        '<button class="btn btn-sm btn-icon" onclick="downloadGeneratedVariant(' + i + ')" style="margin:0" title="JSON herunterladen">&#128190;</button>';
-    }).join('');
+    window._variantFilenames = [];
+    window._variantTimestamps = [];
+    renderVariantTable();
     showRemixUI();
   }
 
@@ -600,6 +593,10 @@
   }
 
   // ---- Archiv laden (Multi-File-Picker) ----
+  // Dateinamen + Timestamps pro Variante speichern
+  window._variantFilenames = [];
+  window._variantTimestamps = [];
+
   function loadArchiveFiles(event) {
     var files = Array.from(event.target.files);
     if (files.length === 0) return;
@@ -607,33 +604,75 @@
     var results = document.getElementById('genResults');
     status.textContent = files.length + ' Datei(en) werden geladen...';
     window._generatedVariants = [];
+    window._variantFilenames = [];
+    window._variantTimestamps = [];
     var loaded = 0;
-    files.forEach(function(file) {
+    var fileList = [];
+    files.forEach(function(file, fi) {
       var reader = new FileReader();
       reader.onload = function(e) {
         try {
           var data = JSON.parse(e.target.result);
           if (data.slug || data.title) {
-            window._generatedVariants.push(data);
+            fileList[fi] = { data: data, name: file.name, modified: file.lastModified };
           }
         } catch(err) {
           status.textContent = 'Fehler in ' + file.name + ': ' + err.message;
         }
         loaded++;
         if (loaded === files.length) {
+          // Reihenfolge beibehalten, leere Slots entfernen
+          fileList.forEach(function(item) {
+            if (item) {
+              window._generatedVariants.push(item.data);
+              window._variantFilenames.push(item.name);
+              window._variantTimestamps.push(item.modified);
+            }
+          });
           status.textContent = window._generatedVariants.length + ' Variante(n) aus Archiv geladen.';
-          results.innerHTML = window._generatedVariants.map(function(v, i) {
-            return '<button class="btn btn-sm" onclick="loadGeneratedVariant(' + i + ')" style="margin:0">' +
-              'V' + (i + 1) + ': ' + (v.theme || '?') + ' / ' + esc(v.title || 'Untitled') +
-              '</button>' +
-              '<button class="btn btn-sm btn-icon" onclick="downloadGeneratedVariant(' + i + ')" style="margin:0" title="JSON herunterladen">&#128190;</button>';
-          }).join('');
+          renderVariantTable();
           showRemixUI();
         }
       };
       reader.readAsText(file);
     });
     event.target.value = '';
+  }
+
+  function renderVariantTable() {
+    var results = document.getElementById('genResults');
+    var variants = window._generatedVariants || [];
+    var filenames = window._variantFilenames || [];
+    if (variants.length === 0) { results.innerHTML = ''; return; }
+
+    var hasFilenames = filenames.length > 0 && filenames[0];
+    var timestamps = window._variantTimestamps || [];
+    var thStyle = 'text-align:left;padding:.3rem .4rem;font-size:.7rem;color:var(--text-muted);font-weight:500';
+    var html = '<table style="width:100%;border-collapse:collapse;font-size:.82rem;margin-top:.3rem">';
+    html += '<tr style="border-bottom:1px solid var(--border)">' +
+      (hasFilenames ? '<th style="' + thStyle + '">Dateiname</th>' : '') +
+      '<th style="' + thStyle + '">Nr.</th>' +
+      '<th style="' + thStyle + '">Theme</th>' +
+      '<th style="' + thStyle + '">Titel</th>' +
+      (hasFilenames ? '<th style="' + thStyle + '">Gespeichert</th>' : '') +
+      '<th style="padding:.3rem .4rem"></th>' +
+      '</tr>';
+    variants.forEach(function(v, i) {
+      var fname = filenames[i] || '';
+      var ts = timestamps[i] ? new Date(timestamps[i]).toLocaleString('de-AT', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '';
+      html += '<tr style="border-bottom:1px solid rgba(255,255,255,.04)">' +
+        (hasFilenames ? '<td style="padding:.35rem .4rem;color:var(--text-muted);font-size:.75rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + esc(fname) + '">' + esc(fname) + '</td>' : '') +
+        '<td style="padding:.35rem .4rem;font-weight:600">V' + (i + 1) + '</td>' +
+        '<td style="padding:.35rem .4rem;color:var(--text-muted)">' + (v.theme || '?') + '</td>' +
+        '<td style="padding:.35rem .4rem">' + esc(v.title || 'Untitled') + '</td>' +
+        (hasFilenames ? '<td style="padding:.35rem .4rem;color:var(--text-muted);font-size:.75rem;white-space:nowrap">' + ts + '</td>' : '') +
+        '<td style="padding:.35rem .4rem;white-space:nowrap">' +
+          '<button class="btn btn-sm" onclick="loadGeneratedVariant(' + i + ')" style="padding:.15rem .5rem;font-size:.75rem">Laden</button> ' +
+          '<button class="btn btn-sm btn-icon" onclick="downloadGeneratedVariant(' + i + ')" style="padding:.15rem .3rem;font-size:.75rem" title="JSON herunterladen">&#128190;</button>' +
+        '</td></tr>';
+    });
+    html += '</table>';
+    results.innerHTML = html;
   }
 
   function downloadGeneratedVariant(idx) {
