@@ -35,16 +35,17 @@
     }
 
     /* ---- TABS ---- */
-    .tab-bar { display: flex; gap: 0; margin-bottom: 0; }
+    .tab-bar { display: flex; gap: .4rem; margin-bottom: 0; padding-top: .4rem; }
     .tab-btn {
-      flex: 1; padding: .6rem 1.5rem; font-size: .85rem; font-weight: 600;
-      background: transparent; border: none; border-bottom: 2px solid transparent;
+      flex: 1; padding: .55rem 1.5rem; font-size: .85rem; font-weight: 600;
+      background: transparent; border: none;
+      border-radius: 10px 10px 0 0;
       color: var(--text-muted); cursor: pointer;
-      transition: color .15s, background .15s, border-color .15s;
+      transition: color .15s, background .15s;
       text-align: center;
     }
-    .tab-btn:hover { color: var(--text); background: rgba(255,255,255,.03); }
-    .tab-btn.active { color: #000; background: var(--accent); border-bottom-color: var(--accent); }
+    .tab-btn:hover { color: var(--text); background: rgba(255,255,255,.05); }
+    .tab-btn.active { color: #000; background: var(--accent); }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
