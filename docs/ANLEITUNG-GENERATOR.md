@@ -21,7 +21,7 @@ Der manuelle Modus ist kostenlos und braucht keinen API-Key. Du kopierst einen P
    - Doppelklicke auf `admin.html` im Ordner `project-001/experiment-011/`
    - Die Datei oeffnet sich im Browser
 
-2. **KI-Generator aufklappen**
+2. **Tab "KI-Generator" wählen**
    - Klicke oben im Editor auf den Bereich **"KI-Generator"**
    - Das Panel klappt auf
 
@@ -116,7 +116,7 @@ Im API-Modus generiert der Server die Seite automatisch -- ohne Copy-Paste ueber
    - Gehe zu [http://localhost:3000](http://localhost:3000)
    - Du siehst den Editor (admin.html) ueber den lokalen Server
 
-5. **KI-Generator aufklappen und Beschreibung eingeben**
+5. **Tab "KI-Generator" wählen und Beschreibung eingeben**
    - Wie im manuellen Modus: Beschreibung eintippen und Varianten-Anzahl waehlen
 
 6. **Modus auf "Automatisch" umschalten**
@@ -236,8 +236,8 @@ Ja, im API-Modus und CLI-Modus kannst du den Provider auf "openai" umschalten. D
 1. Klicke im KI-Generator auf **[Archiv laden (Dateien wählen)]**
 2. Navigiere zum Ordner `pages/_generated/`
 3. Wähle eine oder mehrere JSON-Dateien aus (Strg+Klick für Mehrfachauswahl)
-4. Die geladenen Varianten erscheinen als Buttons
-5. Klicke eine Variante um sie in den Editor zu laden
+4. Die geladenen Varianten erscheinen in einer Tabelle (Dateiname, Nr., Theme, Titel, Speicherdatum)
+5. Klicke **[Laden]** um eine Variante in den Editor zu laden (wechselt automatisch zum Editor-Tab)
 6. Bei ≥2 Varianten erscheint automatisch der Remix-Bereich
 
 **Tipp:** So kannst du ältere Entwürfe jederzeit wieder aufrufen, vergleichen, weiterbearbeiten oder remixen.
@@ -270,7 +270,7 @@ Ja, im API-Modus und CLI-Modus kannst du den Provider auf "openai" umschalten. D
 ```
 MANUELL (kostenlos):
 1. admin.html oeffnen
-2. KI-Generator aufklappen
+2. Tab "KI-Generator" wählen
 3. Beschreibung eintippen, Variante waehlen
 4. "Prompt kopieren" -> in claude.ai einfuegen
 5. JSON-Antwort kopieren -> "JSON einfuegen" -> "In Editor laden"

@@ -15,6 +15,7 @@
 | Autosave | Änderungen werden automatisch im Browser gespeichert (localStorage). Restore-Dialog beim nächsten Öffnen |
 | Validierung | Warnt vor dem Speichern bei fehlendem Slug, Titel oder Sektions-IDs |
 | Slug-Sanitize | URL-Pfad wird automatisch kleingeschrieben, nur `a-z`, `0-9`, `-` erlaubt |
+| Tab-Navigation | Zwei Tabs: KI-Generator und Editor. Variante laden wechselt automatisch zum Editor. |
 | Dark-Mode UI | Editor im gleichen dunklen Design wie die generierten Seiten |
 | Varianten-Remix | Beste Sektionen aus verschiedenen generierten Varianten kombinieren (Hero-Radio + Sektions-Checkboxen + Remix-Prompt) |
 | Token-Kosten-Anzeige | Dynamische Schätzung bei Varianten/Remix-Auswahl, Session-Gesamtzähler, 1.000er-Interpunktion |
@@ -87,6 +88,7 @@
 | _Prefix ignoriert | Dateien mit `_` Prefix (z.B. `_example-neue-seite.json`) werden nicht gebaut |
 | Generierungs-Archiv | Alle KI-generierten Varianten in `pages/_generated/` archiviert (`slug_datum_vN-theme.json`). Wird nicht gebaut, nichts geht verloren. |
 | Archiv laden | Historische Varianten direkt im Admin-Panel per Multi-File-Picker laden, bearbeiten oder remixen. Kein Server nötig. |
+| Varianten-Tabelle | Geladene Varianten als Tabelle: Dateiname, Versionsnummer, Theme, Titel, Speicher-Datum/Uhrzeit, Laden/Download-Buttons |
 | Fehlertoleranz | try/catch pro JSON-Datei – ein Fehler stoppt nicht den ganzen Build |
 | Slug-Validierung | Warnung bei Großbuchstaben im Slug, Fehler bei leerem Slug |
 | HTML-Escaping | Titel und Slug in der Übersichtsseite werden sicher escaped |
