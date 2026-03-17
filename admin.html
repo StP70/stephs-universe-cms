@@ -346,17 +346,14 @@
           <span style="font-size:1.1rem">&#127912;</span>
           <span style="font-weight:700;font-size:.95rem">Remix</span>
         </div>
-        <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:.75rem;line-height:1.4">Wähle links das Hero-Design einer Variante und rechts die besten Sektionen aus verschiedenen Varianten. Claude kombiniert alles zu einer neuen Homepage.</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
-          <div>
-            <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem">Hero &amp; Design</div>
-            <div id="remixHeroList" style="background:var(--bg-input);border-radius:var(--radius-sm);padding:.5rem .75rem"></div>
-          </div>
-          <div>
-            <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem">Sektionen</div>
-            <div id="remixSectionList" style="background:var(--bg-input);border-radius:var(--radius-sm);padding:.5rem .75rem;max-height:200px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.15) transparent"></div>
-          </div>
-        </div>
+        <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:.75rem;line-height:1.4">Wähle ein Hero-Design und die besten Sektionen aus verschiedenen Varianten. Claude kombiniert alles zu einer neuen Homepage.</p>
+        <!-- Hero -->
+        <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem">Hero &amp; Design</div>
+        <div id="remixHeroList" style="background:var(--bg-input);border-radius:var(--radius-sm);padding:.5rem .75rem;margin-bottom:.75rem"></div>
+        <!-- Sektionen -->
+        <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem">Sektionen</div>
+        <div id="remixSectionList" style="background:var(--bg-input);border-radius:var(--radius-sm);padding:.5rem .75rem;max-height:360px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.15) transparent"></div>
+        <!-- Anweisung -->
         <div class="field" style="margin-top:.75rem">
           <label>Zusätzliche Anweisung (optional)</label>
           <input type="text" id="remixInstruction" placeholder="z.B. Verwende den lockeren Ton von V2">
@@ -694,32 +691,52 @@
     if (variants.length < 2) { remixDiv.style.display = 'none'; return; }
     remixDiv.style.display = 'block';
 
-    // Hero-Radios
-    var heroHtml = '';
+    // Hero-Tabelle
+    var heroHtml = '<table style="width:100%;border-collapse:collapse;font-size:.82rem">';
+    heroHtml += '<tr style="border-bottom:1px solid var(--border)"><th style="text-align:left;padding:.3rem .4rem;font-size:.7rem;color:var(--text-muted);font-weight:500"></th><th style="text-align:left;padding:.3rem .4rem;font-size:.7rem;color:var(--text-muted);font-weight:500">Variante</th><th style="text-align:left;padding:.3rem .4rem;font-size:.7rem;color:var(--text-muted);font-weight:500">Theme</th><th style="text-align:left;padding:.3rem .4rem;font-size:.7rem;color:var(--text-muted);font-weight:500">Hero-Titel</th><th style="text-align:left;padding:.3rem .4rem;font-size:.7rem;color:var(--text-muted);font-weight:500">Untertitel</th></tr>';
     variants.forEach(function(v, i) {
       var color = v.accentColor || '#10b981';
-      heroHtml += '<label style="display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.82rem;padding:.25rem 0">' +
-        '<input type="radio" name="remixHero" value="' + i + '"' + (i === 0 ? ' checked' : '') + ' onchange="updateRemixTokenEstimate()">' +
-        '<span style="width:10px;height:10px;border-radius:50%;background:' + color + ';flex-shrink:0"></span>' +
-        '<span>V' + (i+1) + ' <strong>' + esc(v.title || '?') + '</strong></span>' +
-        '<span style="color:var(--text-muted);font-size:.75rem">' + (v.theme || '') + '</span>' +
-        '</label>';
+      var subtitle = (v.heroSubtitle || '').replace(/<[^>]*>/g, '');
+      if (subtitle.length > 60) subtitle = subtitle.substring(0, 57) + '...';
+      heroHtml += '<tr style="border-bottom:1px solid rgba(255,255,255,.04)">' +
+        '<td style="padding:.35rem .4rem"><input type="radio" name="remixHero" value="' + i + '"' + (i === 0 ? ' checked' : '') + ' onchange="updateRemixTokenEstimate()"></td>' +
+        '<td style="padding:.35rem .4rem"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + color + ';margin-right:.3rem;vertical-align:middle"></span>V' + (i+1) + '</td>' +
+        '<td style="padding:.35rem .4rem;color:var(--text-muted)">' + (v.theme || '?') + '</td>' +
+        '<td style="padding:.35rem .4rem;font-weight:600">' + esc((v.heroTitle || '').replace(/<[^>]*>/g, '').substring(0, 40)) + '</td>' +
+        '<td style="padding:.35rem .4rem;color:var(--text-muted);font-size:.78rem">' + esc(subtitle) + '</td>' +
+        '</tr>';
     });
+    heroHtml += '</table>';
     document.getElementById('remixHeroList').innerHTML = heroHtml;
 
-    // Sektions-Checkboxen, gruppiert nach Variante
+    // Sektions-Tabelle mit Textvorschau, gruppiert nach Variante
     var secHtml = '';
     variants.forEach(function(v, vi) {
       var sections = v.sections || [];
       if (sections.length === 0) return;
-      secHtml += '<div style="font-size:.7rem;font-weight:600;color:var(--accent);margin-top:' + (vi > 0 ? '.5rem' : '0') + ';margin-bottom:.2rem">V' + (vi+1) + ': ' + esc(v.title || '?') + '</div>';
+      secHtml += '<div style="font-size:.7rem;font-weight:600;color:var(--accent);margin-top:' + (vi > 0 ? '.6rem' : '0') + ';margin-bottom:.2rem">V' + (vi+1) + ': ' + esc(v.title || '?') + '</div>';
+      secHtml += '<table style="width:100%;border-collapse:collapse;font-size:.82rem">';
       sections.forEach(function(s, si) {
-        secHtml += '<label style="display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.82rem;padding:.15rem 0">' +
-          '<input type="checkbox" class="remixSectionCb" data-vi="' + vi + '" data-si="' + si + '" onchange="updateRemixTokenEstimate()">' +
-          '<span>' + esc(s.navLabel || s.title || 'Unbenannt') + '</span>' +
-          '<span style="color:var(--text-muted);font-size:.7rem;margin-left:auto">' + getSectionType(s) + '</span>' +
-          '</label>';
+        // Textvorschau: erster Paragraph oder Card-Titel oder Timeline-Eintrag
+        var preview = '';
+        if (s.paragraphs && s.paragraphs.length) {
+          preview = s.paragraphs[0].replace(/<[^>]*>/g, '');
+        } else if (s.cards && s.cards.length) {
+          preview = s.cards.map(function(c) { return c.icon + ' ' + c.title; }).join(', ');
+        } else if (s.timeline && s.timeline.length) {
+          preview = s.timeline.map(function(t) { return t.time + ': ' + (t.title || ''); }).join(', ');
+        } else if (s.quote) {
+          preview = '"' + (s.quote.text || '').substring(0, 60) + '"';
+        }
+        if (preview.length > 80) preview = preview.substring(0, 77) + '...';
+        secHtml += '<tr style="border-bottom:1px solid rgba(255,255,255,.04)">' +
+          '<td style="padding:.3rem .4rem;width:24px"><input type="checkbox" class="remixSectionCb" data-vi="' + vi + '" data-si="' + si + '" onchange="updateRemixTokenEstimate()"></td>' +
+          '<td style="padding:.3rem .4rem;white-space:nowrap;font-weight:600">' + esc(s.navLabel || s.title || 'Unbenannt') + '</td>' +
+          '<td style="padding:.3rem .4rem;color:var(--accent);font-size:.7rem;white-space:nowrap">' + getSectionType(s) + '</td>' +
+          '<td style="padding:.3rem .4rem;color:var(--text-muted);font-size:.78rem">' + esc(preview) + '</td>' +
+          '</tr>';
       });
+      secHtml += '</table>';
     });
     document.getElementById('remixSectionList').innerHTML = secHtml;
     updateRemixTokenEstimate();
