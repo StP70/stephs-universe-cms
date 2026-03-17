@@ -416,12 +416,10 @@
         <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem">Hero &amp; Design</div>
         <div id="remixHeroList" style="background:var(--bg-input);border-radius:var(--radius-sm);padding:.5rem .75rem;margin-bottom:.75rem"></div>
         <!-- Sektionen mit Sub-Tabs -->
-        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.4rem">
-          <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em">Sektionen</div>
-          <div style="display:flex;gap:0;margin-left:auto">
-            <button class="remix-tab-btn active" onclick="switchRemixTab('version')" id="remixTabVersion" style="padding:.2rem .7rem;font-size:.7rem;font-weight:600;background:rgba(255,255,255,.08);border:1px solid var(--border);border-right:none;border-radius:6px 0 0 6px;color:var(--text);cursor:pointer">Nach Version</button>
-            <button class="remix-tab-btn" onclick="switchRemixTab('section')" id="remixTabSection" style="padding:.2rem .7rem;font-size:.7rem;font-weight:600;background:transparent;border:1px solid var(--border);border-radius:0 6px 6px 0;color:var(--text-muted);cursor:pointer">Nach Sektion</button>
-          </div>
+        <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem">Sektionen</div>
+        <div style="display:flex;gap:0;margin-bottom:.4rem">
+          <button onclick="switchRemixTab('version')" id="remixTabVersion" style="padding:.3rem .9rem;font-size:.75rem;font-weight:600;background:var(--accent);border:1px solid var(--accent);border-right:none;border-radius:6px 0 0 6px;color:#000;cursor:pointer">Nach Version</button>
+          <button onclick="switchRemixTab('section')" id="remixTabSection" style="padding:.3rem .9rem;font-size:.75rem;font-weight:600;background:transparent;border:1px solid var(--border);border-radius:0 6px 6px 0;color:var(--text-muted);cursor:pointer">Nach Sektion</button>
         </div>
         <div id="remixSectionList" style="background:var(--bg-input);border-radius:var(--radius-sm);padding:.5rem .75rem;max-height:360px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.15) transparent"></div>
         <div id="remixSectionListByType" style="display:none;background:var(--bg-input);border-radius:var(--radius-sm);padding:.5rem .75rem;max-height:360px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.15) transparent"></div>
@@ -839,7 +837,9 @@
       var items = allSections.filter(function(x) { return x.vi === vi; });
       if (items.length === 0) return;
       byVersionHtml += '<div style="font-size:.7rem;font-weight:600;color:var(--accent);margin-top:' + (vi > 0 ? '.6rem' : '0') + ';margin-bottom:.2rem">V' + (vi+1) + ': ' + esc(v.title || '?') + '</div>';
+      var thS = 'text-align:left;padding:.25rem .4rem;font-size:.68rem;color:var(--text-muted);font-weight:500';
       byVersionHtml += '<table style="width:100%;border-collapse:collapse;font-size:.82rem">';
+      byVersionHtml += '<tr style="border-bottom:1px solid var(--border)"><th style="' + thS + ';width:24px"></th><th style="' + thS + '">Sektion</th><th style="' + thS + '">Typ</th><th style="' + thS + '">Vorschau</th></tr>';
       items.forEach(function(item) { byVersionHtml += buildSectionRow(item); });
       byVersionHtml += '</table>';
     });
@@ -855,7 +855,9 @@
     var byTypeHtml = '';
     Object.keys(types).forEach(function(typeName) {
       byTypeHtml += '<div style="font-size:.7rem;font-weight:600;color:var(--accent);margin-top:' + (byTypeHtml ? '.6rem' : '0') + ';margin-bottom:.2rem">' + esc(typeName) + '</div>';
+      var thS2 = 'text-align:left;padding:.25rem .4rem;font-size:.68rem;color:var(--text-muted);font-weight:500';
       byTypeHtml += '<table style="width:100%;border-collapse:collapse;font-size:.82rem">';
+      byTypeHtml += '<tr style="border-bottom:1px solid var(--border)"><th style="' + thS2 + ';width:24px"></th><th style="' + thS2 + '">Version</th><th style="' + thS2 + '">Sektion</th><th style="' + thS2 + '">Vorschau</th></tr>';
       types[typeName].forEach(function(item) {
         byTypeHtml += '<tr style="border-bottom:1px solid rgba(255,255,255,.04)">' +
           '<td style="padding:.3rem .4rem;width:24px"><input type="checkbox" class="remixSectionCb" data-vi="' + item.vi + '" data-si="' + item.si + '" onchange="syncRemixCheckboxes(this);updateRemixTokenEstimate()"></td>' +
@@ -878,12 +880,12 @@
     var btnSection = document.getElementById('remixTabSection');
     if (tab === 'version') {
       byVersion.style.display = ''; byType.style.display = 'none';
-      btnVersion.style.background = 'rgba(255,255,255,.08)'; btnVersion.style.color = 'var(--text)';
-      btnSection.style.background = 'transparent'; btnSection.style.color = 'var(--text-muted)';
+      btnVersion.style.background = 'var(--accent)'; btnVersion.style.color = '#000'; btnVersion.style.borderColor = 'var(--accent)';
+      btnSection.style.background = 'transparent'; btnSection.style.color = 'var(--text-muted)'; btnSection.style.borderColor = 'var(--border)';
     } else {
       byVersion.style.display = 'none'; byType.style.display = '';
-      btnSection.style.background = 'rgba(255,255,255,.08)'; btnSection.style.color = 'var(--text)';
-      btnVersion.style.background = 'transparent'; btnVersion.style.color = 'var(--text-muted)';
+      btnSection.style.background = 'var(--accent)'; btnSection.style.color = '#000'; btnSection.style.borderColor = 'var(--accent)';
+      btnVersion.style.background = 'transparent'; btnVersion.style.color = 'var(--text-muted)'; btnVersion.style.borderColor = 'var(--border)';
     }
   }
 
