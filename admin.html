@@ -34,6 +34,19 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* ---- TABS ---- */
+    .tab-bar { display: flex; gap: 0; margin-bottom: 0; }
+    .tab-btn {
+      padding: .55rem 1.2rem; font-size: .85rem; font-weight: 600;
+      background: transparent; border: none; color: var(--text-muted);
+      cursor: pointer; border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
     /* ---- EMOJI PICKER ---- */
     .emoji-picker {
       position: fixed; z-index: 200;
@@ -273,13 +286,18 @@
 <input type="file" id="fileInput" class="file-input" accept=".json" onchange="importJSON(event)">
 
 <main class="app-body">
+  <!-- TAB-BAR -->
+  <div class="tab-bar" style="padding:0 1.5rem;border-bottom:1px solid var(--border);background:var(--bg-elevated)">
+    <button class="tab-btn active" onclick="switchTab('generator')">KI-Generator</button>
+    <button class="tab-btn" onclick="switchTab('editor')">Editor</button>
+  </div>
 
-  <!-- KI-GENERATOR -->
+  <!-- TAB: KI-GENERATOR -->
+  <div id="tabGenerator" class="tab-content active" style="padding:1.5rem">
+
   <div class="panel" id="genPanel">
-    <div class="panel-title" onclick="document.getElementById('genPanel').classList.toggle('open')" style="cursor:pointer;display:flex;align-items:center;gap:.5rem">
-      <span class="section-arrow" style="font-size:.7rem">&#9654;</span> KI-Generator
-    </div>
-    <div class="panel-body" style="display:none">
+    <div class="panel-title">KI-Generator</div>
+    <div class="panel-body">
       <div class="field">
         <label>Beschreibe deine Homepage</label>
         <textarea id="genDescription" rows="4" placeholder="z.B. Zahnarztpraxis in Wien, modern, vertrauenswürdig. Services: Implantate, Prophylaxe, Bleaching. Zielgruppe: Familien."></textarea>
@@ -369,17 +387,6 @@
     </div>
   </div>
   <script>
-  // Generator-Panel Akkordeon
-  document.getElementById('genPanel').addEventListener('click', function(e) {
-    if (e.target.closest('.panel-title')) {
-      const body = this.querySelector('.panel-body');
-      const arrow = this.querySelector('.section-arrow');
-      const isOpen = body.style.display !== 'none';
-      body.style.display = isOpen ? 'none' : 'block';
-      arrow.style.transform = isOpen ? '' : 'rotate(90deg)';
-    }
-  });
-
   // Modus-Toggle: manuell zeigt Paste-Bereich, API zeigt Provider
   document.getElementById('genMode').addEventListener('change', function() {
     var isApi = this.value === 'api';
@@ -589,6 +596,7 @@
     renderSections();
     scheduleAutosave();
     document.getElementById('genStatus').textContent = 'Variante ' + (idx + 1) + ' in Editor geladen.';
+    switchTab('editor');
   }
 
   // ---- Archiv laden (Multi-File-Picker) ----
@@ -806,6 +814,11 @@
   }
   </script>
 
+  </div><!-- /tabGenerator -->
+
+  <!-- TAB: EDITOR -->
+  <div id="tabEditor" class="tab-content" style="padding:1.5rem">
+
   <!-- SEITEN-EINSTELLUNGEN -->
   <div class="panel">
     <div class="panel-title">Seiten-Einstellungen</div>
@@ -911,6 +924,8 @@
     <button class="btn btn-sm" onclick="addSection()">+ Neue Sektion</button>
   </div>
   <div id="sectionsContainer"></div>
+
+  </div><!-- /tabEditor -->
 
 </main>
 
@@ -2278,6 +2293,28 @@ link.classList.add('active');
 <\/script>
 </body>
 </html>`;
+// ============================================================
+// TABS
+// ============================================================
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-btn').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  var tab = document.getElementById('tab' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
+  if (tab) tab.classList.add('active');
+  // Activate matching button
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    if (btn.textContent.toLowerCase().indexOf(tabName) !== -1 ||
+        (tabName === 'generator' && btn.textContent.indexOf('Generator') !== -1) ||
+        (tabName === 'editor' && btn.textContent.indexOf('Editor') !== -1)) {
+      btn.classList.add('active');
+    }
+  });
+}
+
 // ============================================================
 // INIT
 // ============================================================
