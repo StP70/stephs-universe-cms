@@ -369,7 +369,7 @@ Der Prompt an die KI besteht aus zwei Teilen: `system` und `user`.
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-### User-Prompt (Beschreibung + Varianten-Parameter)
+### User-Prompt (Beschreibung + Referenz + Varianten-Parameter)
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
@@ -380,9 +380,19 @@ Der Prompt an die KI besteht aus zwei Teilen: `system` und `user`.
 │   [User-Beschreibung]                                            │
 │                                                                   │
 │   Theme: dark                                                    │
-│   Akzentfarbe: #10b981"                                          │
+│   Akzentfarbe: #10b981                                           │
+│                                                                   │
+│   REFERENZ-HOMEPAGE (HÖCHSTE PRIORITÄT):    ← optional           │
+│   Analysiere diese Website und baue die                          │
+│   Struktur möglichst genau nach.                                 │
+│   URL: https://beispiel-website.com                              │
+│   Was übernehmen: großer Hero, Cards, FAQ"                       │
 └──────────────────────────────────────────────────────────────────┘
 ```
+
+Die Referenz-Homepage wird nur eingefügt wenn URL oder Beschreibung
+angegeben sind. Im Prompt steht sie mit "HÖCHSTE PRIORITÄT" damit
+Claude die Struktur der Referenz vor allem anderen berücksichtigt.
 
 ### Claude: tool_use erzwingt JSON-Output
 

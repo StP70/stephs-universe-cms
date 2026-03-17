@@ -18,6 +18,7 @@
 | Dark-Mode UI | Editor im gleichen dunklen Design wie die generierten Seiten |
 | Varianten-Remix | Beste Sektionen aus verschiedenen generierten Varianten kombinieren (Hero-Radio + Sektions-Checkboxen + Remix-Prompt) |
 | Token-Kosten-Anzeige | Dynamische Schätzung bei Varianten/Remix-Auswahl, Session-Gesamtzähler, 1.000er-Interpunktion |
+| Referenz-Homepage | Optionale URL + Beschreibung einer bestehenden Website als Vorlage. Claude baut die Struktur mit höchster Priorität nach. |
 
 ## Sektions-Editor
 

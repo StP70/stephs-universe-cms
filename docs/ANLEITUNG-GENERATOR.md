@@ -34,6 +34,11 @@ Der manuelle Modus ist kostenlos und braucht keinen API-Key. Du kopierst einen P
      Zielgruppe: Erwachsene und Familien.
      ```
 
+   **Referenz-Homepage (optional):**
+   - Trage die URL einer bestehenden Website ein die dir gefaellt
+   - Beschreibe was dir an der Referenz gefaellt (z.B. "grosser Hero, Cards fuer Services, FAQ-Bereich")
+   - Claude versucht die Struktur der Referenz-Seite nachzubauen, aber mit deinen Inhalten
+
 4. **Varianten waehlen**
    - Waehle per Checkboxen eine oder mehrere der 5 Varianten aus (Mehrfachauswahl moeglich). Es wird EIN Prompt fuer alle gewaehlten Varianten generiert. Jede Variante erzeugt eine andere Art von Homepage:
 
