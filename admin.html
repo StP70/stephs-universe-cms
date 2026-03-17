@@ -681,7 +681,7 @@
             window._variantFilenames.push(item.name);
             window._variantTimestamps.push(item.modified);
           });
-          status.textContent = window._generatedVariants.length + ' Variante(n) aus Archiv geladen.';
+          status.innerHTML = '<span style="color:var(--accent);text-transform:uppercase;font-weight:600">' + window._generatedVariants.length + ' Variante(n) aus Archiv geladen.</span>';
           renderVariantTable();
           showRemixUI();
         }
