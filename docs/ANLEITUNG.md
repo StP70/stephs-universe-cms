@@ -15,6 +15,7 @@ Mit dem Steph's Universe CMS kannst du moderne Informationsseiten erstellen – 
 |---|---|
 | `admin.html` | Visueller Editor – im Browser öffnen |
 | `build.js` | Baut JSON-Dateien zu fertigen HTML-Seiten |
+| `sync-template.js` | Synchronisiert template.html in admin.html (für Entwickler) |
 | `template.html` | Das Design-Template (musst du nicht anfassen) |
 | `pages/` | Hier liegen deine JSON-Dateien (eine pro Seite) |
 | `assets/` | Hier liegen deine Bilder |
@@ -28,7 +29,7 @@ Mit dem Steph's Universe CMS kannst du moderne Informationsseiten erstellen – 
 2. Doppelklicke auf **`admin.html`**
 3. Die Datei öffnet sich im Browser
 
-Du siehst den Editor mit den Beispieldaten der Autophagie & Fasten Seite.
+Du siehst den Editor mit den Beispieldaten der Autophagie & Fasten Seite. Falls du das letzte Mal ungespeicherte Änderungen hattest, fragt dich der Editor ob du diese wiederherstellen möchtest.
 
 ---
 
@@ -46,11 +47,11 @@ Du siehst den Editor mit den Beispieldaten der Autophagie & Fasten Seite.
 
 | Feld | Beschreibung | Beispiel |
 |---|---|---|
-| Slug | URL-Pfad deiner Seite | `autophagie-fasten` |
+| Slug | URL-Pfad deiner Seite (wird automatisch kleingeschrieben) | `autophagie-fasten` |
 | Seitentitel | Titel im Browser-Tab | `Autophagie & Fasten` |
 | Theme | Farbschema der Seite | Dark / Light / Colorful |
 | Sprache | Sprachcode | `de`, `en` |
-| Akzentfarbe | Hauptfarbe für Buttons, Links | `#10b981` (Grün) |
+| Akzentfarbe | Hauptfarbe für Buttons, Links (helle Variante wird automatisch berechnet) | `#10b981` (Grün) |
 | Icon Größe | Höhe des Nav-Icons in Pixel | `46` (Standard) |
 | Hero Hintergrundbild | URL zu einem Bild | Unsplash-Link oder lokaler Pfad |
 | Hero Badge | Kleiner Text über dem Titel | `Wissenschaftlich fundiert` |
@@ -93,16 +94,20 @@ Jede Sektion kann diese Inhaltsblöcke haben (alle optional):
 
 ### Bild
 
-- Klicke den **[Datei]**-Button neben dem Bild-Feld und wähle ein Bild von deinem Rechner – es wird automatisch eingebettet
+- Klicke den **[Datei]**-Button neben dem Bild-Feld und wähle ein Bild von deinem Rechner – es wird automatisch komprimiert (WebP, max 1200px Breite) und eingebettet
 - Alternativ: Trage eine Online-Bild-URL direkt ins Feld ein (z.B. Unsplash-Link)
 
 ### Absätze
 
 1. Klicke **[+ Absatz]**
 2. Schreibe deinen Text ins Textarea
-3. HTML ist erlaubt: `<strong>fett</strong>`, `<em>kursiv</em>`
-4. Weitere Absätze mit **[+ Absatz]** hinzufügen
-5. Absatz löschen mit dem **🗑-Symbol**
+3. **Zeilenumbrüche** werden automatisch übernommen – einfach Enter drücken
+4. **Text formatieren:** Über jedem Absatz gibt es eine Mini-Toolbar:
+   - **F** = Fett – Text markieren, dann **F** klicken
+   - **K** = Kursiv – Text markieren, dann **K** klicken
+   - **🔗** = Link – Text markieren, dann Link-Button klicken und URL eingeben
+5. Weitere Absätze mit **[+ Absatz]** hinzufügen
+6. Absatz löschen mit dem **🗑-Symbol**
 
 ### Cards (Karten)
 
@@ -159,8 +164,9 @@ Jede Sektion kann diese Inhaltsblöcke haben (alle optional):
 ## Schritt 6: Seite speichern
 
 1. Klicke oben auf **[JSON speichern]**
-2. Eine `.json`-Datei wird heruntergeladen (Name = dein Slug, z.B. `autophagie-fasten.json`)
-3. Verschiebe die Datei in den Ordner `project-001/experiment-011/pages/`
+2. Der Editor prüft ob Slug, Titel und Sektions-IDs ausgefüllt sind und warnt bei fehlenden Pflichtfeldern.
+3. Eine `.json`-Datei wird heruntergeladen (Name = dein Slug, z.B. `autophagie-fasten.json`)
+4. Verschiebe die Datei in den Ordner `project-001/experiment-011/pages/`
 
 ---
 
@@ -182,6 +188,8 @@ Jede Sektion kann diese Inhaltsblöcke haben (alle optional):
 Steph's Universe CMS - Build
 
 2 Seite(n) gefunden.
+
+-> assets/ (5 Dateien)
 
 -> autophagie-fasten/index.html
 -> index.html (Übersicht)
@@ -239,7 +247,7 @@ Build fertig! -> dist/
 
 ## Bilder hinzufügen
 
-**Empfohlen:** Klicke den **[Datei]**-Button neben dem jeweiligen Bild-Feld (Icon, Hero, Sektionsbild). Du kannst jede Bilddatei von deinem Rechner auswählen – sie wird automatisch eingebettet. Kein manuelles Kopieren nötig.
+**Empfohlen:** Klicke den **[Datei]**-Button neben dem jeweiligen Bild-Feld (Icon, Hero, Sektionsbild). Du kannst jede Bilddatei von deinem Rechner auswählen – sie wird automatisch komprimiert (WebP-Format, max 1200px Breite) und eingebettet. Kein manuelles Kopieren nötig.
 
 **Alternativ:** Online-Bilder per URL eintragen (z.B. Unsplash-Link direkt ins Textfeld).
 
@@ -264,7 +272,9 @@ Die **Akzentfarbe** ist unabhängig vom Theme frei wählbar.
 ```
 experiment-011/
 ├── admin.html              ← EDITOR: Im Browser öffnen
+├── render.js               ← Template-Engine (wird von admin + build genutzt)
 ├── build.js                ← BUILD: node build.js
+├── sync-template.js         ← Sync: template → admin.html (für Entwickler)
 ├── template.html           ← Design (nicht bearbeiten)
 ├── assets/                 ← Deine Bilder hierher
 │   ├── icon.png
@@ -272,9 +282,10 @@ experiment-011/
 │   └── ...
 ├── pages/                  ← Deine JSON-Dateien hierher
 │   ├── autophagie-fasten.json
-│   └── _example-neue-seite.json
+│   └── _example-neue-seite.json (wird beim Build ignoriert)
 ├── dist/                   ← Fertige Seiten (nach Build)
 │   ├── index.html (Übersicht)
+│   ├── assets/             (Bilder, einmalig kopiert)
 │   └── autophagie-fasten/
 │       └── index.html
 └── docs/
@@ -287,8 +298,8 @@ experiment-011/
 
 ## Häufige Fragen
 
-**Kann ich HTML in Textfeldern verwenden?**
-Ja, in den Feldern Hero Titel, Footer und Absätzen. Zum Beispiel: `<strong>fett</strong>`, `<em>kursiv</em>`, `<br>` für Zeilenumbruch.
+**Kann ich Text formatieren?**
+Ja! In Absätzen gibt es eine Toolbar mit Buttons für Fett, Kursiv und Links. Text markieren, Button klicken – fertig. Zeilenumbrüche werden automatisch übernommen. In den Feldern Hero Titel und Footer ist auch direktes HTML möglich (z.B. `<br>` für Zeilenumbruch).
 
 **Was passiert wenn ich ein Feld leer lasse?**
 Leere Felder werden beim Speichern ignoriert und nicht in die JSON geschrieben. Die Seite zeigt den entsprechenden Block einfach nicht an.
@@ -301,6 +312,10 @@ Nein. Alle Blöcke (Cards, Timeline, Videos, Zitat, Hinweis) sind optional. Nutz
 
 **Wie ändere ich das Icon in der Navigationsleiste?**
 Klicke den **[Datei]**-Button neben "Icon URL" und wähle dein Bild aus. Die Größe kannst du über das Feld "Icon Größe (px)" anpassen (Standard: 46px).
+
+**Was passiert wenn mein Browser abstürzt?** Deine Änderungen werden automatisch im Browser gespeichert (localStorage). Beim nächsten Öffnen von admin.html wirst du gefragt ob du den letzten Stand wiederherstellen möchtest.
+
+**Muss ich die helle Akzentfarbe manuell setzen?** Nein! Sie wird automatisch aus der Akzentfarbe berechnet. Du kannst sie aber manuell überschreiben.
 
 ---
 

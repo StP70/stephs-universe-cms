@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leberfasten</title>
+  <meta name="description" content="Gezielte Ernährungsstrategie, um eine verfettete Leber in kurzer Zeit - meist 14 Tage - effektiv zu entfetten und den Stoffwechsel zu regenerieren.">
+  <meta property="og:title" content="Leberfasten">
+  <meta property="og:description" content="Gezielte Ernährungsstrategie, um eine verfettete Leber in kurzer Zeit - meist 14 Tage - effektiv zu entfetten und den Stoffwechsel zu regenerieren.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1400&q=80">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -72,7 +77,7 @@
     .nav-icon { height: 46px; width: auto; flex-shrink: 0; align-self: center; }
     .nav-links {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
       gap: .4rem;
       flex: 1;
     }
@@ -253,7 +258,7 @@
     }
     @media (max-width: 640px) {
       nav { gap: .6rem; }
-      .nav-links { gap: .3rem; grid-template-columns: repeat(3, 1fr); }
+      .nav-links { gap: .3rem; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
       .nav-links a { font-size: .72rem; padding: .28rem .4rem; }
       .hero { min-height: 70vh; padding: 4rem 1.2rem; }
       .container { padding: 3.5rem 1.2rem; }
@@ -266,7 +271,7 @@
 <!-- NAV -->
 <nav>
   
-  <a href="https://flexgate.at" target="_blank" rel="noopener"><img class="nav-icon" src="assets/icon.png" alt="Icon"></a>
+  <a href="https://flexgate.at" target="_blank" rel="noopener"><img class="nav-icon" src="../assets/icon.png" alt="Icon"></a>
   
   <div class="nav-links">
     
@@ -307,24 +312,10 @@
 
 
 <div class="container fade-up" id="Leberfasten">
-  <img class="section-img" src="assets/Grundlagen.png" alt="Was ist Leberfasten?">
+  <img class="section-img" src="../assets/Grundlagen.png" alt="Was ist Leberfasten?">
   <span class="section-label">Kernkonzept und Ablauf</span>
   <h2>Was ist Leberfasten?</h2>
-  <p style="">Die Kur zielt darauf ab, die Insulinresistenz zu durchbrechen und das Organfett zu reduzieren.
-Dauer: In der Regel 14 Tage. Bei starker Verfettung kann die Phase auf bis zu vier Wochen ausgedehnt werden.
-Ernährung: Pro Tag werden etwa 800 bis 1000 Kilokalorien aufgenommen.
-Mahlzeiten: Meist besteht der Tag aus drei Mahlzeiten. Häufig werden zwei bis drei Mahlzeiten durch spezielle hochwertige Eiweißshakes (wie Hepafast®) ersetzt, die wichtige Ballaststoffe (z.B. Inulin) und leberaktive Stoffe enthalten.
-Ergänzung: Zusätzlich ist reichlich Gemüse (gedünstet oder als Rohkost/Salat) erlaubt, um die Sättigung zu fördern und Vitamine zu liefern.
-
-Lebensmittel-Leitfaden
-Während der Kur gelten klare Prioritäten für die Lebensmittelauswahl:
-Erlaubt/Förderlich:
-Gemüse: Brokkoli, Karotten, Spinat, Zucchini, Spargel, Tomaten.
-Getränke: Wasser, ungesüßter Tee, schwarzer Kaffee (in Maßen) und Zitronenwasser.
-Proteine: Mageres Fleisch (Huhn, Pute), Fisch (Kabeljau, Seelachs) und Eier.
-Zu vermeiden:
-Zucker & Fruktose: Besonders schädlich bei Fettleber; Obst sollte während der strikten Phase nur sehr begrenzt verzehrt werden.
-Einfache Kohlenhydrate: Weißmehlprodukte und stark verarbeitete Lebensmittel. </p>
+  <p style="">Die Kur zielt darauf ab, die Insulinresistenz zu durchbrechen und das Organfett zu reduzieren.<br>Dauer: In der Regel 14 Tage. Bei starker Verfettung kann die Phase auf bis zu vier Wochen ausgedehnt werden.<br>Ernährung: Pro Tag werden etwa 800 bis 1000 Kilokalorien aufgenommen.<br>Mahlzeiten: Meist besteht der Tag aus drei Mahlzeiten. Häufig werden zwei bis drei Mahlzeiten durch spezielle hochwertige Eiweißshakes (wie Hepafast®) ersetzt, die wichtige Ballaststoffe (z.B. Inulin) und leberaktive Stoffe enthalten.<br>Ergänzung: Zusätzlich ist reichlich Gemüse (gedünstet oder als Rohkost/Salat) erlaubt, um die Sättigung zu fördern und Vitamine zu liefern.<br><br>Lebensmittel-Leitfaden<br>Während der Kur gelten klare Prioritäten für die Lebensmittelauswahl:<br>Erlaubt/Förderlich:<br>Gemüse: Brokkoli, Karotten, Spinat, Zucchini, Spargel, Tomaten.<br>Getränke: Wasser, ungesüßter Tee, schwarzer Kaffee (in Maßen) und Zitronenwasser.<br>Proteine: Mageres Fleisch (Huhn, Pute), Fisch (Kabeljau, Seelachs) und Eier.<br>Zu vermeiden:<br>Zucker & Fruktose: Besonders schädlich bei Fettleber; Obst sollte während der strikten Phase nur sehr begrenzt verzehrt werden.<br>Einfache Kohlenhydrate: Weißmehlprodukte und stark verarbeitete Lebensmittel. </p>
 
   
   <div class="quote-block">
@@ -366,7 +357,7 @@ Einfache Kohlenhydrate: Weißmehlprodukte und stark verarbeitete Lebensmittel. <
 
 <hr class="divider">
 <div class="container fade-up" id="fasten">
-  <img class="section-img" src="assets/human.png" alt="Fasten im Überblick">
+  <img class="section-img" src="../assets/human.png" alt="Fasten im Überblick">
   <span class="section-label">Methoden</span>
   <h2>Fasten im Überblick</h2>
   <p style="">Fasten ist der bewusste, zeitlich begrenzte Verzicht auf Nahrung. Es ist eine der ältesten Gesundheitspraktiken der Menschheit und wird heute wissenschaftlich intensiv erforscht.</p>
@@ -412,7 +403,7 @@ Einfache Kohlenhydrate: Weißmehlprodukte und stark verarbeitete Lebensmittel. <
 
 <hr class="divider">
 <div class="container fade-up" id="verbindung">
-  <img class="section-img" src="assets/autophagy.png" alt="Wie Fasten die Autophagie aktiviert">
+  <img class="section-img" src="../assets/autophagy.png" alt="Wie Fasten die Autophagie aktiviert">
   <span class="section-label">Wissenschaft</span>
   <h2>Wie Fasten die Autophagie aktiviert</h2>
   <p style="">Wenn dem Körper über einen längeren Zeitraum keine Nahrung zugeführt wird, sinkt der <strong>Insulinspiegel</strong> und ein Enzym namens <strong>AMPK</strong> wird aktiviert. Gleichzeitig wird der Wachstumsfaktor <strong>mTOR</strong> gehemmt – ein zentraler Signalweg, der bei Nahrungsüberfluss die Autophagie unterdrückt.</p>
@@ -453,7 +444,7 @@ Einfache Kohlenhydrate: Weißmehlprodukte und stark verarbeitete Lebensmittel. <
 
 <hr class="divider">
 <div class="container fade-up" id="timeline">
-  <img class="section-img" src="assets/Zeitstrahl.png" alt="Was passiert beim Fasten?">
+  <img class="section-img" src="../assets/Zeitstrahl.png" alt="Was passiert beim Fasten?">
   <span class="section-label">Zeitverlauf</span>
   <h2>Was passiert beim Fasten?</h2>
   <p style="">Ein Überblick, was in deinem Körper passiert, wenn du aufhörst zu essen.</p>

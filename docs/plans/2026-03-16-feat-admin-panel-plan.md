@@ -94,9 +94,11 @@ Felder: slug, title, theme (Dropdown: dark/light/colorful),
 **Tasks:**
 
 Absätze (paragraphs):
-- [ ] Dynamische Liste von Textareas
-- [ ] [+ Absatz] Button fügt neues Textarea hinzu
-- [ ] [🗑] Button pro Absatz zum Löschen
+- [x] Dynamische Liste von Textareas
+- [x] [+ Absatz] Button fügt neues Textarea hinzu
+- [x] [🗑] Button pro Absatz zum Löschen
+- [x] Formatierungs-Toolbar pro Absatz (Fett, Kursiv, Link)
+- [x] Zeilenumbrüche werden automatisch zu `<br>` konvertiert
 
 Zitat (quote):
 - [ ] Zwei Inputs: `quote.text` (textarea) und `quote.cite` (input)

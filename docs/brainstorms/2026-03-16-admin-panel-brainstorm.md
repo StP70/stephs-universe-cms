@@ -68,8 +68,10 @@ Ein visuelles Admin-Panel (`admin.html`) für das Steph's Universe CMS, mit dem 
 │  │   Bild: [assets/Grundlagen.png]            │   │
 │  │                                             │   │
 │  │   Absätze:                    [+ Absatz]    │   │
-│  │   1. [Das Wort Autophagie...]    [🗑]      │   │
-│  │   2. [Dieser Mechanismus...]     [🗑]      │   │
+│  │   1. [F] [K] [🔗]  ← Toolbar              │   │
+│  │      [Das Wort Autophagie...]    [🗑]      │   │
+│  │   2. [F] [K] [🔗]                          │   │
+│  │      [Dieser Mechanismus...]     [🗑]      │   │
 │  │                                             │   │
 │  │   Zitat:                                    │   │
 │  │   Text: [Autophagie ist das...]             │   │

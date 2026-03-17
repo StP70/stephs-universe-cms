@@ -7,8 +7,11 @@ Ein einfaches, dateibasiertes CMS zum Erstellen von modernen Informationsseiten 
 
 ```
 experiment-011/
-├── template.html              # Design-Template (HTML + CSS + JS)
+├── admin.html                 # Visueller Editor (im Browser öffnen)
+├── render.js                  # Shared Template-Engine (Browser + Node)
 ├── build.js                   # Build-Script: liest JSON → generiert HTML
+├── sync-template.js             # Sync: template.html → admin.html
+├── template.html              # Design-Template (HTML + CSS + JS)
 ├── assets/                    # Gemeinsame Bilder & Icons
 │   ├── icon.png               # Nav-Icon (FLEXGATE, grün)
 │   ├── Grundlagen.png         # Zell-Illustration
@@ -17,9 +20,10 @@ experiment-011/
 │   └── Zeitstrahl.png         # Fasten-Zeitstrahl-Grafik
 ├── pages/                     # 1 JSON-Datei = 1 Seite
 │   ├── autophagie-fasten.json # Erste fertige Seite
-│   └── _example-neue-seite.json # Kopiervorlage für neue Seiten
+│   └── _example-neue-seite.json # Kopiervorlage (wird beim Build ignoriert)
 └── dist/                      # Output nach `node build.js`
     ├── index.html             # Übersicht aller Seiten
+    ├── assets/                # Bilder (einmalig kopiert)
     └── <slug>/index.html      # Einzelne Seiten
 ```
 
@@ -36,7 +40,7 @@ experiment-011/
 
 | Typ        | JSON-Key     | Beschreibung                              |
 |------------|--------------|-------------------------------------------|
-| Text       | `paragraphs` | Fließtext mit HTML-Formatierung           |
+| Text       | `paragraphs` | Fließtext mit Toolbar (Fett/Kursiv/Link), Zeilenumbrüche automatisch |
 | Cards      | `cards`      | Icon + Titel + Text Karten (Grid-Layout)  |
 | Timeline   | `timeline`   | Zeitstrahl mit Zeitpunkt + Beschreibung   |
 | Zitat      | `quote`      | Zitat-Block mit Quellenangabe             |
@@ -51,7 +55,7 @@ experiment-011/
 | `slug`        | URL-Pfad / Ordnername               |
 | `title`       | Browser-Tab-Titel                    |
 | `accentColor` | Hauptakzentfarbe (z.B. `#10b981`)    |
-| `accentLight` | Helle Akzentfarbe (z.B. `#6ee7b7`)  |
+| `accentLight` | Helle Akzentfarbe (auto-berechnet, überschreibbar) |
 | `iconUrl`     | Pfad zum Nav-Icon                    |
 | `iconLink`    | URL hinter dem Icon                  |
 | `iconSize`    | Höhe des Nav-Icons in px (Standard: 46) |
@@ -85,7 +89,7 @@ experiment-011/
 - **Akzentfarbe:** `#10b981` (Emerald Green)
 - **Schrift:** Inter (Google Fonts)
 - **Cards:** Dunkle Karten mit Hover-Glow
-- **Nav:** Glassmorphism + Pillen-Tags (3x2 Grid)
+- **Nav:** Glassmorphism + Pillen-Tags (auto-responsive Grid)
 - **Animationen:** Fade-up beim Scrollen
 - **Responsive:** Mobile-first, 2-Zeilen Nav
 
@@ -97,9 +101,9 @@ experiment-011/
 
 ## Ideen für die Zukunft
 
-- [ ] Admin-Panel (Browser-UI zum Bearbeiten der JSON-Dateien)
-- [ ] Live-Preview beim Bearbeiten
-- [ ] Farbschema pro Seite wählbar
-- [ ] Mehrsprachigkeit
-- [ ] Automatischer Bild-Upload
+- [x] Admin-Panel (Browser-UI zum Bearbeiten der JSON-Dateien)
+- [x] Live-Preview beim Bearbeiten
+- [x] Farbschema pro Seite wählbar (3 Themes: Dark/Light/Colorful)
+- [x] Mehrsprachigkeit (Sprach-Feld im Editor)
+- [x] Automatischer Bild-Upload (mit WebP-Komprimierung)
 - [ ] RSS-Feed Generierung
