@@ -37,15 +37,14 @@
     /* ---- TABS ---- */
     .tab-bar { display: flex; gap: 0; margin-bottom: 0; }
     .tab-btn {
-      flex: 1; padding: .7rem 2rem; font-size: .95rem; font-weight: 600;
-      background: transparent; border: none; color: var(--text-muted);
-      cursor: pointer; border-bottom: 2px solid transparent;
-      transition: color .15s, border-color .15s, background .15s;
+      flex: 1; padding: .6rem 1.5rem; font-size: .85rem; font-weight: 600;
+      background: transparent; border: none; border-bottom: 2px solid transparent;
+      color: var(--text-muted); cursor: pointer;
+      transition: color .15s, background .15s, border-color .15s;
       text-align: center;
     }
     .tab-btn:hover { color: var(--text); background: rgba(255,255,255,.03); }
-    .tab-btn:hover { color: var(--text); }
-    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-btn.active { color: #000; background: var(--accent); border-bottom-color: var(--accent); }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
@@ -417,9 +416,9 @@
         <div id="remixHeroList" style="background:var(--bg-input);border-radius:var(--radius-sm);padding:.5rem .75rem;margin-bottom:.75rem"></div>
         <!-- Sektionen mit Sub-Tabs -->
         <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem">Sektionen</div>
-        <div style="display:flex;gap:0;margin-bottom:.4rem">
-          <button onclick="switchRemixTab('version')" id="remixTabVersion" style="padding:.3rem .9rem;font-size:.75rem;font-weight:600;background:var(--accent);border:1px solid var(--accent);border-right:none;border-radius:6px 0 0 6px;color:#000;cursor:pointer">Nach Version</button>
-          <button onclick="switchRemixTab('section')" id="remixTabSection" style="padding:.3rem .9rem;font-size:.75rem;font-weight:600;background:transparent;border:1px solid var(--border);border-radius:0 6px 6px 0;color:var(--text-muted);cursor:pointer">Nach Sektion</button>
+        <div class="tab-bar" style="margin-bottom:.4rem;border-bottom:1px solid var(--border)">
+          <button class="tab-btn active" onclick="switchRemixTab('version')" id="remixTabVersion" style="flex:0;padding:.4rem 1.2rem;font-size:.78rem">Nach Version</button>
+          <button class="tab-btn" onclick="switchRemixTab('section')" id="remixTabSection" style="flex:0;padding:.4rem 1.2rem;font-size:.78rem">Nach Sektion</button>
         </div>
         <div id="remixSectionList" style="background:var(--bg-input);border-radius:var(--radius-sm);padding:.5rem .75rem;max-height:360px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.15) transparent"></div>
         <div id="remixSectionListByType" style="display:none;background:var(--bg-input);border-radius:var(--radius-sm);padding:.5rem .75rem;max-height:360px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.15) transparent"></div>
@@ -902,12 +901,10 @@
     var btnSection = document.getElementById('remixTabSection');
     if (tab === 'version') {
       byVersion.style.display = ''; byType.style.display = 'none';
-      btnVersion.style.background = 'var(--accent)'; btnVersion.style.color = '#000'; btnVersion.style.borderColor = 'var(--accent)';
-      btnSection.style.background = 'transparent'; btnSection.style.color = 'var(--text-muted)'; btnSection.style.borderColor = 'var(--border)';
+      btnVersion.classList.add('active'); btnSection.classList.remove('active');
     } else {
       byVersion.style.display = 'none'; byType.style.display = '';
-      btnSection.style.background = 'var(--accent)'; btnSection.style.color = '#000'; btnSection.style.borderColor = 'var(--accent)';
-      btnVersion.style.background = 'transparent'; btnVersion.style.color = 'var(--text-muted)'; btnVersion.style.borderColor = 'var(--border)';
+      btnSection.classList.add('active'); btnVersion.classList.remove('active');
     }
   }
 
