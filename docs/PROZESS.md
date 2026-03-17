@@ -70,7 +70,7 @@
 │  │  ├── Bild        (Datei-Upload oder URL)                     │   │
 │  │  ├── Absätze     (Toolbar: Fett/Kursiv/Link + Zeilenumbruch)│   │
 │  │  ├── Cards       (Icon + Titel + Text)                       │   │
-│  │  ├── Timeline    (Zeitpunkt + Beschreibung)                  │   │
+│  │  ├── Timeline    (Zeitpunkt + Titel + Beschreibung)          │   │
 │  │  ├── Videos      (URL + Thumbnail + Titel + Badge)           │   │
 │  │  ├── Zitat       (Text + Quelle)                             │   │
 │  │  └── Warnung     (Titel + Text)                              │   │
@@ -483,7 +483,7 @@ experiment-011/
              image: "assets/Grundlagen.png",
              paragraphs: ["Text...", "Text..."],
              cards: [{icon, title, text}, ...],
-             timeline: [{time, text}, ...],
+             timeline: [{time, title, text}, ...],
              videos: [{url, thumbnail, title, description, badge, badgeType}, ...],
              quote: {text, cite} | null,
              warning: {title, text} | null
@@ -533,7 +533,7 @@ experiment-011/
  [+ Karte]                 →  addCard(idx)            →  cards.push({icon,title,text})
                               renderSections()
 
- [+ Zeitpunkt]             →  addTimelineItem(idx)    →  timeline.push({time,text})
+ [+ Zeitpunkt]             →  addTimelineItem(idx)    →  timeline.push({time,title,text})
                               renderSections()
 
  [+ Video]                 →  addVideo(idx)           →  videos.push({url,...})

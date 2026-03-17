@@ -42,7 +42,7 @@ experiment-011/
 |------------|--------------|-------------------------------------------|
 | Text       | `paragraphs` | Fließtext mit Toolbar (Fett/Kursiv/Link), Zeilenumbrüche automatisch |
 | Cards      | `cards`      | Icon + Titel + Text Karten (Grid-Layout)  |
-| Timeline   | `timeline`   | Zeitstrahl mit Zeitpunkt + Beschreibung   |
+| Timeline   | `timeline`   | Zeitstrahl mit Zeitpunkt + Titel + Beschreibung |
 | Zitat      | `quote`      | Zitat-Block mit Quellenangabe             |
 | Videos     | `videos`     | Video-Karten mit Thumbnail + Play-Button  |
 | Warnung    | `warning`    | Gelber Hinweis-Block                      |
@@ -78,7 +78,7 @@ experiment-011/
 | `image`      | Nein    | Pfad zum Sektionsbild            |
 | `paragraphs` | Nein    | Array von Textabsätzen           |
 | `cards`      | Nein    | Array: `{icon, title, text}`     |
-| `timeline`   | Nein    | Array: `{time, text}`            |
+| `timeline`   | Nein    | Array: `{time, title, text}`     |
 | `quote`      | Nein    | Objekt: `{text, cite}`           |
 | `videos`     | Nein    | Array: `{url, thumbnail, title, description, badge, badgeType}` |
 | `warning`    | Nein    | Objekt: `{title, text}`          |

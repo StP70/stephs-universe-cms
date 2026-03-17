@@ -123,8 +123,9 @@ Jede Sektion kann diese Inhaltsblöcke haben (alle optional):
 
 1. Klicke **[+ Zeitpunkt]**
 2. Fülle aus:
-   - **Zeitpunkt:** z.B. `0–4 h`, `12–18 h`
-   - **Beschreibung:** Was passiert zu diesem Zeitpunkt
+   - **Zeitpunkt:** Nur Zeitangaben, z.B. `Stunde 1-4`, `Tag 1-2`, `Woche 1-2`
+   - **Titel:** Überschrift für diesen Zeitpunkt
+   - **Beschreibung:** Detailtext darunter
 3. Weitere Einträge mit **[+ Zeitpunkt]**
 
 ### Videos
