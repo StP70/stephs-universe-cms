@@ -673,13 +673,13 @@
         }
         loaded++;
         if (loaded === files.length) {
-          // Reihenfolge beibehalten, leere Slots entfernen
-          fileList.forEach(function(item) {
-            if (item) {
-              window._generatedVariants.push(item.data);
-              window._variantFilenames.push(item.name);
-              window._variantTimestamps.push(item.modified);
-            }
+          // Nach Timestamp sortieren: älteste zuerst (V1 = älteste)
+          var sorted = fileList.filter(function(item) { return !!item; });
+          sorted.sort(function(a, b) { return (a.modified || 0) - (b.modified || 0); });
+          sorted.forEach(function(item) {
+            window._generatedVariants.push(item.data);
+            window._variantFilenames.push(item.name);
+            window._variantTimestamps.push(item.modified);
           });
           status.textContent = window._generatedVariants.length + ' Variante(n) aus Archiv geladen.';
           renderVariantTable();
