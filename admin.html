@@ -796,12 +796,12 @@
     variants.forEach(function(v, i) {
       var color = v.accentColor || '#10b981';
       var subtitle = (v.heroSubtitle || '').replace(/<[^>]*>/g, '');
-      if (subtitle.length > 60) subtitle = subtitle.substring(0, 57) + '...';
+      if (subtitle.length > 250) subtitle = subtitle.substring(0, 247) + '...';
       heroHtml += '<tr style="border-bottom:1px solid rgba(255,255,255,.04)">' +
         '<td style="padding:.35rem .4rem"><input type="radio" name="remixHero" value="' + i + '"' + (i === 0 ? ' checked' : '') + ' onchange="updateRemixTokenEstimate()"></td>' +
         '<td style="padding:.35rem .4rem"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + color + ';margin-right:.3rem;vertical-align:middle"></span>V' + (i+1) + '</td>' +
         '<td style="padding:.35rem .4rem;color:var(--text-muted)">' + (v.theme || '?') + '</td>' +
-        '<td style="padding:.35rem .4rem;font-weight:600">' + esc((v.heroTitle || '').replace(/<[^>]*>/g, '').substring(0, 40)) + '</td>' +
+        '<td style="padding:.35rem .4rem;font-weight:600">' + esc((v.heroTitle || '').replace(/<[^>]*>/g, '')) + '</td>' +
         '<td style="padding:.35rem .4rem;color:var(--text-muted);font-size:.78rem">' + esc(subtitle) + '</td>' +
         '</tr>';
     });
