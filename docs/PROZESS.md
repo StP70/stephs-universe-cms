@@ -677,35 +677,37 @@ experiment-011/
          ▼
  generatePreview()
          │
-         ├── 1. fetch('template.html')        ← Template vom gleichen Ordner laden
-         │      .then(r => r.text())
+         ├── 1. window.open('about:blank')     ← SOFORT (synchron!)
+         │      Popup-Blocker-sicher, weil im
+         │      User-Gesture-Kontext. Zeigt
+         │      "Vorschau wird geladen..."
          │
-         ├── 2. Kopie der Daten erstellen
+         ├── 2. Relative Bilder cachen
+         │      Nur lokale Pfade (assets/...),
+         │      NICHT data: oder https: URLs
+         │      (isRelativePath-Filter)
+         │
+         ├── 3. Kopie der Daten erstellen
          │      (gleiche Bereinigung wie beim Export)
          │
-         ├── 3. Template laden:
+         ├── 4. Template laden:
          │      │  try fetch('template.html')    ← Live-Version
          │      │  catch → TEMPLATE_HTML         ← Embedded Fallback
-         │      │
-         ├── 4. CMS.render(templateHtml, cleanData)
+         │
+         ├── 5. CMS.render(templateHtml, cleanData)
          │      │
          │      └── Shared render() aus render.js
          │          (gleiche Datei wie build.js nutzt)
-         │          │
-         │          ├── {{{key}}} Raw-HTML
-         │          ├── {{key}} Values
-         │          ├── {{#if}} Conditionals
-         │          ├── {{#each sections}} Content-Loop
-         │          │   └── Verschachtelte Loops
-         │          └── {{#each sections}} Nav-Loop
          │
-         ├── 5. Blob('text/html') erstellen
+         ├── 6. Asset-Pfade absolut machen
+         │      assets/X → file:///...../assets/X
+         │      (kein <base> Tag – bricht Anker-Links)
          │
-         └── 6. window.open(URL.createObjectURL(blob))
-                         │
-                         ▼
-                  Neuer Browser-Tab mit fertigem HTML
-                  (identisch zum Build-Output)
+         ├── 7. previewWin.document.write(html)
+         │      Fenster mit fertigem HTML befüllen
+         │
+         └── catch: Fehler im Preview-Fenster anzeigen
+                    (statt lautlos zu scheitern)
 ```
 
 ---
