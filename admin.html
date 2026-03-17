@@ -285,6 +285,16 @@
         <textarea id="genDescription" rows="4" placeholder="z.B. Zahnarztpraxis in Wien, modern, vertrauenswürdig. Services: Implantate, Prophylaxe, Bleaching. Zielgruppe: Familien."></textarea>
       </div>
       <div class="field-row">
+        <div class="field" style="flex:2">
+          <label>Referenz-Homepage (optional)</label>
+          <input type="url" id="genRefUrl" placeholder="https://beispiel-website.com">
+        </div>
+        <div class="field" style="flex:3">
+          <label>Was gefällt dir an der Referenz?</label>
+          <input type="text" id="genRefNotes" placeholder="z.B. 5 Sektionen, großer Hero, Cards für Services, FAQ-Bereich">
+        </div>
+      </div>
+      <div class="field-row">
         <div class="field">
           <label>Modus</label>
           <select id="genMode">
@@ -401,6 +411,7 @@
 
   // ---- Multi-Varianten-Prompt bauen ----
   function buildMultiPrompt(description, indices) {
+    var refBlock = getRefBlock();
     var variantDesc = indices.map(function(idx, i) {
       var v = GEN_VARIANTS[idx % GEN_VARIANTS.length];
       return 'Variante ' + (i + 1) + ': Theme "' + v.theme + '", Schreibstil ' + v.tone +
@@ -432,7 +443,22 @@
       '"timeline":[{"time":"Stunde 1-4","title":"Titel","text":"Beschreibung"}],"quote":{"text":"Zitat","cite":"Quelle"},' +
       '"warning":{"title":"Hinweis:","text":"Text"}}]}\n\n' +
       'Nur Blöcke einfügen die Sinn ergeben. Leere Arrays weglassen.\n\n' +
+      refBlock +
       'HOMEPAGE-BESCHREIBUNG:\n' + description;
+  }
+
+  // ---- Referenz-Block für Prompt bauen ----
+  function getRefBlock() {
+    var url = (document.getElementById('genRefUrl') || {}).value || '';
+    var notes = (document.getElementById('genRefNotes') || {}).value || '';
+    if (!url && !notes) return '';
+    var block = 'REFERENZ-HOMEPAGE (HÖCHSTE PRIORITÄT):\n';
+    block += 'Analysiere diese Website und baue die Struktur möglichst genau nach.\n';
+    block += 'Gleiche Anzahl Sektionen, gleiche Sektionstypen, ähnlicher Aufbau.\n';
+    if (url) block += 'URL: ' + url + '\n';
+    if (notes) block += 'Was übernehmen: ' + notes + '\n';
+    block += '\n';
+    return block;
   }
 
   // ---- Prompt kopieren (Manueller Modus) ----

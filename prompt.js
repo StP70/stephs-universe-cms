@@ -20,8 +20,19 @@ const THEME_COLORS = {
 };
 
 // ---- Prompt-Builder ----
-function buildPrompt(description, variantIndex) {
+function buildPrompt(description, variantIndex, options) {
   const variant = VARIANT_MATRIX[variantIndex % VARIANT_MATRIX.length];
+  const refUrl = (options && options.refUrl) || '';
+  const refNotes = (options && options.refNotes) || '';
+
+  let refBlock = '';
+  if (refUrl || refNotes) {
+    refBlock = '\nREFERENZ-HOMEPAGE (HÖCHSTE PRIORITÄT):\n' +
+      'Analysiere diese Website und baue die Struktur möglichst genau nach.\n' +
+      'Gleiche Anzahl Sektionen, gleiche Sektionstypen, ähnlicher Aufbau.\n' +
+      (refUrl ? 'URL: ' + refUrl + '\n' : '') +
+      (refNotes ? 'Was übernehmen: ' + refNotes + '\n' : '');
+  }
 
   return {
     system: `Du bist ein Webdesign-Content-Generator. Du erstellst vollständige JSON-Dateien für ein CMS.
@@ -72,7 +83,7 @@ JSON-SCHEMA:
 
 Nur Blöcke einfügen die Sinn ergeben. Leere Arrays/Objekte weglassen.`,
 
-    user: `Erstelle eine komplette Homepage für:\n\n${description}\n\nTheme: ${variant.theme}\nAkzentfarbe: ${THEME_COLORS[variant.theme] || '#10b981'}`
+    user: `Erstelle eine komplette Homepage für:\n\n${description}\n\nTheme: ${variant.theme}\nAkzentfarbe: ${THEME_COLORS[variant.theme] || '#10b981'}${refBlock}`
   };
 }
 
