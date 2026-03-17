@@ -369,6 +369,7 @@
       '- Erstelle 4-6 Sektionen.\n' +
       '- Sprache: Erkenne die Sprache der Beschreibung.\n' +
       '- Card-Icons: Passende Emojis.\n' +
+      '- Timeline: time-Feld NUR Zeitangaben (Stunde X, Tag X, Woche X). Titel ins title-Feld.\n' +
       '- section.id: Nur lowercase a-z, 0-9, Bindestrich.\n' +
       '- heroTitle darf <br> enthalten, paragraphs dürfen <strong>, <em>, <a> enthalten.\n' +
       '- heroBg: Leer lassen. Keine Videos.\n' +
@@ -379,7 +380,7 @@
       '"ctaText":"Button","footerText":"&copy; 2026",' +
       '"sections":[{"id":"id","navLabel":"Nav","label":"LABEL","title":"Titel",' +
       '"paragraphs":["Text"],"cards":[{"icon":"emoji","title":"T","text":"T"}],' +
-      '"timeline":[{"time":"Zeit","text":"Text"}],"quote":{"text":"Zitat","cite":"Quelle"},' +
+      '"timeline":[{"time":"Stunde 1-4","title":"Titel","text":"Beschreibung"}],"quote":{"text":"Zitat","cite":"Quelle"},' +
       '"warning":{"title":"Hinweis:","text":"Text"}}]}\n\n' +
       'Nur Blöcke einfügen die Sinn ergeben. Leere Arrays weglassen.\n\n' +
       'HOMEPAGE-BESCHREIBUNG:\n' + description;
@@ -1016,7 +1017,7 @@ function updateCard(sIdx, cIdx, field, value) {
 // ---- Timeline ----
 function addTimelineItem(idx) {
   if (!pageData.sections[idx].timeline) pageData.sections[idx].timeline = [];
-  pageData.sections[idx].timeline.push({ time: '', text: '' });
+  pageData.sections[idx].timeline.push({ time: '', title: '', text: '' });
   renderSectionBody(idx);
 }
 function removeTimelineItem(sIdx, tIdx) {
@@ -1358,9 +1359,10 @@ function renderSectionBody(idx) {
       <div class="list-item">
         <div class="list-fields">
           <div class="list-fields-row">
-            <input type="text" value="${esc(t.time)}" placeholder="Zeitpunkt" style="max-width:100px" oninput="updateTimelineItem(${idx},${ti},'time',this.value)">
-            <input type="text" value="${esc(t.text)}" placeholder="Beschreibung" oninput="updateTimelineItem(${idx},${ti},'text',this.value)">
+            <input type="text" value="${esc(t.time)}" placeholder="z.B. Stunde 1-4" style="max-width:120px" oninput="updateTimelineItem(${idx},${ti},'time',this.value)">
+            <input type="text" value="${esc(t.title || '')}" placeholder="Titel" oninput="updateTimelineItem(${idx},${ti},'title',this.value)">
           </div>
+          <textarea rows="2" placeholder="Beschreibung" oninput="updateTimelineItem(${idx},${ti},'text',this.value)">${esc(t.text)}</textarea>
         </div>
         <button class="btn btn-icon btn-sm btn-danger" onclick="removeTimelineItem(${idx},${ti})">&#128465;</button>
       </div>
@@ -1792,6 +1794,7 @@ background: var(--card-bg); border: 1px solid var(--border);
 border-radius: var(--radius); align-items: start;
 }
 .tl-time { font-weight: 700; font-size: .95rem; color: var(--accent); padding-top: .1rem; white-space: nowrap; }
+.tl-title { font-weight: 600; font-size: 1rem; color: var(--text); margin-bottom: .3rem; }
 .tl-text { font-size: .95rem; color: var(--text-muted); text-align: justify; }
 .hinweis {
 background: rgba(251,191,36,.06); border: 1px solid rgba(251,191,36,.2);
@@ -1910,7 +1913,7 @@ nav { gap: .6rem; }
 {{#each this.timeline}}
 <div class="tl-item">
 <div class="tl-time">{{this.time}}</div>
-<div class="tl-text">{{this.text}}</div>
+<div><div class="tl-title">{{this.title}}</div><div class="tl-text">{{this.text}}</div></div>
 </div>
 {{/each}}
 </div>

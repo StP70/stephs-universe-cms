@@ -35,6 +35,7 @@ REGELN:
 - Sektions-Fokus: Nutze bevorzugt ${variant.focus}
 - Sprache: Erkenne die Sprache der Beschreibung und schreibe in dieser Sprache.
 - Card-Icons: Verwende passende Emojis (z.B. 🔬 💪 ⏰ 📋).
+- Timeline: time-Feld NUR Zeitangaben wie "Stunde 1-4", "Tag 1-2", "Woche 1-2". Der Titel kommt ins title-Feld.
 - section.id: Nur lowercase a-z, 0-9, Bindestrich. Keine Leerzeichen.
 - heroTitle: Darf <br> für Zeilenumbruch enthalten.
 - paragraphs: Dürfen <strong>, <em>, <a href="..."> enthalten.
@@ -62,7 +63,7 @@ JSON-SCHEMA:
       "title": "Sektions-Titel",
       "paragraphs": ["Text..."],
       "cards": [{"icon": "emoji", "title": "Titel", "text": "Text"}],
-      "timeline": [{"time": "Zeitpunkt", "text": "Beschreibung"}],
+      "timeline": [{"time": "Stunde 1-4", "title": "Titel", "text": "Beschreibung"}],
       "quote": {"text": "Zitat", "cite": "Quelle"},
       "warning": {"title": "Hinweis:", "text": "Warnungstext"}
     }
@@ -110,9 +111,10 @@ const JSON_SCHEMA = {
           timeline: { type: 'array', items: {
             type: 'object',
             properties: {
-              time: { type: 'string' },
-              text: { type: 'string' }
-            }, required: ['time', 'text']
+              time: { type: 'string', description: 'Nur Zeitangaben: Stunde X, Tag X, Woche X' },
+              title: { type: 'string', description: 'Überschrift des Zeitpunkts' },
+              text: { type: 'string', description: 'Beschreibungstext' }
+            }, required: ['time', 'title', 'text']
           }},
           quote: { type: 'object', properties: {
             text: { type: 'string' },

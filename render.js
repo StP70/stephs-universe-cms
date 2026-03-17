@@ -135,8 +135,9 @@
           if (!tlMatch) return content;
           const tlHtml = section.timeline.map(item => {
             return tlMatch[1]
-              .replace(/\{\{this\.time\}\}/g, item.time)
-              .replace(/\{\{this\.text\}\}/g, item.text);
+              .replace(/\{\{this\.time\}\}/g, item.time || '')
+              .replace(/\{\{this\.title\}\}/g, item.title || '')
+              .replace(/\{\{this\.text\}\}/g, item.text || '');
           }).join('\n');
           return content.replace(tlMatch[0], tlHtml);
         });
