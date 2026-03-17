@@ -818,21 +818,26 @@
         else if (s.timeline && s.timeline.length) preview = s.timeline.map(function(t) { return t.time + ': ' + (t.title || ''); }).join(', ');
         else if (s.quote) preview = '\u201E' + (s.quote.text || '').substring(0, 60) + '\u201C';
         if (preview.length > 80) preview = preview.substring(0, 77) + '...';
-        allSections.push({ vi: vi, si: si, s: s, vTitle: v.title || '?', type: getSectionType(s), preview: preview });
+        var ts = (window._variantTimestamps || [])[vi];
+        var tsStr = ts ? new Date(ts).toLocaleString('de-AT', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '';
+        allSections.push({ vi: vi, si: si, s: s, vTitle: v.title || '?', type: getSectionType(s), preview: preview, timestamp: tsStr });
       });
     });
 
     var _thS = 'text-align:left;padding:.25rem .4rem;font-size:.68rem;color:var(--text-muted);font-weight:500';
     var _cbTd = '<td style="padding:.3rem .4rem;width:24px">';
-    // Tab 1 (Nach Version): Version | Sektion | Typ | Vorschau
-    var _headerByVersion = '<tr style="border-bottom:1px solid var(--border)"><th style="' + _thS + ';width:24px"></th><th style="' + _thS + '">Version</th><th style="' + _thS + '">Sektion</th><th style="' + _thS + '">Typ</th><th style="' + _thS + '">Vorschau</th></tr>';
-    // Tab 2 (Nach Sektion): Sektion | Version | Typ | Vorschau
-    var _headerBySection = '<tr style="border-bottom:1px solid var(--border)"><th style="' + _thS + ';width:24px"></th><th style="' + _thS + '">Sektion</th><th style="' + _thS + '">Version</th><th style="' + _thS + '">Typ</th><th style="' + _thS + '">Vorschau</th></tr>';
+    var _tsTd = 'padding:.3rem .4rem;color:var(--text-muted);font-size:.72rem;white-space:nowrap';
+    var _cbHtml = function(item) { return _cbTd + '<input type="checkbox" class="remixSectionCb" data-vi="' + item.vi + '" data-si="' + item.si + '" onchange="syncRemixCheckboxes(this);updateRemixTokenEstimate()"></td>'; };
+    // Tab 1 (Nach Version): Version | Gespeichert | Sektion | Typ | Vorschau
+    var _headerByVersion = '<tr style="border-bottom:1px solid var(--border)"><th style="' + _thS + ';width:24px"></th><th style="' + _thS + '">Version</th><th style="' + _thS + '">Gespeichert</th><th style="' + _thS + '">Sektion</th><th style="' + _thS + '">Typ</th><th style="' + _thS + '">Vorschau</th></tr>';
+    // Tab 2 (Nach Sektion): Sektion | Version | Gespeichert | Typ | Vorschau
+    var _headerBySection = '<tr style="border-bottom:1px solid var(--border)"><th style="' + _thS + ';width:24px"></th><th style="' + _thS + '">Sektion</th><th style="' + _thS + '">Version</th><th style="' + _thS + '">Gespeichert</th><th style="' + _thS + '">Typ</th><th style="' + _thS + '">Vorschau</th></tr>';
 
     function buildRowByVersion(item) {
       return '<tr style="border-bottom:1px solid rgba(255,255,255,.04)">' +
-        _cbTd + '<input type="checkbox" class="remixSectionCb" data-vi="' + item.vi + '" data-si="' + item.si + '" onchange="syncRemixCheckboxes(this);updateRemixTokenEstimate()"></td>' +
+        _cbHtml(item) +
         '<td style="padding:.3rem .4rem;color:var(--text-muted);font-size:.7rem;white-space:nowrap">V' + (item.vi+1) + '</td>' +
+        '<td style="' + _tsTd + '">' + item.timestamp + '</td>' +
         '<td style="padding:.3rem .4rem;white-space:nowrap;font-weight:600">' + esc(item.s.navLabel || item.s.title || 'Unbenannt') + '</td>' +
         '<td style="padding:.3rem .4rem;color:var(--accent);font-size:.7rem;white-space:nowrap">' + item.type + '</td>' +
         '<td style="padding:.3rem .4rem;color:var(--text-muted);font-size:.78rem">' + esc(item.preview) + '</td>' +
@@ -841,9 +846,10 @@
 
     function buildRowBySection(item) {
       return '<tr style="border-bottom:1px solid rgba(255,255,255,.04)">' +
-        _cbTd + '<input type="checkbox" class="remixSectionCb" data-vi="' + item.vi + '" data-si="' + item.si + '" onchange="syncRemixCheckboxes(this);updateRemixTokenEstimate()"></td>' +
+        _cbHtml(item) +
         '<td style="padding:.3rem .4rem;white-space:nowrap;font-weight:600">' + esc(item.s.navLabel || item.s.title || 'Unbenannt') + '</td>' +
         '<td style="padding:.3rem .4rem;color:var(--text-muted);font-size:.7rem;white-space:nowrap">V' + (item.vi+1) + '</td>' +
+        '<td style="' + _tsTd + '">' + item.timestamp + '</td>' +
         '<td style="padding:.3rem .4rem;color:var(--accent);font-size:.7rem;white-space:nowrap">' + item.type + '</td>' +
         '<td style="padding:.3rem .4rem;color:var(--text-muted);font-size:.78rem">' + esc(item.preview) + '</td>' +
         '</tr>';
