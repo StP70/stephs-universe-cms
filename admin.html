@@ -286,6 +286,13 @@
       </div>
       <div class="field-row">
         <div class="field">
+          <label>Modus</label>
+          <select id="genMode">
+            <option value="manual">Manuell (Prompt kopieren → claude.ai)</option>
+            <option value="api">Automatisch (API-Key nötig)</option>
+          </select>
+        </div>
+        <div class="field" id="genProviderField" style="display:none">
           <label>Provider</label>
           <select id="genProvider">
             <option value="claude">Claude</option>
@@ -293,21 +300,30 @@
           </select>
         </div>
         <div class="field">
-          <label>Varianten</label>
-          <select id="genVariants">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3" selected>3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+          <label>Variante</label>
+          <select id="genVariantIdx">
+            <option value="0">V1: Dark / Seriös</option>
+            <option value="1">V2: Light / Locker</option>
+            <option value="2">V3: Colorful / Emotional</option>
+            <option value="3">V4: Dark / Technisch</option>
+            <option value="4">V5: Light / Kreativ</option>
           </select>
         </div>
-        <div class="field" style="display:flex;align-items:flex-end">
-          <button class="btn" id="genButton" onclick="startGeneration()" style="background:var(--accent);color:#000;font-weight:600;white-space:nowrap">Generieren</button>
-        </div>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-top:.5rem">
+        <button class="btn" id="genButton" onclick="startGeneration()" style="background:var(--accent);color:#000;font-weight:600;white-space:nowrap">Generieren</button>
+        <button class="btn btn-sm" id="genCopyBtn" onclick="copyPrompt()" style="white-space:nowrap">Prompt kopieren</button>
       </div>
       <div id="genStatus" style="margin-top:.5rem;font-size:.85rem;color:var(--text-muted)"></div>
       <div id="genResults" style="margin-top:.5rem;display:flex;flex-wrap:wrap;gap:.4rem"></div>
+      <!-- Manueller Modus: JSON einfügen -->
+      <div id="genManualPaste" style="display:none;margin-top:.75rem">
+        <div class="field">
+          <label>JSON-Antwort von claude.ai hier einfügen</label>
+          <textarea id="genPasteArea" rows="6" placeholder='{"slug":"...","title":"...","sections":[...]}'></textarea>
+        </div>
+        <button class="btn btn-sm" onclick="loadPastedJSON()" style="margin-top:.3rem">In Editor laden</button>
+      </div>
     </div>
   </div>
   <script>
@@ -322,52 +338,133 @@
     }
   });
 
-  async function startGeneration() {
-    const desc = document.getElementById('genDescription').value.trim();
+  // Modus-Toggle: manuell zeigt Paste-Bereich, API zeigt Provider
+  document.getElementById('genMode').addEventListener('change', function() {
+    var isApi = this.value === 'api';
+    document.getElementById('genProviderField').style.display = isApi ? '' : 'none';
+    document.getElementById('genButton').style.display = isApi ? '' : 'none';
+    document.getElementById('genCopyBtn').style.display = isApi ? 'none' : '';
+    document.getElementById('genManualPaste').style.display = isApi ? 'none' : 'none';
+  });
+
+  // ---- Varianten-Definitionen (muss mit prompt.js VARIANT_MATRIX übereinstimmen) ----
+  var GEN_VARIANTS = [
+    { theme: 'dark', tone: 'seriös und professionell', focus: 'Cards + Timeline' },
+    { theme: 'light', tone: 'locker und freundlich', focus: 'Text-Absätze + Zitate' },
+    { theme: 'colorful', tone: 'emotional und einladend', focus: 'Cards + Hinweise' },
+    { theme: 'dark', tone: 'technisch und detailliert', focus: 'Timeline + Text-Absätze' },
+    { theme: 'light', tone: 'kreativ und verspielt', focus: 'Cards + Zitate' },
+  ];
+  var GEN_COLORS = { dark: '#10b981', light: '#0d9488', colorful: '#8b5cf6' };
+
+  // ---- Prompt bauen (gleiche Logik wie prompt.js) ----
+  function buildBrowserPrompt(description, variantIndex) {
+    var v = GEN_VARIANTS[variantIndex % GEN_VARIANTS.length];
+    return 'Du bist ein Webdesign-Content-Generator. Erstelle eine komplette Homepage als JSON.\n\n' +
+      'REGELN:\n' +
+      '- Antworte NUR mit validem JSON. Kein Markdown, keine Erklärungen, keine Code-Fences.\n' +
+      '- Theme: "' + v.theme + '"\n' +
+      '- Schreibstil: ' + v.tone + '\n' +
+      '- Sektions-Fokus: ' + v.focus + '\n' +
+      '- Erstelle 4-6 Sektionen.\n' +
+      '- Sprache: Erkenne die Sprache der Beschreibung.\n' +
+      '- Card-Icons: Passende Emojis.\n' +
+      '- section.id: Nur lowercase a-z, 0-9, Bindestrich.\n' +
+      '- heroTitle darf <br> enthalten, paragraphs dürfen <strong>, <em>, <a> enthalten.\n' +
+      '- heroBg: Leer lassen. Keine Videos.\n' +
+      '- footerText: HTML mit &copy; 2026\n\n' +
+      'JSON-SCHEMA:\n' +
+      '{"slug":"url-pfad","title":"Seitentitel","accentColor":"' + (GEN_COLORS[v.theme] || '#10b981') + '","theme":"' + v.theme + '",' +
+      '"heroBg":"","heroBadge":"Badge","heroTitle":"Titel","heroSubtitle":"Beschreibung",' +
+      '"ctaText":"Button","footerText":"&copy; 2026",' +
+      '"sections":[{"id":"id","navLabel":"Nav","label":"LABEL","title":"Titel",' +
+      '"paragraphs":["Text"],"cards":[{"icon":"emoji","title":"T","text":"T"}],' +
+      '"timeline":[{"time":"Zeit","text":"Text"}],"quote":{"text":"Zitat","cite":"Quelle"},' +
+      '"warning":{"title":"Hinweis:","text":"Text"}}]}\n\n' +
+      'Nur Blöcke einfügen die Sinn ergeben. Leere Arrays weglassen.\n\n' +
+      'HOMEPAGE-BESCHREIBUNG:\n' + description;
+  }
+
+  // ---- Prompt kopieren (Manueller Modus) ----
+  function copyPrompt() {
+    var desc = document.getElementById('genDescription').value.trim();
     if (!desc) { alert('Bitte Beschreibung eingeben.'); return; }
-    const provider = document.getElementById('genProvider').value;
-    const count = parseInt(document.getElementById('genVariants').value);
-    const btn = document.getElementById('genButton');
-    const status = document.getElementById('genStatus');
-    const results = document.getElementById('genResults');
+    var idx = parseInt(document.getElementById('genVariantIdx').value);
+    var prompt = buildBrowserPrompt(desc, idx);
+    navigator.clipboard.writeText(prompt).then(function() {
+      document.getElementById('genStatus').textContent = 'Prompt kopiert! Füge ihn in claude.ai ein und kopiere die JSON-Antwort zurück.';
+      document.getElementById('genManualPaste').style.display = 'block';
+    }).catch(function() {
+      // Fallback: Prompt in Textarea anzeigen
+      document.getElementById('genPasteArea').value = prompt;
+      document.getElementById('genManualPaste').style.display = 'block';
+      document.getElementById('genStatus').textContent = 'Kopieren fehlgeschlagen. Prompt wird unten angezeigt -- manuell kopieren.';
+    });
+  }
+
+  // ---- JSON aus claude.ai einfügen ----
+  function loadPastedJSON() {
+    var raw = document.getElementById('genPasteArea').value.trim();
+    if (!raw) { alert('Bitte JSON einfügen.'); return; }
+    // Markdown-Fences entfernen
+    if (raw.startsWith('```')) {
+      raw = raw.replace(/^```(?:json)?\s*\n?/, '').replace(/\n?```\s*$/, '');
+    }
+    try {
+      var data = JSON.parse(raw);
+      if (!data.slug && !data.title) throw new Error('slug oder title fehlt');
+      // Als Variante speichern und laden
+      window._generatedVariants = [data];
+      loadGeneratedVariant(0);
+      document.getElementById('genStatus').textContent = 'JSON geladen! Seite im Editor bereit.';
+      document.getElementById('genPasteArea').value = '';
+    } catch(err) {
+      alert('Ungültiges JSON: ' + err.message);
+    }
+  }
+
+  // ---- API-Modus: Automatisch generieren ----
+  async function startGeneration() {
+    if (document.getElementById('genMode').value === 'manual') {
+      copyPrompt();
+      return;
+    }
+    var desc = document.getElementById('genDescription').value.trim();
+    if (!desc) { alert('Bitte Beschreibung eingeben.'); return; }
+    var provider = document.getElementById('genProvider').value;
+    var idx = parseInt(document.getElementById('genVariantIdx').value);
+    var btn = document.getElementById('genButton');
+    var status = document.getElementById('genStatus');
+    var results = document.getElementById('genResults');
 
     btn.disabled = true;
     btn.textContent = 'Generiert...';
     results.innerHTML = '';
     window._generatedVariants = [];
 
-    for (let i = 0; i < count; i++) {
-      status.textContent = 'Variante ' + (i + 1) + '/' + count + ' wird generiert...';
-      try {
-        const res = await fetch('/api/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ provider: provider, description: desc, variantIndex: i })
-        });
-        if (!res.ok) {
-          const err = await res.json().catch(function() { return {}; });
-          throw new Error(err.error || 'HTTP ' + res.status);
-        }
-        const json = await res.json();
-        window._generatedVariants.push(json);
-      } catch(err) {
-        status.textContent = 'Fehler bei Variante ' + (i + 1) + ': ' + err.message;
-        btn.disabled = false;
-        btn.textContent = 'Generieren';
-        return;
+    status.textContent = 'Wird generiert (' + GEN_VARIANTS[idx].theme + '/' + GEN_VARIANTS[idx].tone.split(' ')[0] + ')...';
+    try {
+      var res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ provider: provider, description: desc, variantIndex: idx })
+      });
+      if (!res.ok) {
+        var err = await res.json().catch(function() { return {}; });
+        throw new Error(err.error || 'HTTP ' + res.status);
       }
+      var json = await res.json();
+      window._generatedVariants.push(json);
+      status.textContent = 'Generiert!';
+      results.innerHTML = '<button class="btn btn-sm" onclick="loadGeneratedVariant(0)" style="margin:0">' +
+        (json.theme || '?') + ' / ' + esc(json.title || 'Untitled') +
+        '</button>' +
+        '<button class="btn btn-sm btn-icon" onclick="downloadGeneratedVariant(0)" style="margin:0" title="JSON herunterladen">&#128190;</button>';
+    } catch(err) {
+      status.textContent = 'Fehler: ' + err.message;
     }
-
-    status.textContent = window._generatedVariants.length + ' Variante(n) generiert.';
     btn.disabled = false;
     btn.textContent = 'Generieren';
-
-    results.innerHTML = window._generatedVariants.map(function(v, i) {
-      return '<button class="btn btn-sm" onclick="loadGeneratedVariant(' + i + ')" style="margin:0">' +
-        'V' + (i + 1) + ': ' + (v.theme || '?') + ' / ' + esc(v.title || 'Untitled') +
-        '</button>' +
-        '<button class="btn btn-sm btn-icon" onclick="downloadGeneratedVariant(' + i + ')" style="margin:0" title="JSON herunterladen">&#128190;</button>';
-    }).join('');
   }
 
   function loadGeneratedVariant(idx) {
