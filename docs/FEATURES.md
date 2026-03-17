@@ -31,7 +31,7 @@
 | Block | Features |
 |---|---|
 | **Absätze** | Dynamische Liste, Formatierungs-Toolbar (Fett, Kursiv, Link), Zeilenumbrüche automatisch |
-| **Cards** | Icon (Emoji-Picker mit 128 Icons in 8 Kategorien oder manuelle Eingabe) + Titel + Text, Grid-Layout, Hover-Glow, globale Icon-Größe einstellbar |
+| **Cards** | Icon (Emoji-Picker mit 176 Icons in 11 Kategorien oder manuelle Eingabe) + Titel + Text, Grid-Layout, Hover-Glow, globale Icon-Größe einstellbar |
 | **Timeline** | Zeitpunkt + Beschreibung, 2-Spalten Layout, Card-Styling (gleiche Helligkeit wie Cards) |
 | **Videos** | URL + Thumbnail + Titel + Badge, YouTube-Thumbnail wird automatisch erkannt |
 | **Zitat** | Text + Quellenangabe, dekoratives Anführungszeichen |

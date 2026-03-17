@@ -113,7 +113,7 @@ Jede Sektion kann diese Inhaltsblöcke haben (alle optional):
 
 1. Klicke **[+ Karte]**
 2. Fülle aus:
-   - **Icon:** Klicke **☰** um ein Emoji aus dem Picker zu wählen (8 Kategorien), oder tippe ein Emoji direkt ins Feld
+   - **Icon:** Klicke **☰** um ein Emoji aus dem Picker zu wählen (11 Kategorien), oder tippe ein Emoji direkt ins Feld
    - **Titel:** Kurzer Titel
    - **Text:** Beschreibung
 3. Weitere Karten mit **[+ Karte]**
