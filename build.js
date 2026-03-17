@@ -167,7 +167,7 @@ function render(tpl, data) {
         if (!section.paragraphs) return '';
         return section.paragraphs.map((p, pi) => {
           let c = content;
-          c = c.replace(/\{\{\{this\}\}\}/g, p);
+          c = c.replace(/\{\{\{this\}\}\}/g, p.replace(/\n/g, '<br>'));
           c = c.replace(/\{\{#unless @first\}\}([\s\S]*?)\{\{\/unless\}\}/g, (__, inner) => pi === 0 ? '' : inner);
           return c;
         }).join('\n');

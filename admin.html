@@ -212,6 +212,17 @@
     .list-item .list-fields-row { display: flex; gap: .5rem; }
     .list-item .list-fields-row input { flex: 1; }
 
+    /* ---- FORMAT TOOLBAR ---- */
+    .fmt-toolbar { display: flex; gap: .3rem; margin-bottom: .3rem; }
+    .fmt-toolbar button {
+      padding: .15rem .5rem; font-size: .72rem;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text-muted);
+      cursor: pointer; font-family: inherit; line-height: 1.4;
+      transition: border-color .2s, color .2s;
+    }
+    .fmt-toolbar button:hover { border-color: var(--accent); color: var(--accent); }
+
     /* ---- FILE INPUT ---- */
     .file-input { display: none; }
 
@@ -604,6 +615,39 @@ function updateParagraph(sIdx, pIdx, value) {
   pageData.sections[sIdx].paragraphs[pIdx] = value;
 }
 
+// ---- Formatting Toolbar ----
+function fmtWrap(sIdx, pIdx, tag) {
+  const ta = document.getElementById('para-' + sIdx + '-' + pIdx);
+  if (!ta) return;
+  const start = ta.selectionStart;
+  const end = ta.selectionEnd;
+  if (start === end) return;
+  const val = ta.value;
+  const wrapped = '<' + tag + '>' + val.substring(start, end) + '</' + tag + '>';
+  ta.value = val.substring(0, start) + wrapped + val.substring(end);
+  pageData.sections[sIdx].paragraphs[pIdx] = ta.value;
+  const newPos = start + wrapped.length;
+  ta.focus();
+  ta.setSelectionRange(newPos, newPos);
+}
+
+function fmtLink(sIdx, pIdx) {
+  const ta = document.getElementById('para-' + sIdx + '-' + pIdx);
+  if (!ta) return;
+  const start = ta.selectionStart;
+  const end = ta.selectionEnd;
+  const val = ta.value;
+  const selected = val.substring(start, end);
+  const url = prompt('URL eingeben:', 'https://');
+  if (!url) return;
+  const text = selected || url;
+  const link = '<a href="' + url + '" target="_blank">' + text + '</a>';
+  ta.value = val.substring(0, start) + link + val.substring(end);
+  pageData.sections[sIdx].paragraphs[pIdx] = ta.value;
+  ta.focus();
+  ta.setSelectionRange(start + link.length, start + link.length);
+}
+
 // ---- Cards ----
 function addCard(idx) {
   if (!pageData.sections[idx].cards) pageData.sections[idx].cards = [];
@@ -780,7 +824,12 @@ function renderSectionBody(idx) {
     ${(s.paragraphs || []).map((p, pi) => `
       <div class="list-item">
         <div class="list-fields">
-          <textarea rows="5" oninput="updateParagraph(${idx},${pi},this.value)">${esc(p)}</textarea>
+          <div class="fmt-toolbar">
+            <button type="button" onclick="fmtWrap(${idx},${pi},'strong')" title="Fett"><b>F</b></button>
+            <button type="button" onclick="fmtWrap(${idx},${pi},'em')" title="Kursiv"><i>K</i></button>
+            <button type="button" onclick="fmtLink(${idx},${pi})" title="Link">&#128279;</button>
+          </div>
+          <textarea rows="5" id="para-${idx}-${pi}" oninput="updateParagraph(${idx},${pi},this.value)">${esc(p)}</textarea>
         </div>
         <button class="btn btn-icon btn-sm btn-danger" onclick="removeParagraph(${idx},${pi})">&#128465;</button>
       </div>
@@ -1059,7 +1108,7 @@ function render(tpl, data) {
       s = s.replace(/\{\{#each this\.paragraphs\}\}([\s\S]*?)\{\{\/each\}\}/g, (_, c) => {
         if (!section.paragraphs) return '';
         return section.paragraphs.map((p, pi) => {
-          let r = c.replace(/\{\{\{this\}\}\}/g, p);
+          let r = c.replace(/\{\{\{this\}\}\}/g, p.replace(/\n/g, '<br>'));
           r = r.replace(/\{\{#unless @first\}\}([\s\S]*?)\{\{\/unless\}\}/g, (__, inner) => pi === 0 ? '' : inner);
           return r;
         }).join('\n');
