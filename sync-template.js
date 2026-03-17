@@ -25,7 +25,8 @@ let admin = fs.readFileSync(ADMIN_PATH, 'utf8');
 const escaped = template
   .replace(/\\/g, '\\\\')
   .replace(/`/g, '\\`')
-  .replace(/\$\{/g, '\\${');
+  .replace(/\$\{/g, '\\${')
+  .replace(/<\/script>/gi, '<\\/script>');
 
 // Minify: mehrzeilige CSS/HTML auf einzelne Zeilen komprimieren (optional)
 const minified = escaped
