@@ -294,7 +294,7 @@
 <header class="hero" style="--hero-bg:url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1400&q=80')">
   <div class="hero-content">
     <div class="hero-badge">Wissenschaftlich fundiert</div>
-    <h1>{Leberfasten}</h1>
+    <h1>Leberfasten</h1>
     <p>Gezielte Ernährungsstrategie, um eine verfettete Leber in kurzer Zeit - meist 14 Tage - effektiv zu entfetten und den Stoffwechsel zu regenerieren.</p>
     <a href="#Leberfasten" class="hero-cta">
       Mehr erfahren
@@ -305,103 +305,340 @@
 
 <!-- SECTIONS -->
 
-{{#unless @first}}<hr class="divider">{{/unless}}
+
 <div class="container fade-up" id="Leberfasten">
-  {{#if this.image}}<img class="section-img" src="{{this.image}}" alt="{{this.title}}">{{/if}}
-  <span class="section-label">{{this.label}}</span>
-  <h2>{{this.title}}</h2>
-  {{#each this.paragraphs}}<p style="{{#unless @first}}margin-top: 1rem;{{/unless}}">{}</p>
+  <img class="section-img" src="assets/Grundlagen.png" alt="Was ist Leberfasten?">
+  <span class="section-label">Kernkonzept und Ablauf</span>
+  <h2>Was ist Leberfasten?</h2>
+  <p style="">Die Kur zielt darauf ab, die Insulinresistenz zu durchbrechen und das Organfett zu reduzieren.
+Dauer: In der Regel 14 Tage. Bei starker Verfettung kann die Phase auf bis zu vier Wochen ausgedehnt werden.
+Ernährung: Pro Tag werden etwa 800 bis 1000 Kilokalorien aufgenommen.
+Mahlzeiten: Meist besteht der Tag aus drei Mahlzeiten. Häufig werden zwei bis drei Mahlzeiten durch spezielle hochwertige Eiweißshakes (wie Hepafast®) ersetzt, die wichtige Ballaststoffe (z.B. Inulin) und leberaktive Stoffe enthalten.
+Ergänzung: Zusätzlich ist reichlich Gemüse (gedünstet oder als Rohkost/Salat) erlaubt, um die Sättigung zu fördern und Vitamine zu liefern.
 
-{{#unless @first}}<hr class="divider">{{/unless}}
-<div class="container fade-up" id="fasten">
-  {{#if this.image}}<img class="section-img" src="{{this.image}}" alt="{{this.title}}">{{/if}}
-  <span class="section-label">{{this.label}}</span>
-  <h2>{{this.title}}</h2>
-  {{#each this.paragraphs}}<p style="{{#unless @first}}margin-top: 1rem;{{/unless}}">{}</p>
+Lebensmittel-Leitfaden
+Während der Kur gelten klare Prioritäten für die Lebensmittelauswahl:
+Erlaubt/Förderlich:
+Gemüse: Brokkoli, Karotten, Spinat, Zucchini, Spargel, Tomaten.
+Getränke: Wasser, ungesüßter Tee, schwarzer Kaffee (in Maßen) und Zitronenwasser.
+Proteine: Mageres Fleisch (Huhn, Pute), Fisch (Kabeljau, Seelachs) und Eier.
+Zu vermeiden:
+Zucker & Fruktose: Besonders schädlich bei Fettleber; Obst sollte während der strikten Phase nur sehr begrenzt verzehrt werden.
+Einfache Kohlenhydrate: Weißmehlprodukte und stark verarbeitete Lebensmittel. </p>
 
-{{#unless @first}}<hr class="divider">{{/unless}}
-<div class="container fade-up" id="verbindung">
-  {{#if this.image}}<img class="section-img" src="{{this.image}}" alt="{{this.title}}">{{/if}}
-  <span class="section-label">{{this.label}}</span>
-  <h2>{{this.title}}</h2>
-  {{#each this.paragraphs}}<p style="{{#unless @first}}margin-top: 1rem;{{/unless}}">{}</p>
-
-{{#unless @first}}<hr class="divider">{{/unless}}
-<div class="container fade-up" id="timeline">
-  {{#if this.image}}<img class="section-img" src="{{this.image}}" alt="{{this.title}}">{{/if}}
-  <span class="section-label">{{this.label}}</span>
-  <h2>{{this.title}}</h2>
-  {{#each this.paragraphs}}<p style="{{#unless @first}}margin-top: 1rem;{{/unless}}">{}</p>
-
-{{#unless @first}}<hr class="divider">{{/unless}}
-<div class="container fade-up" id="tipps">
-  {{#if this.image}}<img class="section-img" src="{{this.image}}" alt="{{this.title}}">{{/if}}
-  <span class="section-label">{{this.label}}</span>
-  <h2>{{this.title}}</h2>
-  {{#each this.paragraphs}}<p style="{{#unless @first}}margin-top: 1rem;{{/unless}}">{}</p>
-
-{{#unless @first}}<hr class="divider">{{/unless}}
-<div class="container fade-up" id="videos">
-  {{#if this.image}}<img class="section-img" src="{{this.image}}" alt="{{this.title}}">{{/if}}
-  <span class="section-label">{{this.label}}</span>
-  <h2>{{this.title}}</h2>
-  {{#each this.paragraphs}}<p style="{{#unless @first}}margin-top: 1rem;{{/unless}}">{}</p>
-
-  {{#if this.quote}}
+  
   <div class="quote-block">
-    <p>{{this.quote.text}}</p>
-    <cite>{{this.quote.cite}}</cite>
+    <p>Autophagie ist das Recyclingprogramm unserer Zellen – ein Schlüssel zu Langlebigkeit und Gesundheit.</p>
+    <cite>– frei nach Yoshinori Ohsumi, Nobelpreisträger 2016</cite>
   </div>
-  {{/if}}
+  
 
-  {{#if this.cards}}
+  
   <div class="cards">
-    {{#each this.cards}}
+    
     <div class="card">
-      <div class="card-header"><div class="card-icon">{{this.icon}}</div><h3>{{this.title}}</h3></div>
-      <p>{{this.text}}</p>
+      <div class="card-header"><div class="card-icon">🔬</div><h3>Zellerneuerung</h3></div>
+      <p>Beschädigte Zellbestandteile werden abgebaut und durch neue ersetzt – die Zelle verjüngt sich von innen.</p>
     </div>
-    {{/each}}
-  </div>
-  {{/if}}
+    
 
-  {{#if this.timeline}}
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🛡️</div><h3>Immunabwehr</h3></div>
+      <p>Autophagie hilft, intrazelluläre Krankheitserreger wie Bakterien und Viren zu beseitigen.</p>
+    </div>
+    
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">⚡</div><h3>Energiegewinnung</h3></div>
+      <p>In Zeiten von Nährstoffmangel liefert der Abbau zelleigener Bestandteile wertvolle Energie.</p>
+    </div>
+    
+  </div>
+  
+
+  
+
+  
+
+  
+</div>
+
+
+<hr class="divider">
+<div class="container fade-up" id="fasten">
+  <img class="section-img" src="assets/human.png" alt="Fasten im Überblick">
+  <span class="section-label">Methoden</span>
+  <h2>Fasten im Überblick</h2>
+  <p style="">Fasten ist der bewusste, zeitlich begrenzte Verzicht auf Nahrung. Es ist eine der ältesten Gesundheitspraktiken der Menschheit und wird heute wissenschaftlich intensiv erforscht.</p>
+
+  
+
+  
+  <div class="cards">
+    
+    <div class="card">
+      <div class="card-header"><div class="card-icon">⏰</div><h3>16:8 Intervallfasten</h3></div>
+      <p>16 Stunden fasten, 8 Stunden essen. Die beliebteste Methode für den Alltag – z.B. von 12–20 Uhr essen.</p>
+    </div>
+    
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">📅</div><h3>5:2 Methode</h3></div>
+      <p>An 5 Tagen normal essen, an 2 Tagen nur ca. 500–600 kcal. Flexibel in der Wochenplanung.</p>
+    </div>
+    
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🍽️</div><h3>OMAD</h3></div>
+      <p>One Meal a Day – nur eine Mahlzeit am Tag, ein intensiverer Ansatz mit ca. 23h Fastenzeit.</p>
+    </div>
+    
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🧘</div><h3>Mehrtägiges Fasten</h3></div>
+      <p>24–72+ Stunden ohne Nahrung. Stärkster Autophagie-Stimulus, nur mit Vorbereitung und ärztlicher Begleitung.</p>
+    </div>
+    
+  </div>
+  
+
+  
+
+  
+
+  
+</div>
+
+
+<hr class="divider">
+<div class="container fade-up" id="verbindung">
+  <img class="section-img" src="assets/autophagy.png" alt="Wie Fasten die Autophagie aktiviert">
+  <span class="section-label">Wissenschaft</span>
+  <h2>Wie Fasten die Autophagie aktiviert</h2>
+  <p style="">Wenn dem Körper über einen längeren Zeitraum keine Nahrung zugeführt wird, sinkt der <strong>Insulinspiegel</strong> und ein Enzym namens <strong>AMPK</strong> wird aktiviert. Gleichzeitig wird der Wachstumsfaktor <strong>mTOR</strong> gehemmt – ein zentraler Signalweg, der bei Nahrungsüberfluss die Autophagie unterdrückt.</p>
+<p style="margin-top: 1rem;">Das Ergebnis: Die Zellen schalten in den „Aufräummodus“. Je länger die Fastenperiode, desto intensiver läuft die Autophagie ab. Erste Effekte zeigen sich bereits nach <strong>12–16 Stunden</strong>, ein deutlicher Anstieg wird nach <strong>24–48 Stunden</strong> beobachtet.</p>
+
+  
+
+  
+  <div class="cards">
+    
+    <div class="card">
+      <div class="card-header"><div class="card-icon">📉</div><h3>Insulin sinkt</h3></div>
+      <p>Niedrige Insulinwerte signalisieren den Zellen: „Es gibt gerade keine neue Energie von außen.“</p>
+    </div>
+    
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🔄</div><h3>mTOR wird gehemmt</h3></div>
+      <p>Der Wachstumssensor mTOR fährt herunter – das gibt den Startschuss für die zelluläre Selbstreinigung.</p>
+    </div>
+    
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">⚙️</div><h3>AMPK wird aktiviert</h3></div>
+      <p>Der „Energiesensor“ AMPK erkennt den Mangel und kurbelt Reparatur- und Recyclingprozesse an.</p>
+    </div>
+    
+  </div>
+  
+
+  
+
+  
+
+  
+</div>
+
+
+<hr class="divider">
+<div class="container fade-up" id="timeline">
+  <img class="section-img" src="assets/Zeitstrahl.png" alt="Was passiert beim Fasten?">
+  <span class="section-label">Zeitverlauf</span>
+  <h2>Was passiert beim Fasten?</h2>
+  <p style="">Ein Überblick, was in deinem Körper passiert, wenn du aufhörst zu essen.</p>
+
+  
+
+  
+
+  
   <div class="timeline">
-    {{#each this.timeline}}
+    
     <div class="tl-item">
-      <div class="tl-time">{{this.time}}</div>
-      <div class="tl-text">{{this.text}}</div>
+      <div class="tl-time">0–4 h</div>
+      <div class="tl-text">Verdauungsphase – der Körper verarbeitet die letzte Mahlzeit. Blutzucker und Insulin steigen.</div>
     </div>
-    {{/each}}
-  </div>
-  {{/if}}
+    
 
-  {{#if this.videos}}
+    <div class="tl-item">
+      <div class="tl-time">4–8 h</div>
+      <div class="tl-text">Blutzucker normalisiert sich. Der Körper beginnt, Glykogenreserven in der Leber anzuzapfen.</div>
+    </div>
+    
+
+    <div class="tl-item">
+      <div class="tl-time">8–12 h</div>
+      <div class="tl-text">Glykogenspeicher leeren sich. Fettverbrennung setzt ein. Erste Autophagie-Signale.</div>
+    </div>
+    
+
+    <div class="tl-item">
+      <div class="tl-time">12–18 h</div>
+      <div class="tl-text">Ketose beginnt – Fette werden in Ketonkörper umgewandelt. Autophagie nimmt messbar zu.</div>
+    </div>
+    
+
+    <div class="tl-item">
+      <div class="tl-time">18–24 h</div>
+      <div class="tl-text">Starke Autophagie-Aktivität. Der Körper räumt intensiv auf. Wachstumshormon steigt.</div>
+    </div>
+    
+
+    <div class="tl-item">
+      <div class="tl-time">24–48 h</div>
+      <div class="tl-text">Autophagie auf hohem Niveau. Tiefgreifende zelluläre Reparaturprozesse. Entzündungswerte sinken.</div>
+    </div>
+    
+
+    <div class="tl-item">
+      <div class="tl-time">48–72 h</div>
+      <div class="tl-text">Maximale Autophagie. Stammzell-Regeneration beginnt. Immunsystem wird quasi „neu gestartet“.</div>
+    </div>
+    
+  </div>
+  
+
+  
+
+  
+</div>
+
+
+<hr class="divider">
+<div class="container fade-up" id="tipps">
+  
+  <span class="section-label">Praxis</span>
+  <h2>Tipps für Einsteiger</h2>
+  
+
+  
+
+  
+  <div class="cards">
+    
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🚶</div><h3>Langsam starten</h3></div>
+      <p>Beginne mit 12:12 und steigere dich schrittweise auf 16:8. Dein Körper braucht Zeit zur Anpassung.</p>
+    </div>
+    
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">💧</div><h3>Viel trinken</h3></div>
+      <p>Wasser, ungesüßter Tee und schwarzer Kaffee sind erlaubt und helfen, das Hungergefühl zu mildern.</p>
+    </div>
+    
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🥗</div><h3>Nährstoffreich essen</h3></div>
+      <p>In den Essensphasen auf vollwertige, nährstoffreiche Mahlzeiten achten – Qualität vor Quantität.</p>
+    </div>
+    
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">📋</div><h3>Auf den Körper hören</h3></div>
+      <p>Schwindel, starke Schwäche oder Unwohlsein? Dann brich das Fasten ab. Gesundheit geht vor.</p>
+    </div>
+    
+  </div>
+  
+
+  
+
+  
+
+  
+  <div class="hinweis">
+    <div class="hinweis-icon">⚠️</div>
+    <p><strong>Wichtiger Hinweis:</strong> Diese Seite dient ausschließlich der Information und ersetzt keine ärztliche Beratung. Personen mit Vorerkrankungen, Schwangere, Stillende und Kinder sollten nicht ohne ärztliche Rücksprache fasten.</p>
+  </div>
+  
+</div>
+
+
+<hr class="divider">
+<div class="container fade-up" id="videos">
+  
+  <span class="section-label">Weiterführend</span>
+  <h2>Videos zum Thema</h2>
+  <p style="">Ausgewählte Videos rund um Fasten und Autophagie – von Dokumentationen bis zu kurzen Erklärvideos.</p>
+
+  
+
+  
+
+  
+
+  
   <div class="video-grid">
-    {{#each this.videos}}
-    <a class="video-card" href="{{this.url}}" target="_blank" rel="noopener">
+    
+    <a class="video-card" href="https://www.arte.tv/de/videos/118244-000-A/fasten-ein-phaenomen-wird-erforscht/" target="_blank" rel="noopener">
       <div class="video-thumb">
-        <img src="{{this.thumbnail}}" alt="{{this.title}}">
+        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80" alt="Fasten – Ein Phänomen wird erforscht">
         <div class="video-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
       </div>
       <div class="video-body">
-        <h3>{{this.title}}</h3>
-        <p>{{this.description}}</p>
-        <span class="badge badge-{{this.badgeType}}">{{this.badge}}</span>
+        <h3>Fasten – Ein Phänomen wird erforscht</h3>
+        <p>ARTE-Dokumentation über die wissenschaftliche Erforschung des Fastens und seine Auswirkungen auf den Körper.</p>
+        <span class="badge badge-arte">ARTE</span>
       </div>
     </a>
-    {{/each}}
-  </div>
-  {{/if}}
+    
 
-  {{#if this.warning}}
-  <div class="hinweis">
-    <div class="hinweis-icon">⚠️</div>
-    <p><strong>{{this.warning.title}}</strong> {{this.warning.text}}</p>
+    <a class="video-card" href="https://www.youtube.com/watch?v=jlELeipDRXc" target="_blank" rel="noopener">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/jlELeipDRXc/hqdefault.jpg" alt="Fasten & Autophagie erklärt">
+        <div class="video-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="video-body">
+        <h3>Fasten & Autophagie erklärt</h3>
+        <p>Ausführliches Video über die Zusammenhänge zwischen Fasten und zellulärer Selbstreinigung.</p>
+        <span class="badge badge-youtube">YouTube</span>
+      </div>
+    </a>
+    
+
+    <a class="video-card" href="https://www.youtube.com/shorts/f2U6ALFiuwU" target="_blank" rel="noopener">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/f2U6ALFiuwU/hqdefault.jpg" alt="Autophagie in Kürze">
+        <div class="video-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="video-body">
+        <h3>Autophagie in Kürze</h3>
+        <p>Kompaktes Kurzvideo – die wichtigsten Fakten zur Autophagie in unter einer Minute.</p>
+        <span class="badge badge-youtube">YouTube Short</span>
+      </div>
+    </a>
+    
+
+    <a class="video-card" href="https://www.youtube.com/watch?v=0pQSWRdtrf8" target="_blank" rel="noopener">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/0pQSWRdtrf8/hqdefault.jpg" alt="Bakteriophagen – Viren gegen Bakterien">
+        <div class="video-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="video-body">
+        <h3>Bakteriophagen – Viren gegen Bakterien</h3>
+        <p>Wie Bakteriophagen gezielt Bakterien angreifen und als Alternative zu Antibiotika erforscht werden.</p>
+        <span class="badge badge-youtube">YouTube</span>
+      </div>
+    </a>
+    
   </div>
-  {{/if}}
+  
+
+  
 </div>
-{{/each}}
+
 
 <!-- FOOTER -->
 <footer>

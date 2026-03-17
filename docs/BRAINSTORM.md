@@ -54,6 +54,7 @@ experiment-011/
 | `accentLight` | Helle Akzentfarbe (z.B. `#6ee7b7`)  |
 | `iconUrl`     | Pfad zum Nav-Icon                    |
 | `iconLink`    | URL hinter dem Icon                  |
+| `iconSize`    | Höhe des Nav-Icons in px (Standard: 46) |
 | `heroBg`      | Hintergrundbild-URL für Hero         |
 | `heroBadge`   | Kleiner Badge-Text über dem Titel    |
 | `heroTitle`   | Haupttitel (HTML erlaubt)            |

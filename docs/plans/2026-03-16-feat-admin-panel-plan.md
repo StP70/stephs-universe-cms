@@ -60,7 +60,7 @@ JSON Import  → pageData (JS-Objekt) → UI-Felder befüllen
 ```
 Felder: slug, title, theme (Dropdown: dark/light/colorful),
         lang (Input: de/en/...), accentColor (color picker),
-        accentLight (color picker), iconUrl, iconLink,
+        accentLight (color picker), iconUrl, iconLink, iconSize,
         heroBg, heroBadge, heroTitle, heroSubtitle,
         ctaText, footerText
 ```

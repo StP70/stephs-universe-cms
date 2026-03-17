@@ -1,6 +1,6 @@
 # Steph's Universe CMS – Anleitung
 
-**Stand:** 2026-03-16
+**Stand:** 2026-03-17
 **Für:** Stephan Peham
 
 ---
@@ -51,6 +51,7 @@ Du siehst den Editor mit den Beispieldaten der Autophagie & Fasten Seite.
 | Theme | Farbschema der Seite | Dark / Light / Colorful |
 | Sprache | Sprachcode | `de`, `en` |
 | Akzentfarbe | Hauptfarbe für Buttons, Links | `#10b981` (Grün) |
+| Icon Größe | Höhe des Nav-Icons in Pixel | `46` (Standard) |
 | Hero Hintergrundbild | URL zu einem Bild | Unsplash-Link oder lokaler Pfad |
 | Hero Badge | Kleiner Text über dem Titel | `Wissenschaftlich fundiert` |
 | Hero Titel | Großer Titel (HTML erlaubt) | `Autophagie<br>&amp; Fasten` |
@@ -92,9 +93,8 @@ Jede Sektion kann diese Inhaltsblöcke haben (alle optional):
 
 ### Bild
 
-- Trage eine Bild-URL ins Feld **"Bild URL"** ein
-- Lokale Bilder: `assets/mein-bild.png` (Bild vorher in den `assets/` Ordner kopieren)
-- Online-Bilder: Direkte URL eintragen
+- Klicke den **[Datei]**-Button neben dem Bild-Feld und wähle ein Bild von deinem Rechner – es wird automatisch eingebettet
+- Alternativ: Trage eine Online-Bild-URL direkt ins Feld ein (z.B. Unsplash-Link)
 
 ### Absätze
 
@@ -239,9 +239,9 @@ Build fertig! -> dist/
 
 ## Bilder hinzufügen
 
-1. Kopiere dein Bild in den Ordner `assets/` (z.B. `assets/mein-bild.png`)
-2. Im Editor: Trage `assets/mein-bild.png` als Bild-URL ein
-3. Online-Bilder: Direkte URL eintragen (z.B. Unsplash)
+**Empfohlen:** Klicke den **[Datei]**-Button neben dem jeweiligen Bild-Feld (Icon, Hero, Sektionsbild). Du kannst jede Bilddatei von deinem Rechner auswählen – sie wird automatisch eingebettet. Kein manuelles Kopieren nötig.
+
+**Alternativ:** Online-Bilder per URL eintragen (z.B. Unsplash-Link direkt ins Textfeld).
 
 **Unterstützte Formate:** PNG, JPG, WebP, SVG
 
@@ -300,7 +300,7 @@ Ja! Wenn du nichts änderst und speicherst, werden die Beispieldaten genau so ex
 Nein. Alle Blöcke (Cards, Timeline, Videos, Zitat, Hinweis) sind optional. Nutze nur was du brauchst.
 
 **Wie ändere ich das Icon in der Navigationsleiste?**
-Lege ein neues Bild in `assets/` ab und trage den Pfad im Feld "Icon URL" ein.
+Klicke den **[Datei]**-Button neben "Icon URL" und wähle dein Bild aus. Die Größe kannst du über das Feld "Icon Größe (px)" anpassen (Standard: 46px).
 
 ---
 

@@ -290,9 +290,15 @@
           <input type="file" accept="image/*" style="display:none" id="filePick-iconUrl" onchange="handleSettingsImagePick('iconUrl',event)">
         </div>
       </div>
-      <div class="field">
-        <label>Icon Link</label>
-        <input type="text" data-field="iconLink" placeholder="https://flexgate.at">
+      <div class="field-row">
+        <div class="field">
+          <label>Icon Link</label>
+          <input type="text" data-field="iconLink" placeholder="https://flexgate.at">
+        </div>
+        <div class="field">
+          <label>Icon Größe (px)</label>
+          <input type="number" data-field="iconSize" placeholder="46" min="16" max="120" style="max-width:100px">
+        </div>
       </div>
       <div class="field-row">
         <div class="field">
@@ -351,6 +357,7 @@ let pageData = {
   accentLight: '#6ee7b7',
   iconUrl: 'assets/icon.png',
   iconLink: 'https://flexgate.at',
+  iconSize: '46',
   heroBg: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1400&q=80',
   heroBadge: 'Wissenschaftlich fundiert',
   heroTitle: 'Autophagie<br>&amp; Fasten',
@@ -653,17 +660,29 @@ function updateVideo(sIdx, vIdx, field, value) {
   }
 }
 
+// ---- Data-URL Cache for preview (maps relative paths to data URLs) ----
+const imageDataUrls = {};
+
+function readFileAsDataUrl(file) {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(file);
+  });
+}
+
 // ---- Image Picker (Settings) ----
 function pickSettingsImage(field) {
   document.getElementById('filePick-' + field).click();
 }
-function handleSettingsImagePick(field, event) {
+async function handleSettingsImagePick(field, event) {
   const file = event.target.files[0];
   if (!file) return;
-  const path = 'assets/' + file.name;
-  pageData[field] = path;
-  // Update all inputs with this data-field
-  document.querySelectorAll('[data-field="' + field + '"]').forEach(el => el.value = path);
+  const dataUrl = await readFileAsDataUrl(file);
+  pageData[field] = dataUrl;
+  imageDataUrls['assets/' + file.name] = dataUrl;
+  // Show filename in inputs (not the long data URL)
+  document.querySelectorAll('[data-field="' + field + '"]').forEach(el => el.value = file.name);
   event.target.value = '';
 }
 
@@ -671,14 +690,14 @@ function handleSettingsImagePick(field, event) {
 function pickImage(sIdx) {
   document.getElementById('imgFile-' + sIdx).click();
 }
-function handleImagePick(sIdx, event) {
+async function handleImagePick(sIdx, event) {
   const file = event.target.files[0];
   if (!file) return;
-  // Use relative path: assets/filename
-  const path = 'assets/' + file.name;
-  pageData.sections[sIdx].image = path;
+  const dataUrl = await readFileAsDataUrl(file);
+  pageData.sections[sIdx].image = dataUrl;
+  imageDataUrls['assets/' + file.name] = dataUrl;
   const input = document.getElementById('imgInput-' + sIdx);
-  if (input) input.value = path;
+  if (input) input.value = file.name;
   event.target.value = '';
 }
 
@@ -912,7 +931,7 @@ function importJSON(event) {
       pageData = {
         slug: '', title: '', theme: 'dark', lang: 'de',
         accentColor: '#10b981', accentLight: '#6ee7b7',
-        iconUrl: 'assets/icon.png', iconLink: '',
+        iconUrl: 'assets/icon.png', iconLink: '', iconSize: '46',
         heroBg: '', heroBadge: '', heroTitle: '', heroSubtitle: '',
         ctaText: 'Mehr erfahren', footerText: '',
         sections: [],
@@ -937,8 +956,28 @@ function importJSON(event) {
 // ============================================================
 // PREVIEW
 // ============================================================
-function generatePreview() {
+async function generatePreview() {
   const data = JSON.parse(JSON.stringify(pageData));
+
+  // Try to cache any relative images that aren't cached yet (e.g. default data)
+  const pathsToCache = [];
+  if (data.iconUrl && !data.iconUrl.startsWith('http') && !imageDataUrls[data.iconUrl]) pathsToCache.push(data.iconUrl);
+  if (data.heroBg && !data.heroBg.startsWith('http') && !imageDataUrls[data.heroBg]) pathsToCache.push(data.heroBg);
+  (data.sections || []).forEach(s => {
+    if (s.image && !s.image.startsWith('http') && !imageDataUrls[s.image]) pathsToCache.push(s.image);
+  });
+  await Promise.all(pathsToCache.map(async path => {
+    try {
+      const resp = await fetch(path);
+      if (resp.ok) {
+        const blob = await resp.blob();
+        imageDataUrls[path] = await new Promise(resolve => {
+          const r = new FileReader(); r.onload = () => resolve(r.result); r.readAsDataURL(blob);
+        });
+      }
+    } catch(e) { /* ignore - file:// fetch may fail */ }
+  }));
+
   // Clean sections for render
   data.sections = data.sections.map(s => {
     const c = { id: s.id, navLabel: s.navLabel, label: s.label, title: s.title };
@@ -952,7 +991,18 @@ function generatePreview() {
     return c;
   });
 
-  const html = render(TEMPLATE_HTML, data);
+  // Replace relative image paths with cached data URLs for preview
+  // (file:// origins can't resolve relative paths in blob previews)
+  if (data.iconUrl && imageDataUrls[data.iconUrl]) data.iconUrl = imageDataUrls[data.iconUrl];
+  if (data.heroBg && imageDataUrls[data.heroBg]) data.heroBg = imageDataUrls[data.heroBg];
+  data.sections.forEach(s => {
+    if (s.image && imageDataUrls[s.image]) s.image = imageDataUrls[s.image];
+  });
+
+  let html = render(TEMPLATE_HTML, data);
+  // Inject <base> so asset paths that aren't cached still resolve when served via http
+  const baseHref = window.location.href.replace(/[^/]*$/, '');
+  html = html.replace('<head>', '<head>\n  <base href="' + baseHref + '">');
   const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   window.open(url, '_blank');
@@ -963,6 +1013,7 @@ function render(tpl, data) {
   data.firstSectionId = data.sections[0]?.id || '';
   if (!data.theme) data.theme = 'dark';
   if (!data.lang) data.lang = 'de';
+  if (!data.iconSize) data.iconSize = '46';
   let html = tpl;
   // Triple-brace {{{key}}} BEFORE double-brace {{key}} to avoid partial match
   html = html.replace(/\{\{\{(\w+)\}\}\}/g, (_, key) => {
@@ -1079,7 +1130,7 @@ const TEMPLATE_HTML = `<!DOCTYPE html>
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.75; -webkit-font-smoothing: antialiased; }
     nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: .7rem 1.5rem; font-size: .875rem; font-weight: 500; gap: 1rem; }
-    .nav-icon { height: 46px; width: auto; flex-shrink: 0; align-self: center; }
+    .nav-icon { height: {{iconSize}}px; width: auto; flex-shrink: 0; align-self: center; }
     .nav-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem; flex: 1; }
     .nav-links a { color: var(--text-muted); text-decoration: none; transition: all .2s; padding: .35rem .85rem; border-radius: 100px; border: 1px solid var(--border); background: rgba(255,255,255,.03); font-size: .8rem; text-align: center; white-space: nowrap; }
     .nav-links a:hover { color: #fff; border-color: var(--accent); background: rgba(16,185,129,.1); }

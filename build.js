@@ -85,6 +85,7 @@ function render(tpl, data) {
   data.firstSectionId = data.sections[0]?.id || '';
   if (!data.theme) data.theme = 'dark';
   if (!data.lang) data.lang = 'de';
+  if (!data.iconSize) data.iconSize = '46';
 
   let html = tpl;
 
