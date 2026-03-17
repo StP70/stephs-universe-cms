@@ -124,7 +124,9 @@ async function main() {
   console.log(`  Beschreibung: "${description}"\n`);
 
   const callFn = provider === 'openai' ? callOpenAI : callClaude;
-  const pagesDir = path.join(__dirname, 'pages');
+  const genDir = path.join(__dirname, 'pages', '_generated');
+  if (!fs.existsSync(genDir)) fs.mkdirSync(genDir, { recursive: true });
+  const today = new Date().toISOString().slice(0, 10);
   let errors = 0;
 
   for (let i = 0; i < variants; i++) {
@@ -140,17 +142,12 @@ async function main() {
         console.log(` ⚠ Warnungen: ${valErrors.join(', ')}`);
       }
 
-      // Dateiname: slug-v1.json
-      const filename = (data.slug || 'seite') + '-v' + (i + 1) + '.json';
-      const filePath = path.join(pagesDir, filename);
-
-      // Überschreib-Check
-      if (fs.existsSync(filePath)) {
-        console.log(` ⚠ ${filename} existiert bereits, wird überschrieben.`);
-      }
+      // Dateiname: slug_2026-03-17_v1-dark.json
+      const filename = (data.slug || 'seite') + '_' + today + '_v' + (i + 1) + '-' + (data.theme || 'dark') + '.json';
+      const filePath = path.join(genDir, filename);
 
       fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
-      console.log(` -> ${filename}`);
+      console.log(` -> _generated/${filename}`);
     } catch(err) {
       errors++;
       console.log(` ✗ ${err.message}`);

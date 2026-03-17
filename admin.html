@@ -559,7 +559,8 @@
     var blob = new Blob([json], { type: 'application/json' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = (data.slug || 'variante-' + (idx + 1)) + '.json';
+    var today = new Date().toISOString().slice(0, 10);
+    a.download = (data.slug || 'seite') + '_' + today + '_v' + (idx + 1) + '-' + (data.theme || 'dark') + '.json';
     a.click();
     URL.revokeObjectURL(a.href);
   }
