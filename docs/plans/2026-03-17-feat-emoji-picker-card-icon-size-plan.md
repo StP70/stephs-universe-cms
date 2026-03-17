@@ -14,9 +14,9 @@ Emoji-Grid-Picker als kategorisiertes Popup im Admin-Panel, mit dem Stephan Card
 
 ### 1. Emoji-Grid-Picker
 
-Ein Singleton-Popup auf `document.body` mit ~80 Emojis in 8 Kategorien. Wird einmalig erstellt, dann per Klasse ein-/ausgeblendet. `position: fixed` mit Viewport-Clamping.
+Ein Singleton-Popup auf `document.body` mit 128 Emojis in 8 Kategorien (je 16). Wird einmalig erstellt, dann per Klasse ein-/ausgeblendet. `position: fixed` mit Viewport-Clamping. Größe: 420x520px.
 
-**Kategorien (jeweils ~10 Emojis):**
+**Kategorien (jeweils 16 Emojis):**
 
 | Kategorie | Emojis |
 |---|---|
@@ -279,7 +279,7 @@ Nach template.html Änderung ausführen: `node sync-template.js`
 ### Funktional
 
 - [x] Emoji-Picker öffnet sich bei Klick auf ☰-Button neben dem Icon-Feld
-- [x] 8 Kategorien mit je ~10 Emojis werden im Grid angezeigt
+- [x] 8 Kategorien mit je 16 Emojis werden im Grid angezeigt
 - [x] Klick auf Emoji → Icon-Feld befüllt, Picker schließt sich
 - [x] Klick außerhalb (mousedown) oder Escape → Picker schließt sich
 - [x] Scroll/Resize → Picker schließt sich
@@ -331,6 +331,6 @@ cardIconSize  Emoji-Picker  Sync +     Test
 - Popup-Positioning: `position: fixed` + `getBoundingClientRect()` vermeidet Stacking-Context-Probleme
 - Click-Outside: `mousedown` + `requestAnimationFrame` robuster als `setTimeout(0)`
 - Emoji-Rendering: Native Unicode-Emojis (kein Sprite/Font nötig), Stick to Unicode 13.0 oder früher
-- DOM-Strategie: Create-once/show-hide für ~80 Buttons (triviale Speicherkosten, schnelleres Öffnen)
+- DOM-Strategie: Create-once/show-hide für 128 Buttons (triviale Speicherkosten, schnelleres Öffnen)
 - Scrollbar: `scrollbar-color` (Standard) + `::-webkit-scrollbar` (Safari-Fallback)
 - Z-Index: Picker bei 200, über Sticky-Header (100)
