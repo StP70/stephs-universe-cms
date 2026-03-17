@@ -331,18 +331,30 @@
         <button class="btn btn-sm" onclick="loadPastedJSON()" style="margin-top:.3rem">In Editor laden</button>
       </div>
       <!-- REMIX -->
-      <div id="genRemix" style="display:none;margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--border)">
-        <div style="font-weight:600;margin-bottom:.5rem">Remix: Beste Teile kombinieren</div>
-        <div id="remixHeroList" style="margin-bottom:.5rem"></div>
-        <div id="remixSectionList" style="margin-bottom:.5rem"></div>
-        <div class="field" style="margin-top:.5rem">
+      <div id="genRemix" style="display:none;margin-top:1.25rem;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius);padding:1rem">
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.25rem">
+          <span style="font-size:1.1rem">&#127912;</span>
+          <span style="font-weight:700;font-size:.95rem">Remix</span>
+        </div>
+        <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:.75rem;line-height:1.4">Wähle links das Hero-Design einer Variante und rechts die besten Sektionen aus verschiedenen Varianten. Claude kombiniert alles zu einer neuen Homepage.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+          <div>
+            <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem">Hero &amp; Design</div>
+            <div id="remixHeroList" style="background:var(--bg-input);border-radius:var(--radius-sm);padding:.5rem .75rem"></div>
+          </div>
+          <div>
+            <div style="font-size:.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem">Sektionen</div>
+            <div id="remixSectionList" style="background:var(--bg-input);border-radius:var(--radius-sm);padding:.5rem .75rem;max-height:200px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.15) transparent"></div>
+          </div>
+        </div>
+        <div class="field" style="margin-top:.75rem">
           <label>Zusätzliche Anweisung (optional)</label>
           <input type="text" id="remixInstruction" placeholder="z.B. Verwende den lockeren Ton von V2">
         </div>
-        <div id="remixTokenEst" style="font-size:.8rem;color:var(--text-muted);margin-top:.3rem"></div>
-        <div style="display:flex;gap:.5rem;margin-top:.5rem">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-top:.75rem">
           <button class="btn btn-sm" onclick="copyRemixPrompt()" style="white-space:nowrap">Remix-Prompt kopieren</button>
           <a href="https://claude.ai/new" target="_blank" rel="noopener" class="btn btn-sm" style="white-space:nowrap;text-decoration:none">Claude.ai öffnen</a>
+          <span id="remixTokenEst" style="font-size:.8rem;color:var(--text-muted);margin-left:auto"></span>
         </div>
       </div>
       <!-- Session-Zähler -->
@@ -657,22 +669,29 @@
     remixDiv.style.display = 'block';
 
     // Hero-Radios
-    var heroHtml = '<div style="font-size:.8rem;font-weight:600;color:var(--text-muted);margin-bottom:.3rem">Hero & Design:</div>';
+    var heroHtml = '';
     variants.forEach(function(v, i) {
-      heroHtml += '<label style="display:flex;align-items:center;gap:.3rem;cursor:pointer;font-size:.85rem;margin-bottom:.2rem">' +
+      var color = v.accentColor || '#10b981';
+      heroHtml += '<label style="display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.82rem;padding:.25rem 0">' +
         '<input type="radio" name="remixHero" value="' + i + '"' + (i === 0 ? ' checked' : '') + ' onchange="updateRemixTokenEstimate()">' +
-        ' V' + (i+1) + ': ' + (v.theme || '?') + ' / ' + esc(v.title || '?') +
+        '<span style="width:10px;height:10px;border-radius:50%;background:' + color + ';flex-shrink:0"></span>' +
+        '<span>V' + (i+1) + ' <strong>' + esc(v.title || '?') + '</strong></span>' +
+        '<span style="color:var(--text-muted);font-size:.75rem">' + (v.theme || '') + '</span>' +
         '</label>';
     });
     document.getElementById('remixHeroList').innerHTML = heroHtml;
 
-    // Sektions-Checkboxen
-    var secHtml = '<div style="font-size:.8rem;font-weight:600;color:var(--text-muted);margin-bottom:.3rem">Sektionen:</div>';
+    // Sektions-Checkboxen, gruppiert nach Variante
+    var secHtml = '';
     variants.forEach(function(v, vi) {
-      (v.sections || []).forEach(function(s, si) {
-        secHtml += '<label style="display:flex;align-items:center;gap:.3rem;cursor:pointer;font-size:.85rem;margin-bottom:.2rem">' +
+      var sections = v.sections || [];
+      if (sections.length === 0) return;
+      secHtml += '<div style="font-size:.7rem;font-weight:600;color:var(--accent);margin-top:' + (vi > 0 ? '.5rem' : '0') + ';margin-bottom:.2rem">V' + (vi+1) + ': ' + esc(v.title || '?') + '</div>';
+      sections.forEach(function(s, si) {
+        secHtml += '<label style="display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.82rem;padding:.15rem 0">' +
           '<input type="checkbox" class="remixSectionCb" data-vi="' + vi + '" data-si="' + si + '" onchange="updateRemixTokenEstimate()">' +
-          ' V' + (vi+1) + ': ' + esc(s.navLabel || s.title || 'Unbenannt') + ' <span style="color:var(--text-muted)">(' + getSectionType(s) + ')</span>' +
+          '<span>' + esc(s.navLabel || s.title || 'Unbenannt') + '</span>' +
+          '<span style="color:var(--text-muted);font-size:.7rem;margin-left:auto">' + getSectionType(s) + '</span>' +
           '</label>';
       });
     });
