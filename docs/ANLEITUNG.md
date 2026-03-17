@@ -284,7 +284,8 @@ experiment-011/
 │   └── ...
 ├── pages/                  ← Deine JSON-Dateien hierher
 │   ├── autophagie-fasten.json
-│   └── _example-neue-seite.json (wird beim Build ignoriert)
+│   ├── _example-neue-seite.json (wird beim Build ignoriert)
+│   └── _generated/             (Archiv für KI-generierte Varianten)
 ├── dist/                   ← Fertige Seiten (nach Build)
 │   ├── index.html (Übersicht)
 │   ├── assets/             (Bilder, einmalig kopiert)

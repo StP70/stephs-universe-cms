@@ -69,9 +69,9 @@ Der manuelle Modus ist kostenlos und braucht keinen API-Key. Du kopierst einen P
    - Klicke auf **[Vorschau]** um das Ergebnis zu pruefen
 
 10. **Speichern und bauen**
-    - Klicke auf **[JSON speichern]**
-    - Verschiebe die Datei in den Ordner `pages/`
-    - Baue die Seite:
+    - Beim **Download** wird die JSON automatisch mit Datum und Theme benannt (z.B. `zahnarzt-wien_2026-03-17_v1-dark.json`)
+    - Die Datei kann in `pages/_generated/` archiviert werden (wird nicht gebaut, geht nie verloren)
+    - Um die Seite zu bauen: Kopiere die JSON nach `pages/` und starte den Build:
       ```
       cd C:\project-001\experiment-011
       node build.js

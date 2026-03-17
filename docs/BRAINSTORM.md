@@ -20,7 +20,8 @@ experiment-011/
 │   └── Zeitstrahl.png         # Fasten-Zeitstrahl-Grafik
 ├── pages/                     # 1 JSON-Datei = 1 Seite
 │   ├── autophagie-fasten.json # Erste fertige Seite
-│   └── _example-neue-seite.json # Kopiervorlage (wird beim Build ignoriert)
+│   ├── _example-neue-seite.json # Kopiervorlage (wird beim Build ignoriert)
+│   └── _generated/              # Archiv für KI-generierte Varianten
 └── dist/                      # Output nach `node build.js`
     ├── index.html             # Übersicht aller Seiten
     ├── assets/                # Bilder (einmalig kopiert)
