@@ -329,16 +329,63 @@
             <option value="openai">OpenAI</option>
           </select>
         </div>
-        <div class="field">
+        <div class="field" style="flex:2">
           <label>Varianten</label>
-          <div style="display:flex;flex-wrap:wrap;gap:.4rem .8rem;font-size:.85rem">
-            <label style="display:flex;align-items:center;gap:.3rem;cursor:pointer"><input type="checkbox" class="genVariantCb" value="0" checked> V1 Dark/Seriös</label>
-            <label style="display:flex;align-items:center;gap:.3rem;cursor:pointer"><input type="checkbox" class="genVariantCb" value="1" checked> V2 Light/Locker</label>
-            <label style="display:flex;align-items:center;gap:.3rem;cursor:pointer"><input type="checkbox" class="genVariantCb" value="2" checked> V3 Colorful/Emotional</label>
-            <label style="display:flex;align-items:center;gap:.3rem;cursor:pointer"><input type="checkbox" class="genVariantCb" value="3"> V4 Dark/Technisch</label>
-            <label style="display:flex;align-items:center;gap:.3rem;cursor:pointer"><input type="checkbox" class="genVariantCb" value="4"> V5 Light/Kreativ</label>
-          </div>
         </div>
+      </div>
+      <div style="background:var(--bg-input);border-radius:var(--radius-sm);padding:.5rem .75rem">
+        <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+          <tr style="border-bottom:1px solid var(--border)">
+            <th style="text-align:left;padding:.3rem .4rem;font-size:.7rem;color:var(--text-muted);font-weight:500;width:30px"></th>
+            <th style="text-align:left;padding:.3rem .4rem;font-size:.7rem;color:var(--text-muted);font-weight:500">Nr.</th>
+            <th style="text-align:left;padding:.3rem .4rem;font-size:.7rem;color:var(--text-muted);font-weight:500">Theme</th>
+            <th style="text-align:left;padding:.3rem .4rem;font-size:.7rem;color:var(--text-muted);font-weight:500">Schreibstil</th>
+            <th style="text-align:left;padding:.3rem .4rem;font-size:.7rem;color:var(--text-muted);font-weight:500">Sektions-Fokus</th>
+            <th style="text-align:left;padding:.3rem .4rem;font-size:.7rem;color:var(--text-muted);font-weight:500">Vorschau</th>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04)">
+            <td style="padding:.35rem .4rem"><input type="checkbox" class="genVariantCb" value="0" checked></td>
+            <td style="padding:.35rem .4rem;font-weight:600"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10b981;margin-right:.3rem;vertical-align:middle"></span>V1</td>
+            <td style="padding:.35rem .4rem">Dark</td>
+            <td style="padding:.35rem .4rem">Seriös, professionell</td>
+            <td style="padding:.35rem .4rem;color:var(--accent)">Cards + Timeline</td>
+            <td style="padding:.35rem .4rem;color:var(--text-muted);font-size:.75rem">Formell, faktenbasiert, klare Struktur</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04)">
+            <td style="padding:.35rem .4rem"><input type="checkbox" class="genVariantCb" value="1" checked></td>
+            <td style="padding:.35rem .4rem;font-weight:600"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#0d9488;margin-right:.3rem;vertical-align:middle"></span>V2</td>
+            <td style="padding:.35rem .4rem">Light</td>
+            <td style="padding:.35rem .4rem">Locker, freundlich</td>
+            <td style="padding:.35rem .4rem;color:var(--accent)">Text + Zitate</td>
+            <td style="padding:.35rem .4rem;color:var(--text-muted);font-size:.75rem">Persönlich, einladend, viel Fließtext</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04)">
+            <td style="padding:.35rem .4rem"><input type="checkbox" class="genVariantCb" value="2" checked></td>
+            <td style="padding:.35rem .4rem;font-weight:600"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#8b5cf6;margin-right:.3rem;vertical-align:middle"></span>V3</td>
+            <td style="padding:.35rem .4rem">Colorful</td>
+            <td style="padding:.35rem .4rem">Emotional, einladend</td>
+            <td style="padding:.35rem .4rem;color:var(--accent)">Cards + Hinweise</td>
+            <td style="padding:.35rem .4rem;color:var(--text-muted);font-size:.75rem">Gefühlvoll, aktivierend, Warnungen hervorgehoben</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04)">
+            <td style="padding:.35rem .4rem"><input type="checkbox" class="genVariantCb" value="3"></td>
+            <td style="padding:.35rem .4rem;font-weight:600"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10b981;margin-right:.3rem;vertical-align:middle"></span>V4</td>
+            <td style="padding:.35rem .4rem">Dark</td>
+            <td style="padding:.35rem .4rem">Technisch, detailliert</td>
+            <td style="padding:.35rem .4rem;color:var(--accent)">Timeline + Text</td>
+            <td style="padding:.35rem .4rem;color:var(--text-muted);font-size:.75rem">Fachlich, chronologisch, datengetrieben</td>
+          </tr>
+          <tr>
+            <td style="padding:.35rem .4rem"><input type="checkbox" class="genVariantCb" value="4"></td>
+            <td style="padding:.35rem .4rem;font-weight:600"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#0d9488;margin-right:.3rem;vertical-align:middle"></span>V5</td>
+            <td style="padding:.35rem .4rem">Light</td>
+            <td style="padding:.35rem .4rem">Kreativ, verspielt</td>
+            <td style="padding:.35rem .4rem;color:var(--accent)">Cards + Zitate</td>
+            <td style="padding:.35rem .4rem;color:var(--text-muted);font-size:.75rem">Lebendig, visuell, inspirierende Zitate</td>
+          </tr>
+        </table>
+      </div>
+      <div style="display:none">
       </div>
       <div id="genTokenEst" style="font-size:.8rem;color:var(--text-muted);margin-top:.3rem"></div>
       <div style="display:flex;gap:.5rem;margin-top:.5rem">
