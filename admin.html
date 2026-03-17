@@ -316,6 +316,10 @@
         <button class="btn btn-sm" id="genCopyBtn" onclick="copyPrompt()" style="white-space:nowrap">Prompt kopieren</button>
         <a href="https://claude.ai/new" target="_blank" rel="noopener" class="btn btn-sm" style="white-space:nowrap;text-decoration:none">Claude.ai öffnen</a>
       </div>
+      <div style="margin-top:.5rem">
+        <input type="file" id="archiveFileInput" accept=".json" multiple style="display:none" onchange="loadArchiveFiles(event)">
+        <button class="btn btn-sm" onclick="document.getElementById('archiveFileInput').click()" style="white-space:nowrap">Archiv laden (Dateien wählen)</button>
+      </div>
       <div id="genStatus" style="margin-top:.5rem;font-size:.85rem;color:var(--text-muted)"></div>
       <div id="genResults" style="margin-top:.5rem;display:flex;flex-wrap:wrap;gap:.4rem"></div>
       <!-- Manueller Modus: JSON einfügen -->
@@ -550,6 +554,43 @@
     renderSections();
     scheduleAutosave();
     document.getElementById('genStatus').textContent = 'Variante ' + (idx + 1) + ' in Editor geladen.';
+  }
+
+  // ---- Archiv laden (Multi-File-Picker) ----
+  function loadArchiveFiles(event) {
+    var files = Array.from(event.target.files);
+    if (files.length === 0) return;
+    var status = document.getElementById('genStatus');
+    var results = document.getElementById('genResults');
+    status.textContent = files.length + ' Datei(en) werden geladen...';
+    window._generatedVariants = [];
+    var loaded = 0;
+    files.forEach(function(file) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          var data = JSON.parse(e.target.result);
+          if (data.slug || data.title) {
+            window._generatedVariants.push(data);
+          }
+        } catch(err) {
+          status.textContent = 'Fehler in ' + file.name + ': ' + err.message;
+        }
+        loaded++;
+        if (loaded === files.length) {
+          status.textContent = window._generatedVariants.length + ' Variante(n) aus Archiv geladen.';
+          results.innerHTML = window._generatedVariants.map(function(v, i) {
+            return '<button class="btn btn-sm" onclick="loadGeneratedVariant(' + i + ')" style="margin:0">' +
+              'V' + (i + 1) + ': ' + (v.theme || '?') + ' / ' + esc(v.title || 'Untitled') +
+              '</button>' +
+              '<button class="btn btn-sm btn-icon" onclick="downloadGeneratedVariant(' + i + ')" style="margin:0" title="JSON herunterladen">&#128190;</button>';
+          }).join('');
+          showRemixUI();
+        }
+      };
+      reader.readAsText(file);
+    });
+    event.target.value = '';
   }
 
   function downloadGeneratedVariant(idx) {
