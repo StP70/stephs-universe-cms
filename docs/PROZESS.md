@@ -1,4 +1,4 @@
-# Steph's Universe CMS – End-to-End Prozess
+# Steph's Universal Pagebuilder CMS – End-to-End Prozess
 
 **Stand:** 2026-03-17
 

@@ -1,5 +1,5 @@
 /**
- * Steph's Universe CMS - Shared Prompt & Validation for KI-Generator
+ * Steph's Universal Pagebuilder CMS - Shared Prompt & Validation for KI-Generator
  * Used by server.js and generate.js
  */
 

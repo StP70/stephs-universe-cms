@@ -1,10 +1,10 @@
 ---
-title: "feat: Admin-Panel für Steph's Universe CMS"
+title: "feat: Admin-Panel für Steph's Universal Pagebuilder CMS"
 type: feat
 date: 2026-03-16
 ---
 
-# ✨ feat: Admin-Panel für Steph's Universe CMS
+# ✨ feat: Admin-Panel für Steph's Universal Pagebuilder CMS
 
 ## Overview
 
@@ -54,7 +54,7 @@ JSON Import  → pageData (JS-Objekt) → UI-Felder befüllen
 
 **Tasks:**
 - [ ] `admin.html` anlegen mit Dark-Mode CSS (gleiche Variablen wie CMS-Output)
-- [ ] Header-Leiste: Titel "Steph's Universe CMS" + 3 Buttons (JSON laden, JSON speichern, Vorschau)
+- [ ] Header-Leiste: Titel "Steph's Universal Pagebuilder CMS" + 3 Buttons (JSON laden, JSON speichern, Vorschau)
 - [ ] Seiten-Einstellungen Formular mit allen Toplevel-Feldern:
 
 ```

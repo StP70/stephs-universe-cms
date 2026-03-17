@@ -1,4 +1,4 @@
-# Steph's Universe CMS – Features
+# Steph's Universal Pagebuilder CMS – Features
 
 **Stand:** 2026-03-17
 

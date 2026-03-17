@@ -1,4 +1,4 @@
-# Admin-Panel für Steph's Universe CMS
+# Admin-Panel für Steph's Universal Pagebuilder CMS
 
 **Datum:** 2026-03-16
 **Status:** Brainstorm abgeschlossen
@@ -8,7 +8,7 @@
 
 ## Was wir bauen
 
-Ein visuelles Admin-Panel (`admin.html`) für das Steph's Universe CMS, mit dem Stephan Informationsseiten erstellen und bearbeiten kann – ohne JSON manuell schreiben zu müssen.
+Ein visuelles Admin-Panel (`admin.html`) für das Steph's Universal Pagebuilder CMS, mit dem Stephan Informationsseiten erstellen und bearbeiten kann – ohne JSON manuell schreiben zu müssen.
 
 **Kernfunktionen:**
 1. **Seiten-Editor** – Visuelles Bearbeiten aller Felder (Hero, Sektionen, Footer)
@@ -43,7 +43,7 @@ Ein visuelles Admin-Panel (`admin.html`) für das Steph's Universe CMS, mit dem 
 
 ```
 ┌──────────────────────────────────────────────────┐
-│  HEADER: "Steph's Universe CMS"                  │
+│  HEADER: "Steph's Universal Pagebuilder CMS"                  │
 │  [JSON laden]  [JSON speichern]  [Vorschau ▶]    │
 ├──────────────────────────────────────────────────┤
 │                                                   │

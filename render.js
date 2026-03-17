@@ -1,5 +1,5 @@
 /**
- * Steph's Universe CMS - Shared Template Engine
+ * Steph's Universal Pagebuilder CMS - Shared Template Engine
  * Works in both Node.js (require) and Browser (<script src>)
  */
 (function(exports) {

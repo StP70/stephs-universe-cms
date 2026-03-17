@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Steph's Universe CMS - Template Sync
+ * Steph's Universal Pagebuilder CMS - Template Sync
  * Synchronisiert template.html in die eingebettete TEMPLATE_HTML-Konstante in admin.html.
  * Ausführen nach jeder Änderung an template.html:
  *   node sync-template.js

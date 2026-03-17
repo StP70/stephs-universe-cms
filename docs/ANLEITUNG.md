@@ -1,4 +1,4 @@
-# Steph's Universe CMS – Anleitung
+# Steph's Universal Pagebuilder CMS – Anleitung
 
 **Stand:** 2026-03-17
 **Für:** Stephan Peham
@@ -7,7 +7,7 @@
 
 ## Übersicht
 
-Mit dem Steph's Universe CMS kannst du moderne Informationsseiten erstellen – ohne zu programmieren. Du arbeitest mit einem visuellen Editor (Admin-Panel), der fertige JSON-Dateien erzeugt. Diese werden dann automatisch zu fertigen HTML-Seiten gebaut.
+Mit dem Steph's Universal Pagebuilder CMS kannst du moderne Informationsseiten erstellen – ohne zu programmieren. Du arbeitest mit einem visuellen Editor (Admin-Panel), der fertige JSON-Dateien erzeugt. Diese werden dann automatisch zu fertigen HTML-Seiten gebaut.
 
 **Deine Werkzeuge:**
 
@@ -187,7 +187,7 @@ Jede Sektion kann diese Inhaltsblöcke haben (alle optional):
 
 **Ausgabe:**
 ```
-Steph's Universe CMS - Build
+Steph's Universal Pagebuilder CMS - Build
 
 2 Seite(n) gefunden.
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Steph's Universe CMS - Combined Server
+ * Steph's Universal Pagebuilder CMS - Combined Server
  * Statische Dateien + API-Proxy für KI-Content-Generator
  *
  * Starten: node server.js
@@ -189,7 +189,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`\n  Steph's Universe CMS Server\n`);
+  console.log(`\n  Steph's Universal Pagebuilder CMS Server\n`);
   console.log(`  http://localhost:${PORT}\n`);
   console.log(`  API-Keys: Claude ${process.env.CLAUDE_API_KEY ? '✓' : '✗'}  OpenAI ${process.env.OPENAI_API_KEY ? '✓' : '✗'}\n`);
 });

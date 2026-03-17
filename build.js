@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Steph's Universe CMS - Static Site Builder
+ * Steph's Universal Pagebuilder CMS - Static Site Builder
  * Liest JSON-Dateien aus /pages und generiert HTML aus dem Template.
  */
 
@@ -42,7 +42,7 @@ const template = fs.readFileSync(TEMPLATE_PATH, 'utf8');
 // Alle JSON-Pages laden (ignoriere Dateien mit _ Prefix)
 const pageFiles = fs.readdirSync(PAGES_DIR).filter(f => f.endsWith('.json') && !f.startsWith('_'));
 
-console.log(`\n  Steph's Universe CMS - Build\n`);
+console.log(`\n  Steph's Universal Pagebuilder CMS - Build\n`);
 console.log(`  ${pageFiles.length} Seite(n) gefunden.\n`);
 
 // ---- Assets einmalig nach dist/assets/ kopieren ----
@@ -100,7 +100,7 @@ const indexHtml = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Steph's Universe - Alle Seiten</title>
+  <title>Steph's Universal Pagebuilder - Alle Seiten</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -114,7 +114,7 @@ const indexHtml = `<!DOCTYPE html>
 </head>
 <body>
   <div class="wrap">
-    <h1>Steph's Universe</h1>
+    <h1>Steph's Universal Pagebuilder</h1>
     <p>Alle veröffentlichten Seiten:</p>
     ${indexLinks}
   </div>

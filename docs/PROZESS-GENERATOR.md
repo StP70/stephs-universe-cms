@@ -1,4 +1,4 @@
-# Steph's Universe CMS -- KI-Content-Generator Prozess
+# Steph's Universal Pagebuilder CMS -- KI-Content-Generator Prozess
 
 **Stand:** 2026-03-17
 

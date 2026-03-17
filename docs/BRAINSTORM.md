@@ -1,4 +1,4 @@
-# Steph's Universe CMS – Brainstorm & Struktur
+# Steph's Universal Pagebuilder CMS – Brainstorm & Struktur
 
 ## Projektidee
 Ein einfaches, dateibasiertes CMS zum Erstellen von modernen Informationsseiten im Dark-Mode Design. Kein Server nötig – JSON rein, HTML raus.

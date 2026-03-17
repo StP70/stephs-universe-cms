@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Steph's Universe CMS - KI-Content-Generator (CLI)
+ * Steph's Universal Pagebuilder CMS - KI-Content-Generator (CLI)
  *
  * Nutzung:
  *   node generate.js "Zahnarztpraxis Wien" --variants 3
@@ -42,7 +42,7 @@ for (let i = 0; i < args.length; i++) {
 }
 
 if (!description) {
-  console.log(`\n  Steph's Universe CMS - KI-Content-Generator\n`);
+  console.log(`\n  Steph's Universal Pagebuilder CMS - KI-Content-Generator\n`);
   console.log('  Nutzung: node generate.js "Beschreibung" [--variants N] [--provider claude|openai]\n');
   console.log('  Beispiel: node generate.js "Zahnarztpraxis Wien, modern" --variants 3\n');
   process.exit(1);
@@ -118,7 +118,7 @@ async function callOpenAI(prompt) {
 
 // ---- Main ----
 async function main() {
-  console.log(`\n  Steph's Universe CMS - KI-Content-Generator\n`);
+  console.log(`\n  Steph's Universal Pagebuilder CMS - KI-Content-Generator\n`);
   console.log(`  Provider: ${provider === 'openai' ? 'OpenAI' : 'Claude'}`);
   console.log(`  Varianten: ${variants}`);
   console.log(`  Beschreibung: "${description}"\n`);
