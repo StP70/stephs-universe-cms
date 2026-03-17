@@ -226,6 +226,19 @@ Ja, im API-Modus und CLI-Modus kannst du den Provider auf "openai" umschalten. D
 
 ---
 
+## Archiv laden (historische Versionen)
+
+1. Klicke im KI-Generator auf **[Archiv laden (Dateien wählen)]**
+2. Navigiere zum Ordner `pages/_generated/`
+3. Wähle eine oder mehrere JSON-Dateien aus (Strg+Klick für Mehrfachauswahl)
+4. Die geladenen Varianten erscheinen als Buttons
+5. Klicke eine Variante um sie in den Editor zu laden
+6. Bei ≥2 Varianten erscheint automatisch der Remix-Bereich
+
+**Tipp:** So kannst du ältere Entwürfe jederzeit wieder aufrufen, vergleichen, weiterbearbeiten oder remixen.
+
+---
+
 ## Varianten remixen
 
 1. Generiere mindestens 2 Varianten (per Prompt kopieren + claude.ai)
