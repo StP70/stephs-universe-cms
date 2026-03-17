@@ -88,7 +88,7 @@
 | _Prefix ignoriert | Dateien mit `_` Prefix (z.B. `_example-neue-seite.json`) werden nicht gebaut |
 | Generierungs-Archiv | Alle KI-generierten Varianten in `pages/_generated/` archiviert (`slug_datum_vN-theme.json`). Wird nicht gebaut, nichts geht verloren. |
 | Archiv laden | Historische Varianten direkt im Admin-Panel per Multi-File-Picker laden, bearbeiten oder remixen. Kein Server nötig. |
-| Varianten-Tabelle | Geladene Varianten als Tabelle: Dateiname, Versionsnummer, Theme, Titel, Speicher-Datum/Uhrzeit, Laden/Download-Buttons |
+| Varianten-Tabelle | Geladene Varianten als Tabelle: Variante, Dateiname, Gespeichert, Theme, Titel, "In Editor laden"-Button |
 | Fehlertoleranz | try/catch pro JSON-Datei – ein Fehler stoppt nicht den ganzen Build |
 | Slug-Validierung | Warnung bei Großbuchstaben im Slug, Fehler bei leerem Slug |
 | HTML-Escaping | Titel und Slug in der Übersichtsseite werden sicher escaped |

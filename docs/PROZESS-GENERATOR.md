@@ -270,10 +270,8 @@ Für Nutzer mit API-Key. Server fungiert als Proxy zwischen Browser und KI-API.
         │
         ▼
  Alle Varianten fertig
- → Klick auf Button: loadVariant(idx)
-   → Daten in Editor laden
- → Klick auf Download: downloadVariant(idx)
-   → JSON als Datei herunterladen
+ → Klick auf "In Editor laden": loadGeneratedVariant(idx)
+   → Daten in Editor laden, wechselt zum Editor-Tab
 ```
 
 ---
