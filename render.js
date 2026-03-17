@@ -9,6 +9,9 @@
     if (!data.theme) data.theme = 'dark';
     if (!data.lang) data.lang = 'de';
     if (!data.iconSize) data.iconSize = '46';
+    if (!data.cardIconSize || isNaN(Number(data.cardIconSize)) || Number(data.cardIconSize) < 16) {
+      data.cardIconSize = '40';
+    }
     // Meta-Description: explizites Feld oder Fallback auf heroSubtitle
     // HTML-Tags entfernen, Anführungszeichen escapen (für content="...")
     if (!data.metaDescription) {

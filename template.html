@@ -175,10 +175,12 @@
     .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: rgba(16,185,129,.2); }
     .card-header { display: flex; align-items: center; gap: .75rem; margin-bottom: .75rem; }
     .card-icon {
-      width: 40px; height: 40px;
+      width: {{cardIconSize}}px; height: {{cardIconSize}}px;
       display: flex; align-items: center; justify-content: center;
-      background: rgba(16,185,129,.08); border-radius: 10px;
-      font-size: 1.2rem; flex-shrink: 0;
+      background: rgba(16,185,129,.08);
+      border-radius: calc({{cardIconSize}}px * 0.25);
+      font-size: calc({{cardIconSize}}px * 0.6);
+      flex-shrink: 0;
     }
     .card h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin: 0; }
     .card p { font-size: .9rem; color: var(--text-muted); line-height: 1.6; text-align: justify; }
