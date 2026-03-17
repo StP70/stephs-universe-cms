@@ -63,8 +63,11 @@ pageFiles.forEach(file => {
   try {
     const data = JSON.parse(fs.readFileSync(path.join(PAGES_DIR, file), 'utf8'));
 
-    // Slug-Warnung bei Großbuchstaben/Sonderzeichen
-    if (data.slug && data.slug !== data.slug.toLowerCase()) {
+    // Slug validieren
+    if (!data.slug) {
+      throw new Error('Slug fehlt – Seite wird übersprungen');
+    }
+    if (data.slug !== data.slug.toLowerCase()) {
       console.log(`  ⚠ ${file}: Slug "${data.slug}" enthält Großbuchstaben (kann URL-Probleme verursachen)`);
     }
 

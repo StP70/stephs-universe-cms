@@ -1131,63 +1131,82 @@ function importJSON(event) {
 // PREVIEW
 // ============================================================
 async function generatePreview() {
-  const data = JSON.parse(JSON.stringify(pageData));
+  // Fenster SOFORT öffnen (synchron im User-Gesture-Kontext) → kein Popup-Blocker
+  const previewWin = window.open('about:blank', '_blank');
+  if (!previewWin) {
+    alert('Popup wurde blockiert. Bitte erlaube Popups für diese Seite.');
+    return;
+  }
+  previewWin.document.write('<html><body style="background:#0a0a0a;color:#888;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0"><p>Vorschau wird geladen...</p></body></html>');
 
-  // Try to cache any relative images that aren't cached yet (e.g. default data)
-  const pathsToCache = [];
-  if (data.iconUrl && !data.iconUrl.startsWith('http') && !imageDataUrls[data.iconUrl]) pathsToCache.push(data.iconUrl);
-  if (data.heroBg && !data.heroBg.startsWith('http') && !imageDataUrls[data.heroBg]) pathsToCache.push(data.heroBg);
-  (data.sections || []).forEach(s => {
-    if (s.image && !s.image.startsWith('http') && !imageDataUrls[s.image]) pathsToCache.push(s.image);
-  });
-  await Promise.all(pathsToCache.map(async path => {
-    try {
-      const resp = await fetch(path);
-      if (resp.ok) {
-        const blob = await resp.blob();
-        imageDataUrls[path] = await new Promise(resolve => {
-          const r = new FileReader(); r.onload = () => resolve(r.result); r.readAsDataURL(blob);
-        });
-      }
-    } catch(e) { /* ignore - file:// fetch may fail */ }
-  }));
-
-  // Clean sections for render
-  data.sections = data.sections.map(s => {
-    const c = { id: s.id, navLabel: s.navLabel, label: s.label, title: s.title };
-    if (s.image) c.image = s.image;
-    if (s.paragraphs?.length && s.paragraphs.some(p => p.trim())) c.paragraphs = s.paragraphs.filter(p => p.trim());
-    if (s.quote?.text || s.quote?.cite) c.quote = s.quote;
-    if (s.cards?.length && s.cards.some(x => x.title || x.text)) c.cards = s.cards.filter(x => x.title || x.text);
-    if (s.timeline?.length && s.timeline.some(x => x.time || x.text)) c.timeline = s.timeline.filter(x => x.time || x.text);
-    if (s.videos?.length && s.videos.some(x => x.url)) c.videos = s.videos.filter(x => x.url);
-    if (s.warning?.title || s.warning?.text) c.warning = s.warning;
-    return c;
-  });
-
-  // Replace relative image paths with cached data URLs for preview
-  // (file:// origins can't resolve relative paths in blob previews)
-  if (data.iconUrl && imageDataUrls[data.iconUrl]) data.iconUrl = imageDataUrls[data.iconUrl];
-  if (data.heroBg && imageDataUrls[data.heroBg]) data.heroBg = imageDataUrls[data.heroBg];
-  data.sections.forEach(s => {
-    if (s.image && imageDataUrls[s.image]) s.image = imageDataUrls[s.image];
-  });
-
-  // Template laden: fetch template.html, Fallback auf eingebettetes Template
-  let templateHtml;
   try {
-    const resp = await fetch('template.html');
-    if (resp.ok) templateHtml = await resp.text();
-  } catch(e) { /* file:// CORS – use fallback */ }
-  if (!templateHtml) templateHtml = TEMPLATE_HTML;
+    const data = JSON.parse(JSON.stringify(pageData));
 
-  let html = CMS.render(templateHtml, data);
-  // Inject <base> so asset paths that aren't cached still resolve when served via http
-  const baseHref = window.location.href.replace(/[^/]*$/, '');
-  html = html.replace('<head>', '<head>\n  <base href="' + baseHref + '">');
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  window.open(url, '_blank');
+    // Try to cache any relative images that aren't cached yet (e.g. default data)
+    // Skip data: URLs and http(s): URLs – only cache local relative paths
+    function isRelativePath(url) {
+      return url && !url.startsWith('http') && !url.startsWith('data:');
+    }
+    const pathsToCache = [];
+    if (isRelativePath(data.iconUrl) && !imageDataUrls[data.iconUrl]) pathsToCache.push(data.iconUrl);
+    if (isRelativePath(data.heroBg) && !imageDataUrls[data.heroBg]) pathsToCache.push(data.heroBg);
+    (data.sections || []).forEach(s => {
+      if (isRelativePath(s.image) && !imageDataUrls[s.image]) pathsToCache.push(s.image);
+    });
+    await Promise.all(pathsToCache.map(async p => {
+      try {
+        const resp = await fetch(p);
+        if (resp.ok) {
+          const blob = await resp.blob();
+          imageDataUrls[p] = await new Promise(resolve => {
+            const r = new FileReader(); r.onload = () => resolve(r.result); r.readAsDataURL(blob);
+          });
+        }
+      } catch(e) { /* ignore - file:// fetch may fail */ }
+    }));
+
+    // Clean sections for render
+    data.sections = data.sections.map(s => {
+      const c = { id: s.id, navLabel: s.navLabel, label: s.label, title: s.title };
+      if (s.image) c.image = s.image;
+      if (s.paragraphs?.length && s.paragraphs.some(p => p.trim())) c.paragraphs = s.paragraphs.filter(p => p.trim());
+      if (s.quote?.text || s.quote?.cite) c.quote = s.quote;
+      if (s.cards?.length && s.cards.some(x => x.title || x.text)) c.cards = s.cards.filter(x => x.title || x.text);
+      if (s.timeline?.length && s.timeline.some(x => x.time || x.text)) c.timeline = s.timeline.filter(x => x.time || x.text);
+      if (s.videos?.length && s.videos.some(x => x.url)) c.videos = s.videos.filter(x => x.url);
+      if (s.warning?.title || s.warning?.text) c.warning = s.warning;
+      return c;
+    });
+
+    // Replace relative image paths with cached data URLs for preview
+    if (data.iconUrl && imageDataUrls[data.iconUrl]) data.iconUrl = imageDataUrls[data.iconUrl];
+    if (data.heroBg && imageDataUrls[data.heroBg]) data.heroBg = imageDataUrls[data.heroBg];
+    data.sections.forEach(s => {
+      if (s.image && imageDataUrls[s.image]) s.image = imageDataUrls[s.image];
+    });
+
+    // Template laden: fetch template.html, Fallback auf eingebettetes Template
+    let templateHtml;
+    try {
+      const resp = await fetch('template.html');
+      if (resp.ok) templateHtml = await resp.text();
+    } catch(e) { /* file:// CORS – use fallback */ }
+    if (!templateHtml) templateHtml = TEMPLATE_HTML;
+
+    let html = CMS.render(templateHtml, data);
+    // Inject <base> so asset paths that aren't cached still resolve when served via http
+    const baseHref = window.location.href.replace(/[^/]*$/, '');
+    html = html.replace('<head>', '<head>\n  <base href="' + baseHref + '">');
+
+    // Preview-Fenster mit fertigem HTML befüllen
+    previewWin.document.open();
+    previewWin.document.write(html);
+    previewWin.document.close();
+  } catch (err) {
+    previewWin.document.open();
+    previewWin.document.write('<html><body style="background:#0a0a0a;color:#ef4444;font-family:sans-serif;padding:2rem"><h2>Vorschau-Fehler</h2><pre>' + err.message + '</pre></body></html>');
+    previewWin.document.close();
+  }
 }
 
 // ---- Embedded Template (Fallback wenn fetch('template.html') fehlschlägt) ----

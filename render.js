@@ -9,10 +9,12 @@
     if (!data.theme) data.theme = 'dark';
     if (!data.lang) data.lang = 'de';
     if (!data.iconSize) data.iconSize = '46';
-    // Meta-Description: explizites Feld oder Fallback auf heroSubtitle (HTML-Tags entfernen)
+    // Meta-Description: explizites Feld oder Fallback auf heroSubtitle
+    // HTML-Tags entfernen, Anführungszeichen escapen (für content="...")
     if (!data.metaDescription) {
       data.metaDescription = (data.heroSubtitle || data.title || '')
-        .replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+        .replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()
+        .replace(/"/g, '&quot;');
     }
 
     let html = tpl;
@@ -105,8 +107,8 @@
         s = s.replace(/\{\{#if this\.quote\}\}([\s\S]*?)\{\{\/if\}\}/g, (_, content) => {
           if (!section.quote) return '';
           return content
-            .replace(/\{\{this\.quote\.text\}\}/g, section.quote.text)
-            .replace(/\{\{this\.quote\.cite\}\}/g, section.quote.cite);
+            .replace(/\{\{this\.quote\.text\}\}/g, section.quote.text || '')
+            .replace(/\{\{this\.quote\.cite\}\}/g, section.quote.cite || '');
         });
 
         // Cards
@@ -143,12 +145,12 @@
           if (!vMatch) return content;
           const vHtml = section.videos.map(video => {
             return vMatch[1]
-              .replace(/\{\{this\.url\}\}/g, video.url)
-              .replace(/\{\{this\.thumbnail\}\}/g, video.thumbnail)
-              .replace(/\{\{this\.title\}\}/g, video.title)
-              .replace(/\{\{this\.description\}\}/g, video.description)
-              .replace(/\{\{this\.badge\}\}/g, video.badge)
-              .replace(/\{\{this\.badgeType\}\}/g, video.badgeType);
+              .replace(/\{\{this\.url\}\}/g, video.url || '')
+              .replace(/\{\{this\.thumbnail\}\}/g, video.thumbnail || '')
+              .replace(/\{\{this\.title\}\}/g, video.title || '')
+              .replace(/\{\{this\.description\}\}/g, video.description || '')
+              .replace(/\{\{this\.badge\}\}/g, video.badge || '')
+              .replace(/\{\{this\.badgeType\}\}/g, video.badgeType || '');
           }).join('\n');
           return content.replace(vMatch[0], vHtml);
         });
@@ -157,8 +159,8 @@
         s = s.replace(/\{\{#if this\.warning\}\}([\s\S]*?)\{\{\/if\}\}/g, (_, content) => {
           if (!section.warning) return '';
           return content
-            .replace(/\{\{this\.warning\.title\}\}/g, section.warning.title)
-            .replace(/\{\{this\.warning\.text\}\}/g, section.warning.text);
+            .replace(/\{\{this\.warning\.title\}\}/g, section.warning.title || '')
+            .replace(/\{\{this\.warning\.text\}\}/g, section.warning.text || '');
         });
 
         // LAST: Simple section fields (only replaces remaining {{this.X}} not inside blocks)
