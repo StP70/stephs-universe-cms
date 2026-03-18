@@ -46,6 +46,7 @@ experiment-011/
 | Timeline   | `timeline`   | Zeitstrahl mit Zeitpunkt + Titel + Beschreibung |
 | Zitat      | `quote`      | Zitat-Block mit Quellenangabe             |
 | Videos     | `videos`     | Video-Karten mit Thumbnail + Play-Button  |
+| Galerie    | `gallery`    | Bildergalerie als Grid mit Lightbox (max 20 Bilder) |
 | Warnung    | `warning`    | Gelber Hinweis-Block                      |
 | Bild       | `image`      | Sektions-Bild (oben in der Sektion)       |
 
@@ -82,6 +83,7 @@ experiment-011/
 | `timeline`   | Nein    | Array: `{time, title, text}`     |
 | `quote`      | Nein    | Objekt: `{text, cite}`           |
 | `videos`     | Nein    | Array: `{url, thumbnail, title, description, badge, badgeType}` |
+| `gallery`    | Nein    | Array: `{src, caption}` – Bildergalerie (max 20) |
 | `warning`    | Nein    | Objekt: `{title, text}`          |
 
 ## Design-System

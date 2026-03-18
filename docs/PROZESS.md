@@ -382,6 +382,7 @@ experiment-011/
  │ Cards   [+ Karte]   │ ──────> cards[]             Grid mit Icon/Titel/Text
  │ Timeline[+ Zeitpkt] │ ──────> timeline[]          Zeitstrahl-Liste
  │ Videos  [+ Video]   │ ──────> videos[]            Video-Karten mit Thumbnail
+ │ Galerie [+ Bild]    │ ──────> gallery[]           Bildergalerie mit Lightbox
  │ Zitat               │ ──────> quote{text,cite}    Blockquote
  │ Warnung             │ ──────> warning{title,text}  Gelber Hinweis-Block
  └─────────────────────┘
@@ -508,6 +509,7 @@ experiment-011/
              cards: [{icon, title, text}, ...],
              timeline: [{time, title, text}, ...],
              videos: [{url, thumbnail, title, description, badge, badgeType}, ...],
+             gallery: [{src, caption}, ...],
              quote: {text, cite} | null,
              warning: {title, text} | null
            },
@@ -561,6 +563,9 @@ experiment-011/
 
  [+ Video]                 →  addVideo(idx)           →  videos.push({url,...})
                               renderSections()
+
+ [+ Bild hinzufügen]       →  addGalleryImage(idx)    →  gallery.push({src,caption})
+                              renderSections()           Max 20 Bilder
 
  Seite lädt               →  restoreAutosave()       →  Falls localStorage-Backup
                               (vor bindSettings)         existiert: Restore-Dialog
@@ -635,7 +640,7 @@ experiment-011/
          │
          ├── 2. Leere Felder bereinigen:
          │      - Leere strings → entfernen
-         │      - Leere arrays (cards:[], timeline:[], videos:[]) → entfernen
+         │      - Leere arrays (cards:[], timeline:[], videos:[], gallery:[]) → entfernen
          │      - quote/warning mit leeren Feldern → null → entfernen
          │
          ├── 3. Pro Sektion:
@@ -643,6 +648,7 @@ experiment-011/
          │      - section.cards filtern (Titel nicht leer)
          │      - section.timeline filtern (time nicht leer)
          │      - section.videos filtern (url nicht leer)
+         │      - section.gallery filtern (src nicht leer)
          │
          ├── 4. JSON.stringify(cleaned, null, 2)
          │
@@ -682,6 +688,7 @@ experiment-011/
          │      - cards: sicherstellen dass Array
          │      - timeline: sicherstellen dass Array
          │      - videos: sicherstellen dass Array
+         │      - gallery: sicherstellen dass Array
          │      - quote: Object oder null
          │      - warning: Object oder null
          │
@@ -847,6 +854,8 @@ experiment-011/
               │   └── {{#each this.timeline}}
               ├── {{#if this.videos}}
               │   └── {{#each this.videos}}
+              ├── {{#if this.gallery}}
+              │   └── {{#each this.gallery}}    Grid + Lightbox
               ├── {{#if this.quote}}          quote.text + quote.cite
               ├── {{#if this.warning}}        warning.title + warning.text
               └── {{this.X}} Restfelder       id, navLabel, label, title
@@ -931,6 +940,8 @@ experiment-011/
  │   │       │   └── <div class="tl-item">   ({{#each this.timeline}})
  │   │       ├── <div class="video-grid">    ({{#if this.videos}})
  │   │       │   └── <a class="video-card">  ({{#each this.videos}})
+ │   │       ├── <div class="gallery-grid">  ({{#if this.gallery}})
+ │   │       │   └── <div class="gallery-item"> ({{#each this.gallery}})
  │   │       └── <div class="hinweis">       ({{#if this.warning}})
  │   │
  │   ├── <footer> ──────────────────────────── Fußzeile

@@ -1,6 +1,6 @@
 # Steph's Universal Pagebuilder CMS – Anleitung
 
-**Stand:** 2026-03-17
+**Stand:** 2026-03-18
 **Für:** Stephan Peham
 
 ---
@@ -141,6 +141,19 @@ Jede Sektion kann diese Inhaltsblöcke haben (alle optional):
 3. Weitere Videos mit **[+ Video]**
 
 **Tipp:** Bei YouTube-Links wird das Thumbnail-Bild automatisch gesetzt.
+
+### Galerie (Bildergalerie)
+
+1. Klicke **[+ Bild hinzufügen]**
+2. Füge ein Bild hinzu:
+   - **Datei:** Klicke den **[Datei]**-Button und wähle ein Bild vom Rechner (wird automatisch als WebP komprimiert)
+   - **URL:** Oder trage eine Bild-URL direkt ins Feld ein
+3. Optional: **Bildunterschrift** eingeben
+4. Weitere Bilder mit **[+ Bild hinzufügen]** (max. 20 pro Galerie)
+5. Bilder sortieren mit **↑↓** Buttons
+6. Bild löschen mit dem **🗑-Symbol**
+
+**Auf der fertigen Seite:** Bilder werden als responsives Grid dargestellt. Klick auf ein Bild öffnet eine Lightbox mit Vor/Zurück-Navigation (auch per Pfeiltasten). Escape oder Klick auf den Hintergrund schließt die Lightbox.
 
 ### Zitat
 
@@ -311,7 +324,7 @@ Leere Felder werden beim Speichern ignoriert und nicht in die JSON geschrieben. 
 Ja! Wenn du nichts änderst und speicherst, werden die Beispieldaten genau so exportiert.
 
 **Muss ich alle Blöcke in einer Sektion nutzen?**
-Nein. Alle Blöcke (Cards, Timeline, Videos, Zitat, Hinweis) sind optional. Nutze nur was du brauchst.
+Nein. Alle Blöcke (Cards, Timeline, Videos, Galerie, Zitat, Hinweis) sind optional. Nutze nur was du brauchst.
 
 **Wie ändere ich das Icon in der Navigationsleiste?**
 Klicke den **[Datei]**-Button neben "Icon URL" und wähle dein Bild aus. Die Größe kannst du über das Feld "Icon Größe (px)" anpassen (Standard: 46px).

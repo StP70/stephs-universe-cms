@@ -354,7 +354,8 @@ Der Prompt an die KI besteht aus zwei Teilen: `system` und `user`.
 │     ├── paragraphs: dürfen <strong>, <em>, <a> enthalten         │
 │     ├── footerText: HTML-Entities (&copy; etc.)                  │
 │     ├── heroBg: leer lassen                                      │
-│     └── Keine Videos generieren                                  │
+│     ├── Keine Videos generieren                                  │
+│     └── Keine Bildergalerie generieren (Bilder vom User)         │
 │                                                                   │
 │  3. JSON-Schema                                                  │
 │     { slug, title, accentColor, theme, heroBg, heroBadge,       │
@@ -443,6 +444,7 @@ Die Funktion `validateAndFix(data)` in `prompt.js` prüft und korrigiert das KI-
  │  └── Leere optionale Blöcke entfernen:                     │
  │      cards=[] → delete, timeline=[] → delete,              │
  │      paragraphs=[] → delete, videos=[] → delete,           │
+ │      gallery=[] → delete,                                  │
  │      quote ohne .text → delete, warning ohne .text → delete│
  └──────────────────────────────────────────────────────────────┘
         │
