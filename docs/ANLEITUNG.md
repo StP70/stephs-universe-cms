@@ -144,12 +144,13 @@ Jede Sektion kann diese Inhaltsblöcke haben (alle optional):
 
 ### Galerie (Bildergalerie)
 
-1. Klicke **[+ Bild hinzufügen]**
-2. Füge ein Bild hinzu:
+1. **Schnellstart mit Beispielbildern:** Klicke **[Beispiele]** und gib die gewünschte Anzahl ein (1-20). Die Galerie wird mit farbigen Platzhalterbildern und vereinstypischen Bildunterschriften gefüllt. Diese kannst du dann durch echte Fotos ersetzen.
+
+2. **Oder manuell:** Klicke **[+ Bild]** und füge ein Bild hinzu:
    - **Datei:** Klicke den **[Datei]**-Button und wähle ein Bild vom Rechner (wird automatisch als WebP komprimiert)
    - **URL:** Oder trage eine Bild-URL direkt ins Feld ein
 3. Optional: **Bildunterschrift** eingeben
-4. Weitere Bilder mit **[+ Bild hinzufügen]** (max. 20 pro Galerie)
+4. Weitere Bilder mit **[+ Bild]** (max. 20 pro Galerie)
 5. Bilder sortieren mit **↑↓** Buttons
 6. Bild löschen mit dem **🗑-Symbol**
 

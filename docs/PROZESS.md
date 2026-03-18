@@ -564,8 +564,11 @@ experiment-011/
  [+ Video]                 →  addVideo(idx)           →  videos.push({url,...})
                               renderSections()
 
- [+ Bild hinzufügen]       →  addGalleryImage(idx)    →  gallery.push({src,caption})
+ [+ Bild]                  →  addGalleryImage(idx)    →  gallery.push({src,caption})
                               renderSections()           Max 20 Bilder
+
+ [Beispiele]               →  fillGalleryDemo(idx)    →  prompt(Anzahl) → SVG-Platzhalter
+                              renderSections()           + Vereins-Captions einfügen
 
  Seite lädt               →  restoreAutosave()       →  Falls localStorage-Backup
                               (vor bindSettings)         existiert: Restore-Dialog
