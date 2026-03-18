@@ -37,7 +37,8 @@ Der manuelle Modus ist kostenlos und braucht keinen API-Key. Du kopierst einen P
    **Referenz-Homepage (optional):**
    - Trage die URL einer bestehenden Website ein die dir gefaellt
    - Beschreibe was dir an der Referenz gefaellt (z.B. "grosser Hero, Cards fuer Services, FAQ-Bereich")
-   - Claude versucht die Struktur der Referenz-Seite nachzubauen, aber mit deinen Inhalten
+   - Im **API-Modus** wird die Referenz-Seite automatisch abgerufen und der Seiteninhalt an die KI uebergeben -- so kann die Struktur praezise nachgebaut werden
+   - Im **manuellen Modus** wird die URL im Prompt mitgegeben -- Claude (claude.ai) kann die Seite selbst aufrufen und analysieren
 
 4. **Varianten waehlen**
    - Waehle per Checkboxen eine oder mehrere der 5 Varianten aus (Mehrfachauswahl moeglich). Es wird EIN Prompt fuer alle gewaehlten Varianten generiert. Jede Variante erzeugt eine andere Art von Homepage:
@@ -141,6 +142,7 @@ Ueber die Kommandozeile kannst du mehrere Varianten auf einmal generieren -- die
 ```
 cd C:\project-001\experiment-011
 node generate.js "Zahnarztpraxis Wien, modern, Services: Implantate und Prophylaxe" --variants 3
+node generate.js "Fitness-Studio" --ref https://beispiel-fitness.com --ref-notes "5 Sektionen, Cards fuer Kurse"
 ```
 
 **Optionale Parameter:**
@@ -149,6 +151,8 @@ node generate.js "Zahnarztpraxis Wien, modern, Services: Implantate und Prophyla
 |---|---|---|
 | `--variants N` | Anzahl Varianten (1-5) | 3 |
 | `--provider claude` | KI-Provider (claude oder openai) | claude |
+| `--ref URL` | Referenz-Website als strukturelle Vorlage | -- |
+| `--ref-notes "Text"` | Was von der Referenz uebernommen werden soll | -- |
 
 **Ausgabe:**
 ```

@@ -24,14 +24,16 @@ function buildPrompt(description, variantIndex, options) {
   const variant = VARIANT_MATRIX[variantIndex % VARIANT_MATRIX.length];
   const refUrl = (options && options.refUrl) || '';
   const refNotes = (options && options.refNotes) || '';
+  const refContent = (options && options.refContent) || '';
 
   let refBlock = '';
-  if (refUrl || refNotes) {
+  if (refUrl || refNotes || refContent) {
     refBlock = '\nREFERENZ-HOMEPAGE (HÖCHSTE PRIORITÄT):\n' +
-      'Analysiere diese Website und baue die Struktur möglichst genau nach.\n' +
+      'Baue die Struktur dieser Website möglichst genau nach.\n' +
       'Gleiche Anzahl Sektionen, gleiche Sektionstypen, ähnlicher Aufbau.\n' +
       (refUrl ? 'URL: ' + refUrl + '\n' : '') +
-      (refNotes ? 'Was übernehmen: ' + refNotes + '\n' : '');
+      (refNotes ? 'Was übernehmen: ' + refNotes + '\n' : '') +
+      (refContent ? '\nINHALT DER REFERENZ-WEBSITE:\n' + refContent + '\n' : '');
   }
 
   return {

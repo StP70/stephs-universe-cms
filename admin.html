@@ -509,9 +509,9 @@
     var notes = (document.getElementById('genRefNotes') || {}).value || '';
     if (!url && !notes) return '';
     var block = 'REFERENZ-HOMEPAGE (HÖCHSTE PRIORITÄT):\n';
-    block += 'Analysiere diese Website und baue die Struktur möglichst genau nach.\n';
+    block += 'Baue die Struktur dieser Website möglichst genau nach.\n';
     block += 'Gleiche Anzahl Sektionen, gleiche Sektionstypen, ähnlicher Aufbau.\n';
-    if (url) block += 'URL: ' + url + '\n';
+    if (url) block += 'URL: ' + url + '\nÖffne diese URL und analysiere die Seitenstruktur.\n';
     if (notes) block += 'Was übernehmen: ' + notes + '\n';
     block += '\n';
     return block;
@@ -589,7 +589,7 @@
         var res = await fetch('/api/generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ provider: provider, description: desc, variantIndex: indices[i] })
+          body: JSON.stringify({ provider: provider, description: desc, variantIndex: indices[i], refUrl: (document.getElementById('genRefUrl') || {}).value || '', refNotes: (document.getElementById('genRefNotes') || {}).value || '' })
         });
         if (!res.ok) {
           var err = await res.json().catch(function() { return {}; });
