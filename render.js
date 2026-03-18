@@ -159,6 +159,23 @@
           return content.replace(vMatch[0], vHtml);
         });
 
+        // Gallery
+        s = s.replace(/\{\{#if this\.gallery\}\}([\s\S]*?)\{\{\/if\}\}/g, (_, content) => {
+          if (!section.gallery) return '';
+          const gMatch = content.match(/\{\{#each this\.gallery\}\}([\s\S]*?)\{\{\/each\}\}/);
+          if (!gMatch) return content;
+          const gHtml = section.gallery.map(item => {
+            let itemHtml = gMatch[1]
+              .replace(/\{\{this\.src\}\}/g, item.src || '')
+              .replace(/\{\{this\.caption\}\}/g, item.caption || '');
+            // Caption-Conditional innerhalb des each
+            itemHtml = itemHtml.replace(/\{\{#if this\.caption\}\}([\s\S]*?)\{\{\/if\}\}/g,
+              item.caption ? '$1' : '');
+            return itemHtml;
+          }).join('\n');
+          return content.replace(gMatch[0], gHtml);
+        });
+
         // Warning
         s = s.replace(/\{\{#if this\.warning\}\}([\s\S]*?)\{\{\/if\}\}/g, (_, content) => {
           if (!section.warning) return '';

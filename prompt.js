@@ -55,6 +55,7 @@ REGELN:
 - footerText: Verwende HTML-Entities: &copy; 2026 &middot; [Firmenname]
 - heroBg: Leer lassen (wird manuell gesetzt).
 - Keine Videos generieren (videos-Array leer lassen oder weglassen).
+- Keine Bildergalerie generieren (gallery-Array weglassen). Bilder kommen vom User.
 
 JSON-SCHEMA:
 {
@@ -185,6 +186,7 @@ function validateAndFix(data) {
       if (s.timeline && s.timeline.length === 0) delete s.timeline;
       if (s.paragraphs && s.paragraphs.length === 0) delete s.paragraphs;
       if (s.videos && s.videos.length === 0) delete s.videos;
+      if (s.gallery && s.gallery.length === 0) delete s.gallery;
       if (s.quote && !s.quote.text) delete s.quote;
       if (s.warning && !s.warning.text) delete s.warning;
     });

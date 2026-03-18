@@ -631,7 +631,7 @@
     pageData.sections = (pageData.sections || []).map(function(s) {
       return Object.assign({
         id: '', navLabel: '', label: '', title: '', image: '',
-        paragraphs: [], quote: null, cards: [], timeline: [], videos: [], warning: null
+        paragraphs: [], quote: null, cards: [], timeline: [], videos: [], gallery: [], warning: null
       }, s);
     });
     if (data.accentColor && !data.accentLight) {
@@ -1414,7 +1414,7 @@ function restoreAutosave() {
       pageData = data;
       pageData.sections = (pageData.sections || []).map(s => ({
         id: '', navLabel: '', label: '', title: '', image: '',
-        paragraphs: [], quote: null, cards: [], timeline: [], videos: [], warning: null,
+        paragraphs: [], quote: null, cards: [], timeline: [], videos: [], gallery: [], warning: null,
         ...s
       }));
       return true;
@@ -1443,6 +1443,7 @@ function addSection() {
     cards: [],
     timeline: [],
     videos: [],
+    gallery: [],
     warning: null
   });
   renderSections();
@@ -1597,6 +1598,56 @@ function updateVideo(sIdx, vIdx, field, value) {
       }
     }
   }
+  scheduleAutosave();
+}
+
+// ---- Gallery ----
+function addGalleryImage(idx) {
+  if (!pageData.sections[idx].gallery) pageData.sections[idx].gallery = [];
+  if (pageData.sections[idx].gallery.length >= 20) {
+    alert('Maximal 20 Bilder pro Galerie.');
+    return;
+  }
+  pageData.sections[idx].gallery.push({ src: '', caption: '' });
+  renderSectionBody(idx);
+  scheduleAutosave();
+}
+function removeGalleryImage(sIdx, gIdx) {
+  pageData.sections[sIdx].gallery.splice(gIdx, 1);
+  renderSectionBody(sIdx);
+  scheduleAutosave();
+}
+function updateGalleryImage(sIdx, gIdx, field, value) {
+  if (!pageData.sections[sIdx].gallery[gIdx]) return;
+  pageData.sections[sIdx].gallery[gIdx][field] = value;
+  scheduleAutosave();
+}
+function moveGalleryImage(sIdx, gIdx, dir) {
+  var arr = pageData.sections[sIdx].gallery;
+  var newIdx = gIdx + dir;
+  if (newIdx < 0 || newIdx >= arr.length) return;
+  var tmp = arr[gIdx];
+  arr[gIdx] = arr[newIdx];
+  arr[newIdx] = tmp;
+  renderSectionBody(sIdx);
+  scheduleAutosave();
+}
+function pickGalleryImage(sIdx, gIdx) {
+  var input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = function(e) { handleGalleryImagePick(sIdx, gIdx, e); };
+  input.click();
+}
+async function handleGalleryImagePick(sIdx, gIdx, event) {
+  var file = event.target.files[0];
+  if (!file) return;
+  var dataUrl = await compressImage(file);
+  pageData.sections[sIdx].gallery[gIdx].src = dataUrl;
+  var thumb = document.getElementById('galThumb-' + sIdx + '-' + gIdx);
+  if (thumb) { thumb.src = dataUrl; thumb.style.display = 'block'; }
+  var urlInput = document.getElementById('galUrl-' + sIdx + '-' + gIdx);
+  if (urlInput) urlInput.value = file.name;
   scheduleAutosave();
 }
 
@@ -1940,6 +1991,33 @@ function renderSectionBody(idx) {
       </div>
     `).join('')}
 
+    <!-- GALLERY -->
+    <div class="block-header">
+      <h4>Galerie</h4>
+      <button class="btn btn-sm" onclick="addGalleryImage(${idx})">+ Bild hinzufügen (${(s.gallery || []).length}/20)</button>
+    </div>
+    ${(s.gallery || []).map((g, gi) => `
+      <div class="list-item" style="align-items:flex-start">
+        <img id="galThumb-${idx}-${gi}" src="${g.src && g.src.startsWith('data:') ? g.src : ''}"
+          style="width:60px;height:45px;object-fit:cover;border-radius:6px;border:1px solid var(--border);flex-shrink:0;${g.src && g.src.startsWith('data:') ? '' : 'display:none;'}">
+        <div class="list-fields">
+          <div style="display:flex;gap:.3rem;align-items:center">
+            <button type="button" class="btn btn-sm" onclick="pickGalleryImage(${idx},${gi})"
+              style="padding:.2rem .5rem;font-size:.75rem">Datei</button>
+            <input type="text" id="galUrl-${idx}-${gi}" value="${esc(g.src && !g.src.startsWith('data:') ? g.src : (g.src ? 'Bild hochgeladen' : ''))}"
+              placeholder="URL oder Datei wählen" oninput="updateGalleryImage(${idx},${gi},'src',this.value)">
+          </div>
+          <input type="text" value="${esc(g.caption || '')}" placeholder="Bildunterschrift (optional)"
+            oninput="updateGalleryImage(${idx},${gi},'caption',this.value)">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.15rem">
+          <button class="btn btn-icon btn-sm" onclick="moveGalleryImage(${idx},${gi},-1)" title="Nach oben">&#8593;</button>
+          <button class="btn btn-icon btn-sm" onclick="moveGalleryImage(${idx},${gi},1)" title="Nach unten">&#8595;</button>
+        </div>
+        <button class="btn btn-icon btn-sm btn-danger" onclick="removeGalleryImage(${idx},${gi})">&#128465;</button>
+      </div>
+    `).join('')}
+
     <!-- WARNING -->
     <div class="block-header"><h4>Hinweis</h4></div>
     <div class="field">
@@ -1992,6 +2070,9 @@ function exportJSON() {
     if (s.videos && s.videos.length && s.videos.some(v => v.url)) {
       clean.videos = s.videos.filter(v => v.url);
     }
+    if (s.gallery && s.gallery.length && s.gallery.some(g => g.src)) {
+      clean.gallery = s.gallery.filter(g => g.src);
+    }
     if (s.warning && (s.warning.title || s.warning.text)) clean.warning = s.warning;
     return clean;
   });
@@ -2030,7 +2111,7 @@ function importJSON(event) {
       // Ensure sections have all fields
       pageData.sections = pageData.sections.map(s => ({
         id: '', navLabel: '', label: '', title: '', image: '',
-        paragraphs: [], quote: null, cards: [], timeline: [], videos: [], warning: null,
+        paragraphs: [], quote: null, cards: [], timeline: [], videos: [], gallery: [], warning: null,
         ...s
       }));
       loadSettingsToUI();
@@ -2379,6 +2460,63 @@ padding: .25rem .7rem; border-radius: 100px; margin-top: .7rem;
 .badge-arte { background: #ff6600; color: #fff; }
 .badge-youtube { background: #ff0000; color: #fff; }
 .badge-custom { background: var(--accent); color: #000; }
+/* ---- GALLERY ---- */
+.gallery-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+gap: 0.75rem; margin-top: 2rem;
+}
+.gallery-item {
+aspect-ratio: 4/3; overflow: hidden; border-radius: var(--radius);
+cursor: pointer; position: relative;
+border: 1px solid var(--border);
+transition: transform .25s ease, box-shadow .25s ease;
+}
+.gallery-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.gallery-item img {
+width: 100%; height: 100%; object-fit: cover;
+transition: transform .3s;
+}
+.gallery-item:hover img { transform: scale(1.05); }
+.gallery-caption {
+position: absolute; bottom: 0; left: 0; right: 0;
+background: linear-gradient(transparent, rgba(0,0,0,.7));
+color: #fff; font-size: .8rem; padding: .5rem .75rem;
+opacity: 0; transition: opacity .3s;
+}
+.gallery-item:hover .gallery-caption { opacity: 1; }
+/* ---- LIGHTBOX ---- */
+.lightbox-overlay {
+position: fixed; inset: 0; z-index: 300;
+background: rgba(0,0,0,.92);
+display: none; align-items: center; justify-content: center;
+flex-direction: column;
+}
+.lightbox-overlay.active { display: flex; }
+.lightbox-overlay img {
+max-width: 90vw; max-height: 80vh; object-fit: contain;
+border-radius: 8px;
+}
+.lightbox-caption {
+color: #fff; font-size: .9rem; margin-top: .75rem;
+max-width: 90vw; text-align: center;
+}
+.lightbox-close {
+position: absolute; top: 1rem; right: 1.5rem;
+background: none; border: none; color: #fff;
+font-size: 2rem; cursor: pointer; opacity: .7;
+transition: opacity .2s;
+}
+.lightbox-close:hover { opacity: 1; }
+.lightbox-nav {
+position: absolute; top: 50%; transform: translateY(-50%);
+background: rgba(255,255,255,.1); border: none; color: #fff;
+font-size: 2rem; padding: .5rem 1rem; cursor: pointer;
+border-radius: 8px; opacity: .7; transition: opacity .2s;
+}
+.lightbox-nav:hover { opacity: 1; background: rgba(255,255,255,.2); }
+.lightbox-prev { left: 1rem; }
+.lightbox-next { right: 1rem; }
 .divider {
 border: none; height: 1px;
 background: linear-gradient(90deg, transparent, var(--border), transparent);
@@ -2476,6 +2614,16 @@ nav { gap: .6rem; }
 {{/each}}
 </div>
 {{/if}}
+{{#if this.gallery}}
+<div class="gallery-grid" data-gallery>
+{{#each this.gallery}}
+<div class="gallery-item" onclick="openLightbox(this)">
+<img src="{{this.src}}" alt="{{this.caption}}" loading="lazy">
+{{#if this.caption}}<div class="gallery-caption">{{this.caption}}</div>{{/if}}
+</div>
+{{/each}}
+</div>
+{{/if}}
 {{#if this.warning}}
 <div class="hinweis">
 <div class="hinweis-icon">⚠️</div>
@@ -2493,6 +2641,48 @@ const fadeObserver = new IntersectionObserver((entries) => {
 entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
 }, { threshold: 0.08 });
 document.querySelectorAll('.fade-up').forEach(el => fadeObserver.observe(el));
+// ---- Lightbox (erstellt DOM bei erstem Aufruf) ----
+let lbItems = [], lbIndex = 0, lbOverlay = null;
+function ensureLightbox() {
+if (lbOverlay) return;
+lbOverlay = document.createElement('div');
+lbOverlay.className = 'lightbox-overlay';
+lbOverlay.innerHTML = '<button class="lightbox-close" onclick="closeLightbox()">&times;</button>' +
+'<button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)">&#8249;</button>' +
+'<button class="lightbox-nav lightbox-next" onclick="navLightbox(1)">&#8250;</button>' +
+'<img id="lightboxImg" src="" alt="">' +
+'<div class="lightbox-caption" id="lightboxCaption"></div>';
+lbOverlay.addEventListener('click', function(e) { if (e.target === lbOverlay) closeLightbox(); });
+document.body.appendChild(lbOverlay);
+}
+function openLightbox(el) {
+ensureLightbox();
+const grid = el.closest('[data-gallery]');
+lbItems = Array.from(grid.querySelectorAll('.gallery-item'));
+lbIndex = lbItems.indexOf(el);
+showLightboxImage();
+lbOverlay.classList.add('active');
+document.addEventListener('keydown', lbKeyHandler);
+}
+function closeLightbox() {
+if (lbOverlay) lbOverlay.classList.remove('active');
+document.removeEventListener('keydown', lbKeyHandler);
+}
+function navLightbox(dir) {
+lbIndex = (lbIndex + dir + lbItems.length) % lbItems.length;
+showLightboxImage();
+}
+function showLightboxImage() {
+const img = lbItems[lbIndex].querySelector('img');
+const cap = lbItems[lbIndex].querySelector('.gallery-caption');
+document.getElementById('lightboxImg').src = img.src;
+document.getElementById('lightboxCaption').textContent = cap ? cap.textContent : '';
+}
+function lbKeyHandler(e) {
+if (e.key === 'Escape') closeLightbox();
+if (e.key === 'ArrowLeft') navLightbox(-1);
+if (e.key === 'ArrowRight') navLightbox(1);
+}
 const navLinks = document.querySelectorAll('.nav-links a');
 const sectionIds = [];
 navLinks.forEach(link => {

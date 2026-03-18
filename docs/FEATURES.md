@@ -28,7 +28,7 @@
 | Akkordeon-Layout | Sektionen auf-/zuklappbar für Übersicht |
 | Hinzufügen / Löschen | Neue Sektionen anlegen, bestehende entfernen (mit Bestätigung) |
 | Sortieren | Sektionen per Pfeil-Buttons nach oben/unten verschieben |
-| 7 Inhaltsblöcke | Text, Cards, Timeline, Videos, Zitat, Warnung, Bild – frei kombinierbar pro Sektion |
+| 8 Inhaltsblöcke | Text, Cards, Timeline, Videos, Galerie, Zitat, Warnung, Bild – frei kombinierbar pro Sektion |
 
 ## Inhaltsblöcke
 
@@ -39,6 +39,7 @@
 | **Timeline** | Zeitpunkt + Titel + Beschreibung, 2-Spalten Layout (Zeit links, Titel+Text rechts), Card-Styling |
 | **Videos** | URL + Thumbnail + Titel + Badge, YouTube-Thumbnail wird automatisch erkannt |
 | **Zitat** | Text + Quellenangabe, dekoratives Anführungszeichen |
+| **Galerie** | Mehrere Bilder als responsives Grid (auto-fit, min 200px), Lightbox mit Vor/Zurück-Navigation, optionale Bildunterschriften, max 20 Bilder, WebP-Komprimierung |
 | **Warnung** | Titel + Text, gelber Hinweis-Block |
 | **Bild** | Datei-Upload oder URL, Sektions-Kopfbild |
 
