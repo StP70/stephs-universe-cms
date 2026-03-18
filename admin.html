@@ -1650,6 +1650,40 @@ async function handleGalleryImagePick(sIdx, gIdx, event) {
   if (urlInput) urlInput.value = file.name;
   scheduleAutosave();
 }
+function fillGalleryDemo(idx) {
+  var count = parseInt(prompt('Wie viele Beispielbilder? (1-20)', '6'));
+  if (!count || isNaN(count)) return;
+  count = Math.max(1, Math.min(20, count));
+  if (!pageData.sections[idx].gallery) pageData.sections[idx].gallery = [];
+  var existing = pageData.sections[idx].gallery.length;
+  if (existing + count > 20) {
+    count = 20 - existing;
+    if (count <= 0) { alert('Galerie ist bereits voll (max 20).'); return; }
+  }
+  var captions = [
+    'Sommerfest 2026', 'Vereinsausflug', 'Mannschaftsfoto', 'Siegerehrung',
+    'Training im Freien', 'Weihnachtsfeier', 'Jugendturnier', 'Generalversammlung',
+    'Wandertag', 'Grillabend', 'Saisonstart', 'Meisterschaft',
+    'Sportlerball', 'Familienfest', 'Lauftreff', 'Workshop',
+    'Tag der offenen Tür', 'Vereinsjubiläum', 'Pokalfinale', 'Neujahrsempfang'
+  ];
+  for (var i = 0; i < count; i++) {
+    var n = existing + i + 1;
+    var hue = (n * 137) % 360;
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">' +
+      '<rect width="800" height="600" fill="hsl(' + hue + ',45%,35%)"/>' +
+      '<text x="400" y="280" text-anchor="middle" font-family="Arial" font-size="80" fill="rgba(255,255,255,.3)">Bild ' + n + '</text>' +
+      '<text x="400" y="360" text-anchor="middle" font-family="Arial" font-size="32" fill="rgba(255,255,255,.2)">800 × 600</text>' +
+      '</svg>';
+    var dataUrl = 'data:image/svg+xml;base64,' + btoa(svg);
+    pageData.sections[idx].gallery.push({
+      src: dataUrl,
+      caption: captions[(n - 1) % captions.length]
+    });
+  }
+  renderSectionBody(idx);
+  scheduleAutosave();
+}
 
 // ============================================================
 // EMOJI PICKER (Singleton on document.body)
@@ -1994,7 +2028,10 @@ function renderSectionBody(idx) {
     <!-- GALLERY -->
     <div class="block-header">
       <h4>Galerie</h4>
-      <button class="btn btn-sm" onclick="addGalleryImage(${idx})">+ Bild hinzufügen (${(s.gallery || []).length}/20)</button>
+      <div style="display:flex;gap:.3rem;margin-left:auto">
+        <button class="btn btn-sm" onclick="fillGalleryDemo(${idx})" title="Beispielbilder einfügen">Beispiele</button>
+        <button class="btn btn-sm" onclick="addGalleryImage(${idx})">+ Bild (${(s.gallery || []).length}/20)</button>
+      </div>
     </div>
     ${(s.gallery || []).map((g, gi) => `
       <div class="list-item" style="align-items:flex-start">
