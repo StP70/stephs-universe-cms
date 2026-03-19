@@ -984,11 +984,162 @@
 
   <!-- TAB: BILD-GENERATOR -->
   <div id="tabBildgenerator" class="tab-content" style="padding:1.5rem">
-    <div class="panel" style="padding:1.25rem">
+    <div class="panel" id="imgGenPanel">
       <div class="panel-title">Bild-Generator</div>
-      <p style="color:var(--text-muted);font-size:.9rem">Bilder für Hero-Hintergründe, Sektionen und Galerien generieren.</p>
+      <div class="panel-body">
+        <p style="color:var(--text-muted);font-size:.85rem;margin-bottom:1rem">Bilder für Hero-Hintergründe, Sektionen und Galerien generieren (via Pollinations.ai – kostenlos, kein API-Key nötig).</p>
+        <div class="field">
+          <label>Bildbeschreibung</label>
+          <textarea id="imgGenPrompt" rows="3" placeholder="z.B. Dunkler abstrakter Hintergrund mit smaragdgrünen Lichtpartikeln, modern, elegant, für eine Tech-Website"></textarea>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Breite (px)</label>
+            <input type="number" id="imgGenWidth" value="1400" min="256" max="2048" step="1">
+          </div>
+          <div class="field">
+            <label>Höhe (px)</label>
+            <input type="number" id="imgGenHeight" value="800" min="256" max="2048" step="1">
+          </div>
+          <div class="field">
+            <label>Modell</label>
+            <select id="imgGenModel">
+              <option value="flux">Flux (Standard)</option>
+              <option value="turbo">Turbo (Schnell)</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap">
+          <button class="btn" id="imgGenButton" onclick="generateImage()" style="background:var(--accent);color:#000;font-weight:600">Bild generieren</button>
+          <button class="btn btn-sm" id="imgGenNewSeed" onclick="generateImage(true)" style="display:none">Neue Variante</button>
+        </div>
+        <div id="imgGenStatus" style="font-size:.85rem;color:var(--text-muted);margin-top:.5rem"></div>
+
+        <!-- Ergebnis -->
+        <div id="imgGenResult" style="display:none;margin-top:1rem">
+          <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#000">
+            <img id="imgGenPreview" style="width:100%;display:block" alt="Generiertes Bild">
+          </div>
+          <div style="display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap">
+            <button class="btn btn-sm" onclick="imgGenUseAsHeroBg()">Als Hero-Hintergrund</button>
+            <button class="btn btn-sm" onclick="imgGenDownload()">Herunterladen</button>
+            <button class="btn btn-sm" onclick="imgGenCopyUrl()">URL kopieren</button>
+          </div>
+        </div>
+
+        <!-- Galerie der generierten Bilder -->
+        <div id="imgGenGallery" style="margin-top:1.25rem;display:none">
+          <label style="font-size:.85rem;font-weight:500;color:var(--text-muted);margin-bottom:.4rem;display:block">Bisherige Ergebnisse</label>
+          <div id="imgGenGalleryGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.5rem"></div>
+        </div>
+      </div>
     </div>
   </div><!-- /tabBildgenerator -->
+
+  <script>
+  // ---- Bild-Generator Logik ----
+  var _imgGenHistory = [];
+  var _imgGenCurrentUrl = '';
+
+  function generateImage(newSeed) {
+    var prompt = document.getElementById('imgGenPrompt').value.trim();
+    if (!prompt) { alert('Bitte Bildbeschreibung eingeben.'); return; }
+    var width = parseInt(document.getElementById('imgGenWidth').value) || 1400;
+    var height = parseInt(document.getElementById('imgGenHeight').value) || 800;
+    var model = document.getElementById('imgGenModel').value;
+    var seed = newSeed ? Math.floor(Math.random() * 999999) : '';
+
+    var btn = document.getElementById('imgGenButton');
+    var status = document.getElementById('imgGenStatus');
+    var result = document.getElementById('imgGenResult');
+    var preview = document.getElementById('imgGenPreview');
+
+    btn.disabled = true;
+    btn.textContent = 'Generiert...';
+    status.textContent = 'Bild wird generiert, bitte warten...';
+    result.style.display = 'none';
+
+    var encodedPrompt = encodeURIComponent(prompt);
+    var url = 'https://image.pollinations.ai/prompt/' + encodedPrompt +
+      '?width=' + width + '&height=' + height + '&model=' + model +
+      '&nologo=true' + (seed ? '&seed=' + seed : '&seed=' + Math.floor(Math.random() * 999999));
+
+    var img = new Image();
+    img.onload = function() {
+      _imgGenCurrentUrl = url;
+      preview.src = url;
+      result.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Bild generieren';
+      document.getElementById('imgGenNewSeed').style.display = '';
+      status.textContent = 'Bild generiert! (' + width + 'x' + height + ')';
+
+      _imgGenHistory.unshift({ url: url, prompt: prompt, width: width, height: height });
+      renderImgGenGallery();
+    };
+    img.onerror = function() {
+      btn.disabled = false;
+      btn.textContent = 'Bild generieren';
+      status.textContent = 'Fehler beim Generieren. Bitte erneut versuchen.';
+    };
+    img.src = url;
+  }
+
+  function imgGenUseAsHeroBg() {
+    if (!_imgGenCurrentUrl) return;
+    var field = document.querySelector('input[data-field="heroBg"]');
+    if (field) {
+      field.value = _imgGenCurrentUrl;
+      field.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    if (typeof pageData !== 'undefined') {
+      pageData.heroBg = _imgGenCurrentUrl;
+      if (typeof scheduleAutosave === 'function') scheduleAutosave();
+    }
+    document.getElementById('imgGenStatus').textContent = 'Als Hero-Hintergrund gesetzt!';
+    switchTab('editor');
+  }
+
+  function imgGenDownload() {
+    if (!_imgGenCurrentUrl) return;
+    var a = document.createElement('a');
+    a.href = _imgGenCurrentUrl;
+    a.download = 'generated-image.png';
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  function imgGenCopyUrl() {
+    if (!_imgGenCurrentUrl) return;
+    navigator.clipboard.writeText(_imgGenCurrentUrl).then(function() {
+      document.getElementById('imgGenStatus').textContent = 'URL kopiert!';
+    });
+  }
+
+  function renderImgGenGallery() {
+    var gallery = document.getElementById('imgGenGallery');
+    var grid = document.getElementById('imgGenGalleryGrid');
+    if (_imgGenHistory.length <= 1) { gallery.style.display = 'none'; return; }
+    gallery.style.display = 'block';
+    grid.innerHTML = _imgGenHistory.map(function(item, idx) {
+      return '<div style="cursor:pointer;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;position:relative" onclick="imgGenSelectFromGallery(' + idx + ')" title="' + item.prompt.replace(/"/g, '&quot;') + '">' +
+        '<img src="' + item.url + '" style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover" loading="lazy">' +
+        '<div style="position:absolute;bottom:0;left:0;right:0;padding:.25rem .4rem;background:rgba(0,0,0,.7);font-size:.65rem;color:#ccc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + item.prompt + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function imgGenSelectFromGallery(idx) {
+    var item = _imgGenHistory[idx];
+    if (!item) return;
+    _imgGenCurrentUrl = item.url;
+    document.getElementById('imgGenPreview').src = item.url;
+    document.getElementById('imgGenResult').style.display = 'block';
+    document.getElementById('imgGenStatus').textContent = 'Bild aus Galerie gewählt. (' + item.width + 'x' + item.height + ')';
+  }
+  </script>
 
   <!-- TAB: EDITOR -->
   <div id="tabEditor" class="tab-content" style="padding:0">
