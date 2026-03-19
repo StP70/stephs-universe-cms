@@ -995,17 +995,18 @@
         <div class="field-row">
           <div class="field">
             <label>Breite (px)</label>
-            <input type="number" id="imgGenWidth" value="1400" min="256" max="2048" step="1">
+            <input type="number" id="imgGenWidth" value="1024" min="256" max="1536" step="1">
           </div>
           <div class="field">
             <label>Höhe (px)</label>
-            <input type="number" id="imgGenHeight" value="800" min="256" max="2048" step="1">
+            <input type="number" id="imgGenHeight" value="576" min="256" max="1536" step="1">
           </div>
           <div class="field">
             <label>Modell</label>
             <select id="imgGenModel">
-              <option value="flux">Flux (Standard)</option>
+              <option value="sana">Sana (Standard)</option>
               <option value="turbo">Turbo (Schnell)</option>
+              <option value="zimage">Zimage (Detailreich)</option>
             </select>
           </div>
         </div>
@@ -1044,10 +1045,10 @@
   function generateImage(newSeed) {
     var prompt = document.getElementById('imgGenPrompt').value.trim();
     if (!prompt) { alert('Bitte Bildbeschreibung eingeben.'); return; }
-    var width = parseInt(document.getElementById('imgGenWidth').value) || 1400;
-    var height = parseInt(document.getElementById('imgGenHeight').value) || 800;
+    var width = parseInt(document.getElementById('imgGenWidth').value) || 1024;
+    var height = parseInt(document.getElementById('imgGenHeight').value) || 576;
     var model = document.getElementById('imgGenModel').value;
-    var seed = newSeed ? Math.floor(Math.random() * 999999) : '';
+    var seed = newSeed ? Math.floor(Math.random() * 999999) : Math.floor(Math.random() * 999999);
 
     var btn = document.getElementById('imgGenButton');
     var status = document.getElementById('imgGenStatus');
@@ -1056,33 +1057,56 @@
 
     btn.disabled = true;
     btn.textContent = 'Generiert...';
-    status.textContent = 'Bild wird generiert, bitte warten...';
+    status.textContent = 'Bild wird generiert, bitte warten... (kann bis zu 60 Sek. dauern)';
     result.style.display = 'none';
 
     var encodedPrompt = encodeURIComponent(prompt);
     var url = 'https://image.pollinations.ai/prompt/' + encodedPrompt +
       '?width=' + width + '&height=' + height + '&model=' + model +
-      '&nologo=true' + (seed ? '&seed=' + seed : '&seed=' + Math.floor(Math.random() * 999999));
+      '&nologo=true&nofeed=true&seed=' + seed;
 
-    var img = new Image();
-    img.onload = function() {
+    // Erst per fetch prüfen ob der Server antwortet, dann Bild laden
+    var timeout = setTimeout(function() {
+      btn.disabled = false;
+      btn.textContent = 'Bild generieren';
+      status.textContent = 'Timeout: Der Server antwortet nicht. Pollinations.ai ist möglicherweise überlastet – bitte später erneut versuchen.';
+    }, 90000);
+
+    fetch(url).then(function(res) {
+      clearTimeout(timeout);
+      if (!res.ok) {
+        return res.text().then(function(body) {
+          var msg = 'Server-Fehler (HTTP ' + res.status + ')';
+          try { var j = JSON.parse(body); if (j.message) msg += ': ' + j.message; } catch(e) {}
+          throw new Error(msg);
+        });
+      }
+      var contentType = res.headers.get('content-type') || '';
+      if (!contentType.startsWith('image/')) {
+        throw new Error('Server liefert kein Bild (Content-Type: ' + contentType + '). API evtl. überlastet.');
+      }
+      return res.blob();
+    }).then(function(blob) {
+      if (!blob || blob.size === 0) {
+        throw new Error('Server liefert leeres Bild. API evtl. überlastet – bitte später erneut versuchen.');
+      }
+      var objectUrl = URL.createObjectURL(blob);
       _imgGenCurrentUrl = url;
-      preview.src = url;
+      preview.src = objectUrl;
       result.style.display = 'block';
       btn.disabled = false;
       btn.textContent = 'Bild generieren';
       document.getElementById('imgGenNewSeed').style.display = '';
-      status.textContent = 'Bild generiert! (' + width + 'x' + height + ')';
+      status.textContent = 'Bild generiert! (' + width + 'x' + height + ', Modell: ' + model + ')';
 
-      _imgGenHistory.unshift({ url: url, prompt: prompt, width: width, height: height });
+      _imgGenHistory.unshift({ url: url, prompt: prompt, width: width, height: height, objectUrl: objectUrl });
       renderImgGenGallery();
-    };
-    img.onerror = function() {
+    }).catch(function(err) {
+      clearTimeout(timeout);
       btn.disabled = false;
       btn.textContent = 'Bild generieren';
-      status.textContent = 'Fehler beim Generieren. Bitte erneut versuchen.';
-    };
-    img.src = url;
+      status.textContent = err.message || 'Fehler beim Generieren. Pollinations.ai ist möglicherweise nicht erreichbar.';
+    });
   }
 
   function imgGenUseAsHeroBg() {
@@ -1124,8 +1148,9 @@
     if (_imgGenHistory.length <= 1) { gallery.style.display = 'none'; return; }
     gallery.style.display = 'block';
     grid.innerHTML = _imgGenHistory.map(function(item, idx) {
+      var imgSrc = item.objectUrl || item.url;
       return '<div style="cursor:pointer;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;position:relative" onclick="imgGenSelectFromGallery(' + idx + ')" title="' + item.prompt.replace(/"/g, '&quot;') + '">' +
-        '<img src="' + item.url + '" style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover" loading="lazy">' +
+        '<img src="' + imgSrc + '" style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover" loading="lazy">' +
         '<div style="position:absolute;bottom:0;left:0;right:0;padding:.25rem .4rem;background:rgba(0,0,0,.7);font-size:.65rem;color:#ccc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + item.prompt + '</div>' +
       '</div>';
     }).join('');
@@ -1135,7 +1160,7 @@
     var item = _imgGenHistory[idx];
     if (!item) return;
     _imgGenCurrentUrl = item.url;
-    document.getElementById('imgGenPreview').src = item.url;
+    document.getElementById('imgGenPreview').src = item.objectUrl || item.url;
     document.getElementById('imgGenResult').style.display = 'block';
     document.getElementById('imgGenStatus').textContent = 'Bild aus Galerie gewählt. (' + item.width + 'x' + item.height + ')';
   }
