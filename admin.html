@@ -291,6 +291,7 @@
   <!-- TAB-BAR -->
   <div class="tab-bar" style="padding:0 1.5rem;border-bottom:1px solid var(--border);background:var(--bg-elevated)">
     <button class="tab-btn main-tab-btn active" onclick="switchTab('generator')" style="flex:0;padding:.6rem 1.5rem">KI-Generator</button>
+    <button class="tab-btn main-tab-btn" onclick="switchTab('bildgenerator')" style="flex:0;padding:.6rem 1.5rem">Bild-Generator</button>
     <button class="tab-btn main-tab-btn" onclick="switchTab('editor')" style="flex:0;padding:.6rem 1.5rem">Editor</button>
   </div>
 
@@ -980,6 +981,14 @@
   </script>
 
   </div><!-- /tabGenerator -->
+
+  <!-- TAB: BILD-GENERATOR -->
+  <div id="tabBildgenerator" class="tab-content" style="padding:1.5rem">
+    <div class="panel" style="padding:1.25rem">
+      <div class="panel-title">Bild-Generator</div>
+      <p style="color:var(--text-muted);font-size:.9rem">Bilder für Hero-Hintergründe, Sektionen und Galerien generieren.</p>
+    </div>
+  </div><!-- /tabBildgenerator -->
 
   <!-- TAB: EDITOR -->
   <div id="tabEditor" class="tab-content" style="padding:0">
@@ -2766,8 +2775,9 @@ function switchTab(tabName) {
   var tab = document.getElementById('tab' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
   if (tab) tab.classList.add('active');
   document.querySelectorAll('.main-tab-btn').forEach(function(btn) {
-    if ((tabName === 'generator' && btn.textContent.indexOf('Generator') !== -1) ||
-        (tabName === 'editor' && btn.textContent.indexOf('Editor') !== -1)) {
+    if ((tabName === 'generator' && btn.textContent === 'KI-Generator') ||
+        (tabName === 'bildgenerator' && btn.textContent === 'Bild-Generator') ||
+        (tabName === 'editor' && btn.textContent === 'Editor')) {
       btn.classList.add('active');
     }
   });
