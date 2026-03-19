@@ -1,0 +1,515 @@
+```json
+[
+  {
+    "slug": "pythagoras-v1",
+    "title": "Der Satz des Pythagoras",
+    "accentColor": "#10b981",
+    "theme": "dark",
+    "heroBg": "",
+    "heroBadge": "Mathematik",
+    "heroTitle": "Der Satz des<br>Pythagoras",
+    "heroSubtitle": "Eine der grundlegendsten Erkenntnisse der Geometrie – präzise erklärt, Schritt für Schritt.",
+    "ctaText": "Jetzt verstehen",
+    "footerText": "&copy; 2026 Pythagoras Erklärt",
+    "sections": [
+      {
+        "id": "grundlage",
+        "navLabel": "Grundlage",
+        "label": "THEORIE",
+        "title": "Was besagt der Satz?",
+        "paragraphs": [
+          "In jedem <strong>rechtwinkligen Dreieck</strong> gilt: Das Quadrat über der Hypotenuse ist gleich der Summe der Quadrate über den beiden Katheten.",
+          "Formal ausgedrückt lautet die Formel: <strong>a² + b² = c²</strong> – wobei <em>c</em> die Hypotenuse (die längste Seite, gegenüber dem rechten Winkel) und <em>a</em> sowie <em>b</em> die beiden Katheten sind.",
+          "Diese Formel gilt ausnahmslos für jedes rechtwinklige Dreieck – unabhängig von Größe oder Proportion."
+        ]
+      },
+      {
+        "id": "begriffe",
+        "navLabel": "Begriffe",
+        "label": "DEFINITIONEN",
+        "title": "Die drei Seiten im Überblick",
+        "cards": [
+          {
+            "icon": "📐",
+            "title": "Kathete a",
+            "text": "Eine der beiden Seiten, die den rechten Winkel einschließen. Sie liegt dem rechten Winkel anliegend gegenüber einer der spitzen Ecken."
+          },
+          {
+            "icon": "📏",
+            "title": "Kathete b",
+            "text": "Die zweite Seite, die den rechten Winkel bildet. Zusammen mit Kathete a ergibt sie die Grundstruktur des rechtwinkligen Dreiecks."
+          },
+          {
+            "icon": "🔺",
+            "title": "Hypotenuse c",
+            "text": "Die längste Seite des rechtwinkligen Dreiecks. Sie liegt stets gegenüber dem rechten Winkel und ist Gegenstand der Berechnung."
+          },
+          {
+            "icon": "🔲",
+            "title": "Quadrat über einer Seite",
+            "text": "Jede Seite wird quadriert – d. h. mit sich selbst multipliziert. Die Summe der quadrierten Katheten ergibt das Quadrat der Hypotenuse."
+          }
+        ]
+      },
+      {
+        "id": "herleitung",
+        "navLabel": "Herleitung",
+        "label": "SCHRITT FÜR SCHRITT",
+        "title": "Wie rechnet man damit?",
+        "timeline": [
+          {
+            "time": "Schritt 1",
+            "title": "Rechten Winkel identifizieren",
+            "text": "Stelle sicher, dass das Dreieck tatsächlich einen rechten Winkel (90°) besitzt. Nur dann gilt der Satz des Pythagoras."
+          },
+          {
+            "time": "Schritt 2",
+            "title": "Seiten benennen",
+            "text": "Benenne die Seiten: Die Seite gegenüber dem rechten Winkel ist die Hypotenuse c. Die anderen beiden sind Kathete a und Kathete b."
+          },
+          {
+            "time": "Schritt 3",
+            "title": "Formel anwenden",
+            "text": "Setze die bekannten Werte in a² + b² = c² ein. Sind a = 3 und b = 4, gilt: 9 + 16 = 25, also c = 5."
+          },
+          {
+            "time": "Schritt 4",
+            "title": "Wurzel ziehen",
+            "text": "Um c zu berechnen, ziehe die Quadratwurzel aus dem Ergebnis: c = √(a² + b²). Im Beispiel: c = √25 = 5."
+          }
+        ]
+      },
+      {
+        "id": "beispiel",
+        "navLabel": "Beispiel",
+        "label": "PRAXISBEISPIEL",
+        "title": "Das 3-4-5-Dreieck",
+        "paragraphs": [
+          "Das bekannteste Beispiel ist das sogenannte <strong>3-4-5-Dreieck</strong>: Die Katheten haben die Längen 3 und 4, die Hypotenuse die Länge 5.",
+          "Probe: <strong>3² + 4² = 9 + 16 = 25 = 5²</strong> ✓ – Die Gleichung geht auf. Dieses Dreieck wird seit der Antike in Architektur und Landvermessung verwendet.",
+          "Weitere bekannte pythagoreische Tripel sind <em>(5, 12, 13)</em>, <em>(8, 15, 17)</em> und <em>(7, 24, 25)</em>."
+        ]
+      },
+      {
+        "id": "geschichte",
+        "navLabel": "Geschichte",
+        "label": "HISTORISCHES",
+        "title": "Wer war Pythagoras?",
+        "paragraphs": [
+          "<strong>Pythagoras von Samos</strong> (ca. 570–495 v. Chr.) war ein griechischer Philosoph und Mathematiker. Er gründete eine einflussreiche Schule, die Zahlen und Harmonie als Grundprinzip der Welt betrachtete.",
+          "Der nach ihm benannte Satz war jedoch bereits den Babyloniern und Ägyptern bekannt – Pythagoras gilt aber als derjenige, der ihn erstmals <em>bewiesen</em> hat.",
+          "Bis heute ist der Satz des Pythagoras eines der meistgenutzten mathematischen Werkzeuge in Technik, Architektur und Naturwissenschaft."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "pythagoras-v2",
+    "title": "Pythagoras einfach erklärt",
+    "accentColor": "#0d9488",
+    "theme": "light",
+    "heroBg": "",
+    "heroBadge": "Mathe für alle",
+    "heroTitle": "Hey, lass uns über<br>Pythagoras reden!",
+    "heroSubtitle": "Keine Angst vor Formeln – wir erklären dir den berühmtesten Satz der Mathematik auf entspannte Art.",
+    "ctaText": "Los geht's!",
+    "footerText": "&copy; 2026 Mathe Einfach",
+    "sections": [
+      {
+        "id": "was-ist-das",
+        "navLabel": "Was ist das?",
+        "label": "DER EINSTIEG",
+        "title": "Darum geht's",
+        "paragraphs": [
+          "Stell dir ein Dreieck vor, das <strong>einen rechten Winkel</strong> hat – so wie die Ecke eines Blattes Papier. Bei so einem Dreieck passiert etwas Erstaunliches mit den Seiten.",
+          "Die Formel dazu lautet ganz einfach: <strong>a² + b² = c²</strong>. Das klingt erstmal trocken, aber dahinter steckt eine richtig elegante Idee!",
+          "Kurz gesagt: Wenn du zwei Seiten kennst, kannst du die dritte immer ausrechnen. Praktisch, oder?"
+        ],
+        "quote": {
+          "text": "Mathematik ist die Sprache, in der Gott das Universum geschrieben hat.",
+          "cite": "Galileo Galilei"
+        }
+      },
+      {
+        "id": "die-seiten",
+        "navLabel": "Die Seiten",
+        "label": "ERKLÄRT",
+        "title": "Was bedeuten a, b und c?",
+        "paragraphs": [
+          "<strong>a und b</strong> sind die beiden Seiten, die den rechten Winkel einschließen – man nennt sie Katheten. Denk an die zwei Beine eines Stuhls.",
+          "<strong>c</strong> ist die längste Seite, die Hypotenuse. Sie ist immer gegenüber dem rechten Winkel und sozusagen der „Star“ der Formel.",
+          "Das Tolle: Die Formel funktioniert immer, egal wie groß oder klein das Dreieck ist. Solange da ein rechter Winkel drin ist – passt!"
+        ]
+      },
+      {
+        "id": "rechnen",
+        "navLabel": "Rechnen",
+        "label": "BEISPIEL",
+        "title": "Ein konkretes Rechenbeispiel",
+        "paragraphs": [
+          "Nehmen wir <strong>a = 3 cm</strong> und <strong>b = 4 cm</strong>. Wie lang ist dann c?",
+          "Wir rechnen: 3² + 4² = 9 + 16 = 25. Und jetzt ziehen wir die Wurzel: √25 = <strong>5 cm</strong>. Fertig!",
+          "Das 3-4-5-Dreieck ist übrigens das bekannteste Beispiel – die alten Ägypter haben es schon beim Bauen der Pyramiden verwendet. 😄"
+        ],
+        "quote": {
+          "text": "Das Schöne an der Mathematik ist, dass sie keine Meinung hat – sie hat einfach recht.",
+          "cite": "unbekannt"
+        }
+      },
+      {
+        "id": "wozu",
+        "navLabel": "Wozu?",
+        "label": "ANWENDUNG",
+        "title": "Wofür braucht man das im echten Leben?",
+        "paragraphs": [
+          "Viel öfter als du denkst! <strong>Architekten</strong> berechnen damit Dachschrägen, <strong>Navigationssysteme</strong> ermitteln Entfernungen, und sogar beim <em>Aufhängen eines Bildes</em> gerade an der Wand hilft Pythagoras.",
+          "Auch in der Informatik steckt er überall drin – zum Beispiel bei der Berechnung von Abständen in Spielen oder beim Rendern von 3D-Grafiken.",
+          "Kurz: Wer Pythagoras kann, hat ein echtes Schweizer Taschenmesser im Kopf. 🧠"
+        ],
+        "quote": {
+          "text": "Mathematik ist nicht nur zum Rechnen da – sie ist eine Art zu denken.",
+          "cite": "Paul Halmos"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "pythagoras-v3",
+    "title": "Pythagoras entdecken",
+    "accentColor": "#8b5cf6",
+    "theme": "colorful",
+    "heroBg": "",
+    "heroBadge": "✨ Mathematik erleben",
+    "heroTitle": "Ein Satz,<br>der die Welt verändert hat",
+    "heroSubtitle": "Tauche ein in die faszinierende Welt des rechtwinkligen Dreiecks – und verstehe, warum dieser Satz seit 2500 Jahren begeistert.",
+    "ctaText": "Entdecke die Formel",
+    "footerText": "&copy; 2026 Pythagoras Entdecken",
+    "sections": [
+      {
+        "id": "einstieg",
+        "navLabel": "Einstieg",
+        "label": "DIE IDEE",
+        "title": "Eine Formel für die Ewigkeit",
+        "paragraphs": [
+          "Stell dir vor: Mit nur drei Buchstaben – <strong>a, b und c</strong> – lässt sich eine der mächtigsten Wahrheiten der Geometrie beschreiben. <strong>a² + b² = c²</strong>.",
+          "Diese Formel gilt für jedes rechtwinklige Dreieck auf der Welt. Immer. Überall. Ohne Ausnahme. Das ist nicht nur nützlich – das ist wunderschön."
+        ],
+        "warning": {
+          "title": "Wichtig:",
+          "text": "Der Satz des Pythagoras gilt NUR für rechtwinklige Dreiecke – also solche mit einem Winkel von exakt 90°. Bei anderen Dreiecken gelten andere Regeln."
+        }
+      },
+      {
+        "id": "formel",
+        "navLabel": "Formel",
+        "label": "DIE FORMEL",
+        "title": "Was steckt hinter a² + b² = c²?",
+        "cards": [
+          {
+            "icon": "🅰️",
+            "title": "Kathete a",
+            "text": "Eine der beiden kurzen Seiten, die den rechten Winkel einschließen. Quadriert wird sie zur ersten Komponente der Formel."
+          },
+          {
+            "icon": "🅱️",
+            "title": "Kathete b",
+            "text": "Die zweite kurze Seite. Zusammen mit a bildet sie die Basis – und ihr gemeinsames Quadrat ergibt die Hypotenuse."
+          },
+          {
+            "icon": "🔺",
+            "title": "Hypotenuse c",
+            "text": "Die Königin des Dreiecks! Immer die längste Seite, immer gegenüber dem rechten Winkel. Ihr Quadrat ist gleich a² + b²."
+          },
+          {
+            "icon": "🔢",
+            "title": "Quadrieren",
+            "text": "Eine Zahl zu quadrieren bedeutet, sie mit sich selbst zu multiplizieren: 3² = 9, 4² = 16. So entsteht die magische Beziehung."
+          },
+          {
+            "icon": "√",
+            "title": "Wurzel ziehen",
+            "text": "Um c zu berechnen, ziehst du am Ende die Quadratwurzel: c = √(a² + b²). Aus 25 wird so die wunderbare Zahl 5."
+          }
+        ]
+      },
+      {
+        "id": "visualisierung",
+        "navLabel": "Visualisierung",
+        "label": "BILD IM KOPF",
+        "title": "So kannst du es dir vorstellen",
+        "paragraphs": [
+          "Stell dir auf jeder Seite des Dreiecks ein Quadrat vor. Das Quadrat auf der Hypotenuse <strong>c</strong> hat genau die gleiche Fläche wie die beiden Quadrate auf <strong>a</strong> und <strong>b</strong> zusammen.",
+          "Diesen Flächenvergleich hat schon Pythagoras genutzt, um seinen Satz zu beweisen – ohne Algebra, nur mit Geometrie. Eine Meisterleistung!"
+        ],
+        "warning": {
+          "title": "Merkhilfe:",
+          "text": "Denke an drei Quadrate, die an den Seiten des Dreiecks kleben. Die Fläche des großen Quadrats (auf c) ist immer gleich der Summe der beiden kleinen Quadrate (auf a und b)."
+        }
+      },
+      {
+        "id": "beispiele",
+        "navLabel": "Beispiele",
+        "label": "IN DER PRAXIS",
+        "title": "Pythagoreische Tripel",
+        "cards": [
+          {
+            "icon": "3️⃣",
+            "title": "3 – 4 – 5",
+            "text": "Das berühmteste Tripel: 3² + 4² = 9 + 16 = 25 = 5². Schon die alten Ägypter nutzten es beim Bau der Pyramiden."
+          },
+          {
+            "icon": "5️⃣",
+            "title": "5 – 12 – 13",
+            "text": "Ein weiteres elegantes Tripel: 25 + 144 = 169 = 13². Häufig in technischen Konstruktionen anzutreffen."
+          },
+          {
+            "icon": "8️⃣",
+            "title": "8 – 15 – 17",
+            "text": "Auch dieses Tripel ist ein echter Pythagoras: 64 + 225 = 289 = 17². Mathematisch rein und wunderschön."
+          }
+        ],
+        "warning": {
+          "title": "Wusstest du?",
+          "text": "Es gibt unendlich viele pythagoreische Tripel – also ganzzahlige Lösungen für a² + b² = c². Sie faszinieren Mathematiker bis heute."
+        }
+      },
+      {
+        "id": "anwendung",
+        "navLabel": "Anwendung",
+        "label": "ÜBERALL IM LEBEN",
+        "title": "Pythagoras begegnet uns täglich",
+        "cards": [
+          {
+            "icon": "🏗️",
+            "title": "Architektur",
+            "text": "Dachschrägen, Stützen und Fundamente: Bauingenieure rechnen täglich mit Pythagoras, um stabile Konstruktionen zu schaffen."
+          },
+          {
+            "icon": "🗺️",
+            "title": "Navigation",
+            "text": "GPS und Kartenanwendungen berechnen Luftlinien-Entfernungen mithilfe des pythagoreischen Prinzips in zwei und drei Dimensionen."
+          },
+          {
+            "icon": "🎮",
+            "title": "Spieleentwicklung",
+            "text": "In 3D-Spielen wird der Abstand zwischen zwei Punkten im Raum mit einer erweiterten Form von Pythagoras berechnet."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "pythagoras-v4",
+    "title": "Pythagoras – Technische Dokumentation",
+    "accentColor": "#10b981",
+    "theme": "dark",
+    "heroBg": "",
+    "heroBadge": "Geometrie & Analysis",
+    "heroTitle": "Satz des Pythagoras:<br>Technisch präzise erklärt",
+    "heroSubtitle": "Von der axiomatischen Grundlage bis zur praktischen Anwendung – eine vollständige technische Aufbereitung des fundamentalen Lehrsatzes der euklidischen Geometrie.",
+    "ctaText": "Zur technischen Erklärung",
+    "footerText": "&copy; 2026 MathDocs",
+    "sections": [
+      {
+        "id": "axiomatik",
+        "navLabel": "Axiomatik",
+        "label": "GRUNDLAGEN",
+        "title": "Mathematische Einordnung",
+        "paragraphs": [
+          "Der Satz des Pythagoras ist ein fundamentaler <strong>Lehrsatz der euklidischen Geometrie</strong>. Er beschreibt eine notwendige und hinreichende Bedingung für das Vorliegen eines rechten Winkels in einem Dreieck.",
+          "Formal: Sei △ABC ein Dreieck mit den Seitenlängen <em>a, b, c</em> gegenüber den Winkeln α, β, γ. Gilt γ = 90°, so folgt zwingend: <strong>a² + b² = c²</strong>.",
+          "Der Beweis basiert auf dem Flächeninhaltsprinzip und lässt sich sowohl algebraisch als auch geometrisch führen. Euklid lieferte im dritten Jahrhundert v. Chr. den ersten vollständigen formalen Beweis im Rahmen seiner <em>Elemente</em>."
+        ]
+      },
+      {
+        "id": "beweisfuehrung",
+        "navLabel": "Beweis",
+        "label": "BEWEISFÜHRUNG",
+        "title": "Geometrischer Beweis durch Flächenvergleich",
+        "timeline": [
+          {
+            "time": "Schritt 1",
+            "title": "Konstruktion der Quadrate",
+            "text": "Errichte über jeder Seite des rechtwinkligen Dreiecks ein Quadrat. Die Flächen betragen a², b² und c². Dies ist die geometrische Grundlage des Beweises."
+          },
+          {
+            "time": "Schritt 2",
+            "title": "Aufteilung des großen Quadrats",
+            "text": "Das Quadrat der Hypotenuse (c²) lässt sich durch Umlegung in exakt zwei Teilflächen zerlegen, die den Quadraten der Katheten a² und b² entsprechen."
+          },
+          {
+            "time": "Schritt 3",
+            "title": "Flächengleichheit nachweisen",
+            "text": "Durch kongruente Dreiecksumlegung kann gezeigt werden, dass die Gesamtfläche auf beiden Seiten der Gleichung identisch ist: a² + b² = c²."
+          },
+          {
+            "time": "Schritt 4",
+            "title": "Algebraische Verifikation",
+            "text": "Alternativ algebraisch: (a+b)² = c² + 4·(ab/2) → a² + 2ab + b² = c² + 2ab → a² + b² = c². Der Beweis ist vollständig."
+          }
+        ]
+      },
+      {
+        "id": "umkehrung",
+        "navLabel": "Umkehrsatz",
+        "label": "UMKEHRUNG",
+        "title": "Der Umkehrsatz des Pythagoras",
+        "paragraphs": [
+          "Der Satz gilt auch in der Umkehrung: Gilt für die Seiten eines Dreiecks die Relation <strong>a² + b² = c²</strong>, so ist der der Seite c gegenüberliegende Winkel zwingend ein rechter Winkel (90°).",
+          "Dies ermöglicht die <em>konstruktive Anwendung</em>: Durch Messung der Seitenlängen kann die Rechtwinkligkeit eines Dreiecks exakt überprüft werden – ohne Winkelmessung.",
+          "Praktisch relevant ist dies bei der Bauabnahme, der Vermessungstechnik sowie der Qualitätskontrolle in der Fertigungstechnik. Das pythagoreische Tripel (3, 4, 5) wird seit der Antike zur Winkelkontrolle eingesetzt."
+        ]
+      },
+      {
+        "id": "verallgemeinerung",
+        "navLabel": "Verallgemeinerung",
+        "label": "ERWEITERUNG",
+        "title": "Verallgemeinerungen und verwandte Sätze",
+        "timeline": [
+          {
+            "time": "Erweiterung 1",
+            "title": "Kosinussatz (allgemeines Dreieck)",
+            "text": "Der Kosinussatz verallgemeinert Pythagoras auf beliebige Dreiecke: c² = a² + b² – 2ab·cos(γ). Für γ = 90° entfällt der Korrekturterm, und es ergibt sich exakt a² + b² = c²."
+          },
+          {
+            "time": "Erweiterung 2",
+            "title": "Dreidimensionale Anwendung",
+            "text": "Im dreidimensionalen Raum lautet die Raumdiagonale eines Quaders: d = √(a² + b² + c²). Dies ist eine direkte iterierte Anwendung des pythagoreischen Prinzips."
+          },
+          {
+            "time": "Erweiterung 3",
+            "title": "Euklidischer Abstand in n Dimensionen",
+            "text": "Der allgemeine euklidische Abstand zweier Punkte P und Q im ℝⁿ ist definiert als d(P,Q) = √(Σᵢ(pᵢ – qᵢ)²). Pythagoras ist die Spezialfall-Instanz für n = 2."
+          }
+        ]
+      },
+      {
+        "id": "anwendungsfelder",
+        "navLabel": "Anwendung",
+        "label": "ANWENDUNGSFELDER",
+        "title": "Technische und wissenschaftliche Einsatzbereiche",
+        "paragraphs": [
+          "In der <strong>Geodäsie und Kartographie</strong> bildet Pythagoras die Basis zur Berechnung von Horizontaldistanzen aus Schrägmessungen. In der <strong>Computergrafik</strong> wird der euklidische Abstand zur Kollisionsdetektion, Beleuchtungsberechnung und Raytracing verwendet.",
+          "Die <strong>Signalverarbeitung</strong> nutzt das Prinzip zur Berechnung der Magnitude komplexer Zahlen: |z| = √(Re² + Im²). In der <em>Mechanik</em> ermittelt man resultierende Kräfte aus orthogonalen Komponenten über dieselbe Formel.",
+          "Selbst in der <strong>Relativitätstheorie</strong> findet sich Pythagoras wieder: Das Linienelement des Minkowski-Raums ist eine pseudo-euklidische Erweiterung mit einem negativen Vorzeichen für die Zeitkomponente."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "pythagoras-v5",
+    "title": "Pythagoras – Das Dreieck-Abenteuer",
+    "accentColor": "#0d9488",
+    "theme": "light",
+    "heroBg": "",
+    "heroBadge": "🎉 Mathe-Abenteuer",
+    "heroTitle": "Das coolste Dreieck<br>der Welt!",
+    "heroSubtitle": "Warum sind Dreiecke eigentlich so aufregend? Weil Pythagoras darin steckt – und der hat vor 2500 Jahren die Mathe-Welt auf den Kopf gestellt. Lass uns das gemeinsam entdecken!",
+    "ctaText": "Abenteuer starten 🚀",
+    "footerText": "&copy; 2026 Dreiecks-Abenteuer",
+    "sections": [
+      {
+        "id": "hallo-pythagoras",
+        "navLabel": "Hallo!",
+        "label": "DER EINSTIEG",
+        "title": "Wer hat eigentlich diese Formel erfunden?",
+        "paragraphs": [
+          "Vor etwa 2500 Jahren lebte auf der griechischen Insel Samos ein ziemlich schlaues Kerlchen namens <strong>Pythagoras</strong>. Er liebte Zahlen so sehr, dass er eine ganze Schule dafür gründete!",
+          "Und eines Tages bemerkte er etwas Magisches an rechtwinkligen Dreiecken: Die Seiten stehen immer in einer ganz bestimmten Beziehung zueinander. <strong>a² + b² = c²</strong> – simpel, genial, für immer wahr."
+        ],
+        "quote": {
+          "text": "Zahlen regieren die Welt.",
+          "cite": "Pythagoras von Samos"
+        }
+      },
+      {
+        "id": "die-formel",
+        "navLabel": "Die Formel",
+        "label": "DAS HERZSTÜCK",
+        "title": "a² + b² = c² – Was bedeutet das?",
+        "cards": [
+          {
+            "icon": "📐",
+            "title": "a und b sind die Katheten",
+            "text": "Das sind die zwei kurzen Seiten – die, die den rechten Winkel einschließen. Stell dir zwei Wände einer Zimmerecke vor!"
+          },
+          {
+            "icon": "🏹",
+            "title": "c ist die Hypotenuse",
+            "text": "Die längste Seite! Sie liegt schräg gegenüber dem rechten Winkel – wie ein Pfeil, der diagonal durch die Ecke schießt."
+          },
+          {
+            "icon": "🔢",
+            "title": "Das Quadrieren",
+            "text": "Jede Seite wird mit sich selbst multipliziert: a × a = a². So entstehen die Werte, die sich magisch zu c² addieren."
+          },
+          {
+            "icon": "🌟",
+            "title": "Die Formel",
+            "text": "a² + b² = c². Kurz. Knackig. Korrekt. Diese Formel hat die Menschheit seit zweieinhalb Jahrtausenden begleitet – und sie stimmt noch immer!"
+          }
+        ],
+        "quote": {
+          "text": "Für jedes komplexe Problem gibt es eine einfache Lösung – und sie ist meistens schön.",
+          "cite": "frei nach Pythagoras"
+        }
+      },
+      {
+        "id": "rechnen-macht-spass",
+        "navLabel": "Rechnen",
+        "label": "JETZT WIRDS BUNT",
+        "title": "Lass uns rechnen – versprochen, es macht Spaß!",
+        "cards": [
+          {
+            "icon": "3️⃣",
+            "title": "a = 3, b = 4 → c = ?",
+            "text": "3² = 9, 4² = 16, zusammen 25. Wurzel aus 25 = 5. Boom! Die Hypotenuse ist 5. Das 3-4-5-Dreieck ist berühmt wie ein Popstar."
+          },
+          {
+            "icon": "5️⃣",
+            "title": "a = 5, b = 12 → c = ?",
+            "text": "5² = 25, 12² = 144, zusammen 169. Wurzel aus 169 = 13. Perfekt! Das 5-12-13-Dreieck ist der kleine Bruder des 3-4-5."
+          },
+          {
+            "icon": "🤔",
+            "title": "a = 6, b = 8 → c = ?",
+            "text": "6² = 36, 8² = 64, zusammen 100. Wurzel aus 100 = 10. Überraschung – eine glatte 10! Pythagoras liebt runde Zahlen."
+          }
+        ],
+        "quote": {
+          "text": "Mathematik ist das Alphabet, mit dem Gott das Universum beschrieben hat.",
+          "cite": "Galileo Galilei"
+        }
+      },
+      {
+        "id": "im-alltag",
+        "navLabel": "Alltag",
+        "label": "ÜBERALL DABEI",
+        "title": "Wo steckt Pythagoras in deinem Leben?",
+        "cards": [
+          {
+            "icon": "📺",
+            "title": "TV-Bildschirme",
+            "text": "Die Diagonale eines 55-Zoll-Fernsehers? Berechnet mit Pythagoras! Hersteller messen Bildschirme immer diagonal."
+          },
+          {
+            "icon": "🏠",
+            "title": "Beim Heimwerken",
+            "text": "Hängst du ein Regal auf? Mit Pythagoras prüfst du, ob deine Ecken wirklich rechtwinklig sind – wie die alten Baumeister!"
+          },
+          {
+            "icon": "⚽",
+            "title": "Beim Sport",
+            "text": "Im Fußball berechnen Trainer die kürzeste Distanz zum Tor. In der Spielanalyse-Software steckt Pythagoras drin."
+          },
+          {
+            "icon": "🎮",
+            "title": "In Videospielen",
+            "text": "Jede Abstandsberechnung in einem 3D-Spiel basiert auf Pythagoras. Dein Lieblingscharakter bewegt sich dank ihm so flüssig."
+          }
+        ]
+      }
+    ]
+  }
+]
+```

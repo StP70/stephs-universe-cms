@@ -56,6 +56,7 @@ REGELN:
 - heroBg: Leer lassen (wird manuell gesetzt).
 - Keine Videos generieren (videos-Array leer lassen oder weglassen).
 - Keine Bildergalerie generieren (gallery-Array weglassen). Bilder kommen vom User.
+- WICHTIG: Verwende KEINE typografischen Anführungszeichen wie \u201E \u201C \u201D im JSON. Nutze ausschließlich einfache ASCII-Zeichen. Für Anführungszeichen im Text verwende &bdquo; und &ldquo; als HTML-Entities.
 
 JSON-SCHEMA:
 {

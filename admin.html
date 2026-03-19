@@ -488,7 +488,8 @@
       '- section.id: Nur lowercase a-z, 0-9, Bindestrich.\n' +
       '- heroTitle darf <br> enthalten, paragraphs dürfen <strong>, <em>, <a> enthalten.\n' +
       '- heroBg: Leer lassen. Keine Videos.\n' +
-      '- footerText: HTML mit &copy; 2026\n\n' +
+      '- footerText: HTML mit &copy; 2026\n' +
+      '- WICHTIG: Verwende KEINE typografischen Anführungszeichen wie \u201E \u201C \u201D im JSON. Nutze ausschließlich einfache ASCII-Zeichen. Für Anführungszeichen im Text verwende &bdquo; und &ldquo; als HTML-Entities.\n\n' +
       'VARIANTEN:\n' + variantDesc + '\n\n' +
       'JSON-SCHEMA (pro Variante):\n' +
       '{"slug":"url-pfad","title":"Seitentitel","accentColor":"#hex","theme":"dark|light|colorful",' +
@@ -542,6 +543,8 @@
     if (raw.startsWith('```')) {
       raw = raw.replace(/^```(?:json)?\s*\n?/, '').replace(/\n?```\s*$/, '');
     }
+    // Auto-fix: German smart-quotes „…" where closing " is a stray ASCII " that breaks JSON
+    raw = raw.replace(/\u201E([^\u201C\u0022]*)\u0022/g, '\u201E$1\u201C');
     try {
       var parsed = JSON.parse(raw);
       // Array oder einzelnes Objekt?
