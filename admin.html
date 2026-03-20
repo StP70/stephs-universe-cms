@@ -987,7 +987,20 @@
     <div class="panel" id="imgGenPanel">
       <div class="panel-title">Bild-Generator</div>
       <div class="panel-body">
-        <p style="color:var(--text-muted);font-size:.85rem;margin-bottom:1rem">Bilder für Hero-Hintergründe, Sektionen und Galerien generieren (via Pollinations.ai – kostenlos, kein API-Key nötig).</p>
+        <p style="color:var(--text-muted);font-size:.85rem;margin-bottom:1rem">Bilder für Hero-Hintergründe, Sektionen und Galerien generieren.</p>
+        <div class="field-row">
+          <div class="field">
+            <label>Provider</label>
+            <select id="imgGenProvider" onchange="toggleImgGenProvider()">
+              <option value="pollinations">Pollinations.ai (kein API-Key)</option>
+              <option value="huggingface">Hugging Face (API-Key nötig, kostenlos)</option>
+            </select>
+          </div>
+          <div class="field" id="imgGenHfKeyField" style="display:none">
+            <label>HF API-Key (<a href="https://huggingface.co/settings/tokens/new?ownUserPermissions=inference.serverless.write&tokenType=fineGrained" target="_blank" rel="noopener" style="color:var(--accent)">hier erstellen</a>)</label>
+            <input type="password" id="imgGenHfKey" placeholder="hf_..." oninput="if(this.value) localStorage.setItem('hfApiKey',this.value)">
+          </div>
+        </div>
         <div class="field">
           <label>Bildbeschreibung</label>
           <textarea id="imgGenPrompt" rows="3" placeholder="z.B. Dunkler abstrakter Hintergrund mit smaragdgrünen Lichtpartikeln, modern, elegant, für eine Tech-Website"></textarea>
@@ -1042,13 +1055,63 @@
   var _imgGenHistory = [];
   var _imgGenCurrentUrl = '';
 
+  // Gespeicherten HF-Key laden
+  (function() {
+    var saved = localStorage.getItem('hfApiKey');
+    if (saved) {
+      var el = document.getElementById('imgGenHfKey');
+      if (el) el.value = saved;
+    }
+  })();
+
+  // HF Modelle pro Stil
+  var HF_MODELS = {
+    'flux': 'black-forest-labs/FLUX.1-dev',
+    'sdxl-lightning': 'ByteDance/SDXL-Lightning',
+    'sdxl': 'stabilityai/stable-diffusion-xl-base-1.0'
+  };
+
+  function toggleImgGenProvider() {
+    var provider = document.getElementById('imgGenProvider').value;
+    var hfKeyField = document.getElementById('imgGenHfKeyField');
+    var modelSelect = document.getElementById('imgGenModel');
+    hfKeyField.style.display = provider === 'huggingface' ? '' : 'none';
+    // Modelle je nach Provider wechseln
+    if (provider === 'huggingface') {
+      modelSelect.innerHTML =
+        '<option value="flux">FLUX.1-dev (Beste Qualität)</option>' +
+        '<option value="sdxl-lightning">SDXL-Lightning (Schnell)</option>' +
+        '<option value="sdxl">SDXL Base (Klassisch)</option>';
+    } else {
+      modelSelect.innerHTML =
+        '<option value="sana">Sana (Standard)</option>' +
+        '<option value="turbo">Turbo (Schnell)</option>' +
+        '<option value="zimage">Zimage (Detailreich)</option>';
+    }
+    // Gespeicherten HF-Key laden
+    if (provider === 'huggingface') {
+      var saved = localStorage.getItem('hfApiKey');
+      if (saved) document.getElementById('imgGenHfKey').value = saved;
+    }
+  }
+
   function generateImage(newSeed) {
     var prompt = document.getElementById('imgGenPrompt').value.trim();
     if (!prompt) { alert('Bitte Bildbeschreibung eingeben.'); return; }
+    var provider = document.getElementById('imgGenProvider').value;
+    if (provider === 'huggingface') {
+      generateImageHF(prompt, newSeed);
+    } else {
+      generateImagePollinations(prompt, newSeed);
+    }
+  }
+
+  // ---- Pollinations.ai ----
+  function generateImagePollinations(prompt, newSeed) {
     var width = parseInt(document.getElementById('imgGenWidth').value) || 1024;
     var height = parseInt(document.getElementById('imgGenHeight').value) || 576;
     var model = document.getElementById('imgGenModel').value;
-    var seed = newSeed ? Math.floor(Math.random() * 999999) : Math.floor(Math.random() * 999999);
+    var seed = Math.floor(Math.random() * 999999);
 
     var btn = document.getElementById('imgGenButton');
     var status = document.getElementById('imgGenStatus');
@@ -1057,7 +1120,7 @@
 
     btn.disabled = true;
     btn.textContent = 'Generiert...';
-    status.textContent = 'Bild wird generiert, bitte warten... (kann bis zu 60 Sek. dauern)';
+    status.textContent = 'Bild wird generiert (Pollinations.ai), bitte warten... (kann bis zu 60 Sek. dauern)';
     result.style.display = 'none';
 
     var encodedPrompt = encodeURIComponent(prompt);
@@ -1065,11 +1128,10 @@
       '?width=' + width + '&height=' + height + '&model=' + model +
       '&nologo=true&nofeed=true&seed=' + seed;
 
-    // Erst per fetch prüfen ob der Server antwortet, dann Bild laden
     var timeout = setTimeout(function() {
       btn.disabled = false;
       btn.textContent = 'Bild generieren';
-      status.textContent = 'Timeout: Der Server antwortet nicht. Pollinations.ai ist möglicherweise überlastet – bitte später erneut versuchen.';
+      status.textContent = 'Timeout: Pollinations.ai antwortet nicht. Versuche Hugging Face als Alternative.';
     }, 90000);
 
     fetch(url).then(function(res) {
@@ -1083,41 +1145,130 @@
       }
       var contentType = res.headers.get('content-type') || '';
       if (!contentType.startsWith('image/')) {
-        throw new Error('Server liefert kein Bild (Content-Type: ' + contentType + '). API evtl. überlastet.');
+        throw new Error('Kein Bild erhalten. API evtl. überlastet.');
       }
       return res.blob();
     }).then(function(blob) {
       if (!blob || blob.size === 0) {
-        throw new Error('Server liefert leeres Bild. API evtl. überlastet – bitte später erneut versuchen.');
+        throw new Error('Leeres Bild erhalten. API evtl. überlastet.');
       }
-      var objectUrl = URL.createObjectURL(blob);
-      _imgGenCurrentUrl = url;
-      preview.src = objectUrl;
-      result.style.display = 'block';
-      btn.disabled = false;
-      btn.textContent = 'Bild generieren';
-      document.getElementById('imgGenNewSeed').style.display = '';
-      status.textContent = 'Bild generiert! (' + width + 'x' + height + ', Modell: ' + model + ')';
-
-      _imgGenHistory.unshift({ url: url, prompt: prompt, width: width, height: height, objectUrl: objectUrl });
-      renderImgGenGallery();
+      imgGenShowResult(blob, url, prompt, width, height, 'pollinations/' + model);
     }).catch(function(err) {
       clearTimeout(timeout);
       btn.disabled = false;
       btn.textContent = 'Bild generieren';
-      status.textContent = err.message || 'Fehler beim Generieren. Pollinations.ai ist möglicherweise nicht erreichbar.';
+      status.textContent = 'Pollinations: ' + (err.message || 'Fehler') + ' – Tipp: Wechsle zu Hugging Face als Alternative.';
     });
+  }
+
+  // ---- Hugging Face Inference API ----
+  function generateImageHF(prompt, newSeed) {
+    var apiKey = document.getElementById('imgGenHfKey').value.trim() || localStorage.getItem('hfApiKey') || '';
+    if (!apiKey) { alert('Bitte Hugging Face API-Key eingeben. Kostenlos erstellen unter:\nhttps://huggingface.co/settings/tokens'); return; }
+    localStorage.setItem('hfApiKey', apiKey);
+
+    var width = parseInt(document.getElementById('imgGenWidth').value) || 1024;
+    var height = parseInt(document.getElementById('imgGenHeight').value) || 576;
+    var modelKey = document.getElementById('imgGenModel').value;
+    var modelId = HF_MODELS[modelKey] || HF_MODELS['flux'];
+    var seed = Math.floor(Math.random() * 999999);
+
+    var btn = document.getElementById('imgGenButton');
+    var status = document.getElementById('imgGenStatus');
+    var result = document.getElementById('imgGenResult');
+
+    btn.disabled = true;
+    btn.textContent = 'Generiert...';
+    status.textContent = 'Bild wird generiert (Hugging Face: ' + modelId.split('/')[1] + '), bitte warten...';
+    result.style.display = 'none';
+
+    var timeout = setTimeout(function() {
+      btn.disabled = false;
+      btn.textContent = 'Bild generieren';
+      status.textContent = 'Timeout: Hugging Face antwortet nicht. Das Modell wird evtl. gerade geladen – bitte in 30 Sek. erneut versuchen.';
+    }, 120000);
+
+    fetch('https://api-inference.huggingface.co/models/' + modelId, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + apiKey,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        inputs: prompt,
+        parameters: { width: width, height: height, seed: seed }
+      })
+    }).then(function(res) {
+      clearTimeout(timeout);
+      if (res.status === 503) {
+        throw new Error('Modell wird geladen (Cold Start). Bitte in 30–60 Sek. erneut versuchen.');
+      }
+      if (res.status === 401 || res.status === 403) {
+        throw new Error('API-Key ungültig oder keine Berechtigung. Bitte Key prüfen.');
+      }
+      if (!res.ok) {
+        return res.text().then(function(body) {
+          var msg = 'HTTP ' + res.status;
+          try { var j = JSON.parse(body); if (j.error) msg += ': ' + j.error; } catch(e) {}
+          throw new Error(msg);
+        });
+      }
+      var contentType = res.headers.get('content-type') || '';
+      if (!contentType.startsWith('image/')) {
+        return res.text().then(function(body) {
+          var msg = 'Kein Bild erhalten';
+          try { var j = JSON.parse(body); if (j.error) msg += ': ' + j.error; } catch(e) {}
+          throw new Error(msg);
+        });
+      }
+      return res.blob();
+    }).then(function(blob) {
+      if (!blob || blob.size === 0) {
+        throw new Error('Leeres Bild erhalten.');
+      }
+      imgGenShowResult(blob, '', prompt, width, height, modelId.split('/')[1]);
+    }).catch(function(err) {
+      clearTimeout(timeout);
+      btn.disabled = false;
+      btn.textContent = 'Bild generieren';
+      status.textContent = 'Hugging Face: ' + (err.message || 'Fehler beim Generieren.');
+    });
+  }
+
+  // ---- Gemeinsam: Ergebnis anzeigen ----
+  function imgGenShowResult(blob, originalUrl, prompt, width, height, modelName) {
+    var objectUrl = URL.createObjectURL(blob);
+    _imgGenCurrentUrl = originalUrl || objectUrl;
+    document.getElementById('imgGenPreview').src = objectUrl;
+    document.getElementById('imgGenResult').style.display = 'block';
+    document.getElementById('imgGenButton').disabled = false;
+    document.getElementById('imgGenButton').textContent = 'Bild generieren';
+    document.getElementById('imgGenNewSeed').style.display = '';
+    document.getElementById('imgGenStatus').textContent = 'Bild generiert! (' + width + 'x' + height + ', ' + modelName + ')';
+
+    _imgGenHistory.unshift({ url: originalUrl || objectUrl, prompt: prompt, width: width, height: height, objectUrl: objectUrl });
+    renderImgGenGallery();
   }
 
   function imgGenUseAsHeroBg() {
     if (!_imgGenCurrentUrl) return;
+    var imgEl = document.getElementById('imgGenPreview');
+    var src = imgEl.src;
+    // Bei Blob-URLs (Hugging Face): in Data-URL konvertieren
+    if (src.startsWith('blob:')) {
+      var canvas = document.createElement('canvas');
+      canvas.width = imgEl.naturalWidth;
+      canvas.height = imgEl.naturalHeight;
+      canvas.getContext('2d').drawImage(imgEl, 0, 0);
+      src = canvas.toDataURL('image/jpeg', 0.9);
+    }
     var field = document.querySelector('input[data-field="heroBg"]');
     if (field) {
-      field.value = _imgGenCurrentUrl;
+      field.value = src;
       field.dispatchEvent(new Event('input', { bubbles: true }));
     }
     if (typeof pageData !== 'undefined') {
-      pageData.heroBg = _imgGenCurrentUrl;
+      pageData.heroBg = src;
       if (typeof scheduleAutosave === 'function') scheduleAutosave();
     }
     document.getElementById('imgGenStatus').textContent = 'Als Hero-Hintergrund gesetzt!';
@@ -1125,11 +1276,20 @@
   }
 
   function imgGenDownload() {
-    if (!_imgGenCurrentUrl) return;
+    var imgEl = document.getElementById('imgGenPreview');
+    if (!imgEl.src) return;
     var a = document.createElement('a');
-    a.href = _imgGenCurrentUrl;
+    // Blob-URL oder Data-URL: Canvas verwenden
+    if (imgEl.src.startsWith('blob:') || imgEl.src.startsWith('data:')) {
+      var canvas = document.createElement('canvas');
+      canvas.width = imgEl.naturalWidth;
+      canvas.height = imgEl.naturalHeight;
+      canvas.getContext('2d').drawImage(imgEl, 0, 0);
+      a.href = canvas.toDataURL('image/png');
+    } else {
+      a.href = imgEl.src;
+    }
     a.download = 'generated-image.png';
-    a.target = '_blank';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -1137,7 +1297,17 @@
 
   function imgGenCopyUrl() {
     if (!_imgGenCurrentUrl) return;
-    navigator.clipboard.writeText(_imgGenCurrentUrl).then(function() {
+    var url = _imgGenCurrentUrl;
+    if (url.startsWith('blob:')) {
+      // Blob-URLs sind nicht teilbar – als Data-URL kopieren
+      var imgEl = document.getElementById('imgGenPreview');
+      var canvas = document.createElement('canvas');
+      canvas.width = imgEl.naturalWidth;
+      canvas.height = imgEl.naturalHeight;
+      canvas.getContext('2d').drawImage(imgEl, 0, 0);
+      url = canvas.toDataURL('image/jpeg', 0.9);
+    }
+    navigator.clipboard.writeText(url).then(function() {
       document.getElementById('imgGenStatus').textContent = 'URL kopiert!';
     });
   }
